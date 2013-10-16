@@ -1,0 +1,22 @@
+{
+  "name": "fork2",
+  "version": "0.0.0",
+  "authors": [
+    "Howard Yeh <howard@metacircus.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "underscore": "~1.5.2"
+  },
+  "dependencies": {
+    "require-cs": "~0.4.4"
+  }
+}

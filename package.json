@@ -1,0 +1,20 @@
+{
+  "name": "fork2",
+  "version": "0.0.0",
+  "description": "fork 2",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "browserify": "~2.34.1",
+    "coffeeify": "~0.5.1",
+    "debowerify": "~0.1.8",
+    "requirejs": "~2.1.9"
+  },
+  "dependencies": {
+    "express": "~3.4.1"
+  }
+}
