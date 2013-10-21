@@ -2,6 +2,7 @@ src := src
 build := build
 bower := bower_components
 bundle := bundle
+optimize := uglify2
 
 .PHONY: bundle build
 
@@ -12,7 +13,7 @@ less_files := $(shell find $(src) -type f -name '*.less')
 css_files := $(less_files:$(src)/%.less=$(build)/%.css)
 
 bundle: build
-	r.js -o $(build)/build.js dir=$(bundle)
+	r.js -o $(build)/build.js dir=$(bundle) optimize=$(optimize)
 
 build: js css
 	@rsync -qPa $(bower) $(build)
