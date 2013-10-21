@@ -3,6 +3,8 @@ build := build
 bower := bower_components
 bundle := bundle
 
+.PHONY: bundle build
+
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
