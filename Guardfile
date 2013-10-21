@@ -6,5 +6,6 @@ end
 
 guard 'livereload' do
   watch(%r{build/.*})
-  watch(%r{index.html})
+  watch(%r{views/.*})
+  watch(%r{server.coffee})
 end
