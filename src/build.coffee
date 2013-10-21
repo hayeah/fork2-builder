@@ -5,6 +5,12 @@
   optimize: "uglify2"
   skipDirOptimize: true
   modules: [
-    name: "main"
+    {
+      name: "vendor"
+    }
+    {
+      name: "main"
+      exclude: ["vendor"]
+    }
   ]
 }
