@@ -4,7 +4,7 @@ requirejs.config
     jquery: "bower_components/jquery/jquery"
     underscore: "bower_components/underscore/underscore"
     almond: "bower_components/almond/almond"
-    "jquery-layout": "lib/jquery.layout"
+    "jquery-layout": "lib/jquery.layout-latest"
   shim:
     underscore:
       exports: "_"
