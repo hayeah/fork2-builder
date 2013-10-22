@@ -17,6 +17,7 @@ bundle: build
 
 build: js css
 	@rsync -qPa $(bower) $(build)
+	@rsync -qPa $(src)/lib $(build)
 
 css: $(css_files)
 
