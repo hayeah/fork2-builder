@@ -1,6 +1,7 @@
 fs = require("fs")
 path = require("path")
 async = require("async")
+mkdirp = require 'mkdirp'
 # create a unique instance of handlebars compiler
 hbs = require("handlebars").create()
 
@@ -26,7 +27,8 @@ class SlideCast
   build: (cb) ->
     output_path = path.normalize(path.join(@out,"index.html"))
     async.waterfall [
-      @index_file_content.bind(@)
+      (cb) => mkdirp(@out,cb)
+      (_made,cb) => @index_file_content(cb)
       (content,cb) =>
         result = @render(content)
         fs.writeFile(output_path,result,cb)
