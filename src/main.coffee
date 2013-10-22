@@ -4,11 +4,13 @@ requirejs.config
     jquery: "bower_components/jquery/jquery"
     underscore: "bower_components/underscore/underscore"
     almond: "bower_components/almond/almond"
+    "jquery-layout": "lib/jquery.layout"
   shim:
     underscore:
       exports: "_"
     reveal:
       exports: "Reveal"
+    "jquery-layout": ["jquery"]
 
-require(["app"])
+# require(["app"])
 
