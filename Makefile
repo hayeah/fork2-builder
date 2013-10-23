@@ -9,8 +9,7 @@ optimize := uglify2
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
-less_files := $(shell find $(src) -type f -name '*.less')
-css_files := $(less_files:$(src)/%.less=$(build)/%.css)
+css_files := $(shell find $(src)/css -type f)
 
 bundle: build
 	r.js -o $(build)/build.js dir=$(bundle) optimize=$(optimize)
@@ -19,11 +18,17 @@ build: js css
 	@rsync -qPa $(bower) $(build)
 	@rsync -qPa $(src)/lib $(build)
 
-css: $(css_files)
+css: $(build)/main.css
 
-$(build)/%.css: $(src)/%.less
-	@mkdir -p $(@D)
-	lessc $< $@
+$(build)/main.css: $(css_files)
+	@mkdir -p $(build)
+	lessc $(src)/main.less $@
+
+# css: $(css_files)
+#
+# $(build)/%.css: $(src)/%.less
+# 	@mkdir -p $(@D)
+# 	lessc $< $@
 
 # Compile CoffeeScript to JavaScript
 js: $(js_files)
