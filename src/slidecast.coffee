@@ -1,6 +1,7 @@
 define (require) ->
   Reveal = require "reveal"
   $ = require "jquery"
+  IDE = require "ide"
 
   class SlideCast
     constructor: ->
@@ -11,5 +12,7 @@ define (require) ->
         history: true
 
       @reveal = Reveal
+
+      @ide = new IDE("#ide")
 
     
