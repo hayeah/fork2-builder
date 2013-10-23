@@ -21,6 +21,10 @@ class ShowIDE extends ControllerAction
   handle: ->
     @res.render('ide')
 
+class ShowBootstrapDemo extends ControllerAction
+  handle: ->
+    @res.render('bootstrap')
+
 fs = require("fs")
 path = require("path")
 class ShowSlideCast extends ControllerAction
@@ -43,6 +47,7 @@ class App
   setup: (@express) ->
     @handle "get", "/", Home
     @handle "get", '/ide', ShowIDE
+    @handle "get", '/bootstrap', ShowBootstrapDemo
     @handle "get", '/:name', ShowSlideCast
 
   handle: (verb,path,action) ->

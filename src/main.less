@@ -1,14 +1,16 @@
 @import (less) "lib/layout-default-latest.css";
+
+// reveal.css introduces some global styles. Doesn't seem to break when bootstrap resets everything.
+@import (less) "bower_components/reveal.js/css/reveal.css";
+@import (less) "reveal-theme-default.css";
+
+@import (less) "bower_components/bootstrap/less/bootstrap.less";
+
 @import (less) "css/slidecast.less";
 @import (less) "css/ide.less";
 
 .ui-layout-pane {
   padding: 0;
-}
-
-html, body {
-  height: 100%;
-  margin: 0;
 }
 
 .reveal-wrapper {
