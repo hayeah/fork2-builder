@@ -1,5 +1,5 @@
 define (require) ->
-  require("jquery-layout")
+  require("jquery.layout")
   $("body").layout
     west:
       minSize: 300
