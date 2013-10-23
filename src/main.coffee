@@ -1,4 +1,11 @@
 requirejs.config
+  packages: [
+    {
+      name: "ace"
+      location: "bower_components/ace/lib/ace"
+      main: "ace"
+    }
+  ]
   paths:
     reveal: "bower_components/reveal.js/js/reveal"
     jquery: "bower_components/jquery/jquery"

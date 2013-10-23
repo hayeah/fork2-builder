@@ -1,13 +1,9 @@
+<div id="ide"></div>
+
 <script type="text/javascript">
   //<![CDATA[
   require(["ide"],function (IDE) {
-    console.log(IDE);
+    ide = new IDE("#ide")
   });
   //]]>
 </script>
-
-<div class="ui-layout-center">
-  <div class="ui-layout-center">Main</div>
-  <div class="ui-layout-south">South</div>
-</div>
-<div class="ui-layout-west">West</div>
