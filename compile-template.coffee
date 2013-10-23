@@ -6,7 +6,9 @@ Compiler = require './lib/template-compiler'
 argv = require("optimist")
   .usage("Compile a template")
   .alias("i","input")
-  .describe("i","input file").argv
+  .describe("i","input file")
+  .describe("r","root path with which to compile template")
+  .argv
 
 argv.input &&
   inFile = fs.createReadStream(argv.input)
@@ -14,6 +16,8 @@ argv.input &&
 inStream = inFile || process.stdin
 outStream = process.stdout
 
-c = new Compiler(inStream,outStream)
+root = argv.root || argv.input
+
+c = new Compiler(inStream,outStream,root)
 
 c.compile (err) ->

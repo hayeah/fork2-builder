@@ -2,7 +2,7 @@ marked = require 'marked'
 async = require 'async'
 sync = require 'sync'
 
-hbs = require("handlebars").create()
+hbs = require("handlebars")
 
 markdown = (options) ->
   input = options.fn(this)
@@ -16,11 +16,11 @@ markdown = (options) ->
 
   output = render.sync(null)
 
-hbs.registerHelper("markdown",markdown)
-hbs.registerHelper("md",markdown)
-
 class TemplateCompiler
-  constructor: (@inStream,@outStream) ->
+  constructor: (@inStream,@outStream,@root) ->
+    @hbs = hbs.create()
+    @hbs.registerHelper("markdown",markdown)
+    @hbs.registerHelper("md",markdown)
 
   # cb(err)
   compile: (cb) ->
@@ -34,7 +34,7 @@ class TemplateCompiler
   # cb(err,renderResult:String)
   renderhbs: (content,cb) ->
     context = {}
-    template = hbs.compile(content)
+    template = @hbs.compile(content)
     # Because handlebarjs does not support helpers that uses async functions,
     # we use the sync library here so helper functions can use fiber to make
     # an async function to behave as though it is synchronous to handlebarjs.
