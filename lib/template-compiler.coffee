@@ -33,12 +33,17 @@ code = (filepath,options) ->
   processor = new Code(fullpath)
   processor.process.sync(processor)
 
+# TODO: refactor this to be a separate file
+directives = 
+  code: code
+  md: markdown
+  markdown: markdown
+
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
     @hbs = hbs.create()
-    @register("markdown",markdown)
-    @register("md",markdown)
-    @register("code",code)
+    for name, fn of directives
+      @register(name,fn)
 
   # Registers a function as handlebars helper. Also injects the
   # root context of the TemplateCompiler into the `options` argument when 
