@@ -18,19 +18,21 @@ markdown = (options) ->
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
+# @param hbs (Handlebars) the instance of handlebars.js doing compilation
 # @return The wrapped helper function
-withRoot = (fn,root) ->
+withRoot = (fn,root,hbs) ->
   return ->
     args = arguments
     options = args[args.length-1]
     options.root = root
+    options.hbs = hbs
     fn.apply(this,args)
 
 path = require 'path'
 Code = require './directives/code'
 code = (filepath,options) ->
   fullpath = path.join(options.root,filepath)
-  processor = new Code(fullpath)
+  processor = new Code(fullpath,options)
   processor.process.sync(processor)
 
 # TODO: refactor this to be a separate file
@@ -49,7 +51,7 @@ class TemplateCompiler
   # root context of the TemplateCompiler into the `options` argument when 
   # the helper is invoked.
   register: (name,fn) ->
-    @hbs.registerHelper(name,withRoot(fn,@root))
+    @hbs.registerHelper(name,withRoot(fn,@root,@hbs))
 
   # cb(err)
   compile: (cb) ->
