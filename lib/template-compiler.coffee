@@ -44,6 +44,17 @@ directives =
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
     @hbs = hbs.create()
+    
+    # Add utility functions to this instance of handlebars
+    #
+    # returns html safe string
+    @hbs.escape = (str) => 
+      @hbs.Utils.escapeExpression(str)
+
+    # mark a string as not to escape
+    @hbs.safe = (str) =>
+      new @hbs.SafeString(str)
+
     for name, fn of directives
       @register(name,fn)
 
