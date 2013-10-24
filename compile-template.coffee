@@ -7,6 +7,7 @@ argv = require("optimist")
   .usage("Compile a template")
   .alias("i","input")
   .describe("i","input file")
+  .alias("r","root")
   .describe("r","root path with which to compile template")
   .argv
 
