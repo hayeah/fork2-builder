@@ -81,7 +81,12 @@ class TemplateCompiler
     # we use the sync library here so helper functions can use fiber to make
     # an async function to behave as though it is synchronous to handlebarjs.
     sync (->
-      body = template(context)
+      try
+        body = template(context)
+      catch e
+        console.log e
+        console.log e.stack
+        throw e
     ), cb
 
   # cb(err,streamData:String)
