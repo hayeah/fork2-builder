@@ -35,11 +35,27 @@ code = (filepath,options) ->
   processor = new Code(fullpath,options)
   processor.process.sync(processor)
 
+# Build a synchronous handlebars helper function from a directive class
+buildHelper = (klass) ->
+  return ->
+    args = Array.prototype.slice.call(arguments,0)
+    options = args[args.length-1]
+    directive = new klass(options)
+    process = (cb) ->
+      args.push(cb)
+      directive.process.apply(directive,args)
+
+    process.sync()
+
+edit = buildHelper(require("./directives/edit"))
+  
+
 # TODO: refactor this to be a separate file
 directives = 
   code: code
   md: markdown
   markdown: markdown
+  edit: edit
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
