@@ -12,7 +12,10 @@
     "browserify": "~2.34.1",
     "coffeeify": "~0.5.1",
     "debowerify": "~0.1.8",
-    "requirejs": "~2.1.9"
+    "requirejs": "~2.1.9",
+    "mocha": "~1.13.0",
+    "coffee-script": "~1.6.3",
+    "should": "~2.0.2"
   },
   "dependencies": {
     "express": "~3.4.1",

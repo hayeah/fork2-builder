@@ -4,7 +4,7 @@ bower := bower_components
 bundle := bundle
 optimize := uglify2
 
-.PHONY: bundle build
+.PHONY: bundle build test
 
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
@@ -41,4 +41,7 @@ $(build)/%.js: $(src)/%.coffee
 $(build)/build.js: $(src)/build.coffee
 	@mkdir -p $(@D)
 	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
+
+test:
+	mocha --compilers coffee:coffee-script test
 	
