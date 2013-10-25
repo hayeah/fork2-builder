@@ -14,7 +14,10 @@ define (require) ->
         </div>
       </div>
     </div>
-    <div class="ui-layout-west">Exercise Content</div>
+    <div class="ui-layout-west">
+      <div class="ide-tutorial-container">
+      </div>
+    </div>
   </div>
   """
 
@@ -26,12 +29,32 @@ define (require) ->
       @$editor = @$.find(".ide-editor")
       @$start_dialog = @$.find(".ide-start-dialog")
       @$start_button = @$.find(".ide-start-dialog .btn")
+      @$tutorial_container = @$.find(".ide-tutorial-container")
 
       @$container.layout
         west:
           minSize: 300
 
       @ace = ace.edit(@$editor.get(0))
+
+    # displays element as tutorial instruction text
+    setTutorialInstruction: (el) ->
+      @$tutorial_container.html(el)
+
+    # set the tutorial content
+    setTutorial: (@tutorial) ->
+      @tutorial.setIDE(this)
+      @tutorial.goto_first()
+
+    # dynamically dispatches an IDE action
+    dispatch: (action) ->
+      method = this[action.type]
+      method.call(@,action.data)
+
+    edit: (opts) ->
+      file = opts.file
+      @ace.getSession().setValue file.content
+
 
     start: ->
       @$start_dialog.hide()

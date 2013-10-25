@@ -17,9 +17,14 @@ class Home extends ControllerAction
   handle: ->
     @res.render('home')
 
+fs = require("fs")
+path = require("path")
 class ShowIDE extends ControllerAction
   handle: ->
-    @res.render('ide')
+    root = __dirname
+    exercises = path.join(root,"tutorials-build",@params.name,"exercises.html")
+    fs.readFile exercises, {encoding: "utf8"}, (err,content) =>
+      @res.render('ide',exercises: content)
 
 class ShowBootstrapDemo extends ControllerAction
   handle: ->
@@ -46,7 +51,7 @@ class ShowSlideCast extends ControllerAction
 class App
   setup: (@express) ->
     @handle "get", "/", Home
-    @handle "get", '/ide', ShowIDE
+    @handle "get", '/ide/:name', ShowIDE
     @handle "get", '/bootstrap', ShowBootstrapDemo
     @handle "get", '/:name', ShowSlideCast
 

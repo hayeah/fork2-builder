@@ -1,9 +1,16 @@
 <div id="ide"></div>
 
+<article class="ide-exercises">
+  {{{exercises}}}
+</article>
+
 <script type="text/javascript">
   //<![CDATA[
-  require(["ide"],function (IDE) {
-    ide = new IDE("#ide")
+  require(["ide","ide/tutorial"],function (IDE,Tutorial) {
+    ide = new IDE("#ide");
+    ide.start();
+    tutorial = new Tutorial(".ide-exercises");
+    ide.setTutorial(tutorial);
   });
   //]]>
 </script>

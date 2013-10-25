@@ -32,11 +32,10 @@ module.exports = class Edit
       (cb) => fs.readFile @fullPath,{encoding: "utf8"}, cb
       (content,cb) =>
         data = {
-          type: "edit"
           file: {path: @filePath, content: content}
           run: @options.run
         }
-        cb(null,@ideActionTag(data))
+        cb(null,@ideActionTag("edit",data))
     ], cb
 
   # TODO Pull these methods into a base class.
@@ -57,6 +56,10 @@ module.exports = class Edit
 
   # Builds a script tag that embeds a json data.
   # @return (String) a html safe string
-  ideActionTag: (data) ->
-    json = @escape JSON.stringify(data)
+  ideActionTag: (type,data) ->
+    payload = {
+      type: type
+      data: data
+    }
+    json = JSON.stringify(payload)
     @safe "<script class='ide-action' type='text/json'>#{json}</script>"
