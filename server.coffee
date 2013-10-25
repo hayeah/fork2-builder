@@ -72,7 +72,7 @@ class App
     @socket = require("socket.io").listen(@server)
     @socket.of("/webso/pty").on "connection", (so) ->
       new PTYServer(so)
-    console.log "Listening to port #{port}"
+    console.log "Process #{process.pid} Listening to port #{port}"
 
   handle: (verb,path,action) ->
     handler = (req,res) -> 
