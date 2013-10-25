@@ -1,11 +1,3 @@
-express = require('express')
-ehbs = require("express3-handlebars")
-
-app = express()
-
-app.engine('.hbs.html', ehbs({defaultLayout: 'main',extname: '.hbs.html'}))
-app.set('view engine', '.hbs.html')
-
 class ControllerAction
   constructor: (@req,@res) ->
     @params = @req.params
@@ -48,12 +40,31 @@ class ShowSlideCast extends ControllerAction
       else
         @res.render("slidecast",slidecast: content)
 
+http = require("http")
+express = require('express')
+ehbs = require("express3-handlebars")
+
 class App
-  setup: (@express) ->
+  constructor: () ->
+    @setupExpress()
+
+  setupExpress: ->
+    @express = express()
+
+    @express.engine('.hbs.html', ehbs({defaultLayout: 'main',extname: '.hbs.html'}))
+    @express.set('view engine', '.hbs.html')
+    @express.use(express.static(__dirname))
+
     @handle "get", "/", Home
     @handle "get", '/ide/:name', ShowIDE
     @handle "get", '/bootstrap', ShowBootstrapDemo
     @handle "get", '/:name', ShowSlideCast
+
+  start: (port) ->
+    @server = http.createServer(@express)
+    @server.listen(port || 3000)
+    @socket = require("socket.io").listen(@server)
+    console.log "Listening to port #{port}"
 
   handle: (verb,path,action) ->
     handler = (req,res) -> 
@@ -61,8 +72,8 @@ class App
 
     @express[verb](path, handler)
 
-(new App()).setup(app)
+app = new App()
+app.start(3000)
 
-app.use(express.static(__dirname))
 
-app.listen(3000)
+
