@@ -6,6 +6,7 @@
   require(["ide/terminal-spawner"],function (Spawner) {
     spawner = new Spawner("/webso/pty");
     spawner.spawn("#terminal",null,function(term) {
+      tty = term
       term.exec({run: "/bin/bash"})
     });
   });

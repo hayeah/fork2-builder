@@ -21,6 +21,10 @@ define (require) ->
 
       @tty.open @$.get(0)
 
+      # FIXME: what happens if we try to send data before exec?
+      @tty.on "data", (data) => 
+        @output(data)
+
       @tty.write "welcome to terminal\n"
 
     output: (data) ->
@@ -36,13 +40,9 @@ define (require) ->
       w = @tty.cols
       h = @tty.rows
 
-      # FIXME: Here we are assuming that websocket is already connected. Don't.
       @so.emit("exec",{
           id: @id,
           options: {w: w, h: h}
           data: data
       })
-
-      @tty.on "data", (data) => 
-        @output(data)
   

@@ -1,5 +1,6 @@
 pty = require("pty.js")
 
+# TODO: should handle "exit" event
 class TTY
   constructor: (@so,@id,options,data) ->
     cmd = data.run
@@ -14,6 +15,9 @@ class TTY
     @tty.on "data", (data) =>
       @output(data)
 
+    @tty.on "exit", =>
+      @tty = null
+
   output: (data) ->
     @so.emit "data", {
       id: @id
@@ -21,7 +25,11 @@ class TTY
     }
 
   input: (data) ->
-    @tty.write(data)
+    @tty.write(data) if @tty
+
+  # kill the tty and its process
+  kill: ->
+    @tty.destroy() if @tty
 
 
 # Multiplexes PTYs over a single socket.io connection.
@@ -52,6 +60,11 @@ module.exports = class PTYServer
   # The received msg is something like:
   # msg: { id: 1, options: { w: 80, h: 24 }, data: { run: '/bin/bash' } }
   exec: (msg) ->
-    ttyID = msg.id    
-    tty = new TTY(@so,ttyID,msg.options,msg.data)
-    @ttys[ttyID] = tty
+    id = msg.id
+
+    # if there's a previously running tty, close that first.
+    if oldtty = @ttys[id]
+      oldtty.kill()
+
+    tty = new TTY(@so,id,msg.options,msg.data)
+    @ttys[id] = tty
