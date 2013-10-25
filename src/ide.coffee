@@ -1,6 +1,7 @@
 define (require) ->
   require("jquery.layout")
   ace = require("ace")
+  modelist = require 'ace/ext/modelist'
 
   template = """
   <div class="ide">
@@ -53,7 +54,10 @@ define (require) ->
 
     edit: (opts) ->
       file = opts.file
+      match = modelist.getModeForPath(file.path)
+      mode = match.mode
       @ace.getSession().setValue file.content
+      @ace.getSession().setMode mode
 
 
     start: ->
