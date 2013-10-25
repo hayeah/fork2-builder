@@ -11,7 +11,7 @@ define (require) ->
         <div class="ide-editor">
         </div>
         <div class="btn-group ide-control">
-          <a class="btn btn-primary">Run</a>
+          <a class="btn btn-primary ide-run">Run</a>
         </div>
       </div>
 
@@ -45,6 +45,9 @@ define (require) ->
       @$start_button = @$.find(".ide-start-dialog .btn")
       @$tutorial_container = @$.find(".ide-tutorial-container")
       @$term = @$.find(".ide-terminal")
+      @$run = @$.find(".ide-run")
+      @$run.click =>
+        @run()
 
       @$container.layout
         west:
@@ -68,9 +71,12 @@ define (require) ->
 
     # dynamically dispatches an IDE action
     dispatch: (action) ->
+      @runData = null
       method = this[action.type]
       method.call(@,action.data)
 
+    # Enters into edit mode. It sets @getRunData to a function that
+    # builds the json object that is sent to runner.
     edit: (opts) ->
       file = opts.file
       match = modelist.getModeForPath(file.path)
@@ -78,6 +84,21 @@ define (require) ->
       @ace.getSession().setValue file.content
       @ace.getSession().setMode mode
 
+      @getRunData = => {
+        type: "edit"
+        data: {
+          file: {
+            content: @ace.getSession().getValue()
+            path: file.path  
+          }
+          run: opts.run
+        }
+      }
+
+    # runs the current program
+    run: ->
+      data = @getRunData()
+      console.log data
 
     start: ->
       @$start_dialog.hide()
