@@ -1,5 +1,6 @@
 define (require) ->
 # define ["jquery","termjs"],($,Terminal) ->
+  require "lib/source-code-pro"
   $ = require "jquery"
   Terminal = require "termjs"
   # Incrementing counter that gives each Term instance a unique id
