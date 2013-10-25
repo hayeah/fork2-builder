@@ -78,6 +78,8 @@ define (require) ->
     # Enters into edit mode. It sets @getRunData to a function that
     # builds the json object that is sent to runner.
     edit: (opts) ->
+      # TODO: I think this is something like an entry point to a mode.
+      # And `run` should be a method of the mode.
       file = opts.file
       match = modelist.getModeForPath(file.path)
       mode = match.mode
@@ -95,10 +97,12 @@ define (require) ->
         }
       }
 
+    # TODO: should be a mode method... probably.
     # runs the current program
     run: ->
       data = @getRunData()
       console.log data
+
 
     start: ->
       @$start_dialog.hide()

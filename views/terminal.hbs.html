@@ -1,0 +1,14 @@
+<div class="terminal"></div>
+
+<script type="text/javascript">
+  //<![CDATA[
+  // require(["jquery","ide/terminal"],function ($,Terminal) {
+  require(["ide/terminal-spawner"],function (Spawner) {
+    spawner = new Spawner("/webso/pty");
+    spawner.spawn(".terminal",null,function(term) {
+      term.exec({run: "/bin/bash"})
+    });
+  });
+
+  //]]>
+</script>

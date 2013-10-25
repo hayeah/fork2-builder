@@ -18,6 +18,7 @@ requirejs.config
     "jquery.ui.position": "bower_components/jquery-ui/ui/jquery.ui.position"
     "jquery.ui.draggable": "bower_components/jquery-ui/ui/jquery.ui.draggable"
     "termjs": "bower_components/term.js/src/term"
+    "socketio": "bower_components/socket.io-client/dist/socket.io"
 
   shim:
     underscore:

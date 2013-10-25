@@ -9,6 +9,10 @@ class Home extends ControllerAction
   handle: ->
     @res.render('home')
 
+class ShowTerm extends ControllerAction
+  handle: ->
+    @res.render("terminal")
+
 fs = require("fs")
 path = require("path")
 class ShowIDE extends ControllerAction
@@ -56,14 +60,18 @@ class App
     @express.use(express.static(__dirname))
 
     @handle "get", "/", Home
+    @handle "get", "/terminal", ShowTerm
     @handle "get", '/ide/:name', ShowIDE
     @handle "get", '/bootstrap', ShowBootstrapDemo
     @handle "get", '/:name', ShowSlideCast
 
   start: (port) ->
+    PTYServer = require "./server/pty-server"
     @server = http.createServer(@express)
     @server.listen(port || 3000)
     @socket = require("socket.io").listen(@server)
+    @socket.of("/webso/pty").on "connection", (so) ->
+      new PTYServer(so)
     console.log "Listening to port #{port}"
 
   handle: (verb,path,action) ->
