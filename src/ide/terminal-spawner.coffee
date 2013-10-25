@@ -14,7 +14,6 @@ define (require) ->
         console.log "TermSpawner connected"
 
       @so.on "data", (msg) =>
-        console.log ["msg",msg]
         @proxyData(msg)
 
     proxyData: (msg) ->
