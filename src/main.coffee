@@ -17,12 +17,15 @@ requirejs.config
     "jquery.ui.mouse": "bower_components/jquery-ui/ui/jquery.ui.mouse"
     "jquery.ui.position": "bower_components/jquery-ui/ui/jquery.ui.position"
     "jquery.ui.draggable": "bower_components/jquery-ui/ui/jquery.ui.draggable"
+    "termjs": "bower_components/term.js/src/term"
 
   shim:
     underscore:
       exports: "_"
     reveal:
       exports: "Reveal"
+    termjs:
+      exports: "Terminal"
     "jquery.layout": ["jquery.ui.draggable"]
     "jquery.ui.core": ["jquery"]
     "jquery.ui.widget": ["jquery.ui.core"]

@@ -2,12 +2,24 @@ define (require) ->
   require("jquery.layout")
   ace = require("ace")
   modelist = require 'ace/ext/modelist'
+  Term = require("ide/term")
 
   template = """
   <div class="ide">
-    <div class="ui-layout-center">
-      <div class="ide-editor">
+    <div class="ui-layout-center ide-workarea">
+      <div class="ui-layout-center">
+        <div class="ide-editor">
+        </div>
+        <div class="btn-group ide-control">
+          <a class="btn btn-primary">Run</a>
+        </div>
       </div>
+
+      <div class="ui-layout-south">
+        <div class="ide-terminal">
+        </div>
+      </div>
+      
       <div class="ide-start-dialog">
         <div class="ide-start-dialog-content">
           <a class="btn btn-primary btn-lg">Start Exercises</a>
@@ -27,16 +39,23 @@ define (require) ->
       @$ = $(el)
       @$.html(template)
       @$container = @$.find(".ide")
+      @$workarea = @$.find(".ide-workarea")
       @$editor = @$.find(".ide-editor")
       @$start_dialog = @$.find(".ide-start-dialog")
       @$start_button = @$.find(".ide-start-dialog .btn")
       @$tutorial_container = @$.find(".ide-tutorial-container")
+      @$term = @$.find(".ide-terminal")
 
       @$container.layout
         west:
           minSize: 300
 
+      @$workarea.layout
+        south:
+          minSize: 250
+
       @ace = ace.edit(@$editor.get(0))
+      @term = new Term(@$term)
 
     # displays element as tutorial instruction text
     setTutorialInstruction: (el) ->
