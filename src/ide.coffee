@@ -2,7 +2,8 @@ define (require) ->
   require("jquery.layout")
   ace = require("ace")
   modelist = require 'ace/ext/modelist'
-  Term = require("ide/term")
+  TerminalSpawner = require "ide/terminal-spawner"
+  termSpawner = new TerminalSpawner("/webso/pty")
 
   template = """
   <div class="ide">
@@ -37,6 +38,7 @@ define (require) ->
   class IDE
     constructor: (el) ->
       @$ = $(el)
+      @name = @$.data("name")
       @$.html(template)
       @$container = @$.find(".ide")
       @$workarea = @$.find(".ide-workarea")
@@ -58,7 +60,9 @@ define (require) ->
           minSize: 250
 
       @ace = ace.edit(@$editor.get(0))
-      @term = new Term(@$term)
+
+      termSpawner.spawn @$term, null, (tty) =>
+        @tty = tty
 
     # displays element as tutorial instruction text
     setTutorialInstruction: (el) ->
@@ -100,7 +104,10 @@ define (require) ->
     # TODO: should be a mode method... probably.
     # runs the current program
     run: ->
+      return unless @tty
       data = @getRunData()
+      # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.
+      @tty.exec({run: "go", args: ["run","hello.go"], name: @name})
       console.log data
 
 

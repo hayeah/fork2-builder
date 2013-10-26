@@ -18,9 +18,9 @@ path = require("path")
 class ShowIDE extends ControllerAction
   handle: ->
     root = __dirname
-    exercises = path.join(root,"tutorials-build",@params.name,"exercises.html")
+    exercises = path.join(root,"tutorials-build",@params.name,"ex1.html")
     fs.readFile exercises, {encoding: "utf8"}, (err,content) =>
-      @res.render('ide',exercises: content)
+      @res.render('ide',exercises: content,name: @params.name)
 
 class ShowBootstrapDemo extends ControllerAction
   handle: ->

@@ -25,8 +25,6 @@ define (require) ->
       @tty.on "data", (data) => 
         @output(data)
 
-      @tty.write "welcome to terminal\n"
-
     output: (data) ->
       @so.emit "data", {
         id: @id

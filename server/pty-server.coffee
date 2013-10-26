@@ -1,15 +1,27 @@
 pty = require("pty.js")
+path = require 'path'
 
 # TODO: should handle "exit" event
 class TTY
   constructor: (@so,@id,options,data) ->
+    console.log ["TTY",data]
     cmd = data.run
+    args = data.args || []
 
-    @tty = pty.spawn cmd, [],
+    # FIXME: this is just for demo. Please remove later.
+    # name is the tutorial name we are running
+    if name = data.name
+      cwd = path.join process.cwd(), "tutorials-build", name
+    else
+      cwd = process.env.HOME
+
+    console.log ["cwd",cwd]
+
+    @tty = pty.spawn cmd, args,
       name: "xterm-color"
       cols: options.w
       rows: options.h
-      cwd: process.env.HOME
+      cwd: cwd
       env: process.env
 
     @tty.on "data", (data) =>
