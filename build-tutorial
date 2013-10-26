@@ -16,7 +16,7 @@ mkdir -p $outputDir
 
 for template in $templates; do
   filename=`basename $template | cut -d "." -f 1`
-  cmd="./compile-template.coffee -i $template -o ${outputDir}/${filename}.html -r $inputDir "
+  cmd="./compile-template.coffee -r $inputDir -i $template -o ${outputDir}/${filename}.html"
   echo $cmd
   $cmd
 done
