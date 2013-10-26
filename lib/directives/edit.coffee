@@ -33,7 +33,7 @@ module.exports = class Edit
       (content,cb) =>
         data = {
           file: {path: @filePath, content: content}
-          run: @options.run
+          run: @options.hash.run
         }
         cb(null,@ideActionTag("edit",data))
     ], cb
@@ -62,4 +62,5 @@ module.exports = class Edit
       data: data
     }
     json = JSON.stringify(payload)
-    @safe "<script class='ide-action' type='text/json'>#{json}</script>"
+    result = "<script class='ide-action' type='text/json'>#{json}</script>"
+    @safe result
