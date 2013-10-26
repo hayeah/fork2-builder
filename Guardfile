@@ -13,7 +13,7 @@ end
 
 guard 'livereload' do
   watch(%r{^build/.*})
-  watch(%r{^tutorials-build/.*})
+  # watch(%r{^tutorials-build/.*})
   watch(%r{views/.*})
   watch(%r{server.coffee})
 end
