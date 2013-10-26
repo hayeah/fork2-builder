@@ -18,7 +18,7 @@ path = require("path")
 class ShowIDE extends ControllerAction
   handle: ->
     root = __dirname
-    exercises = path.join(root,"tutorials-build",@params.name,"ex1.html")
+    exercises = path.join(root,"tutorials-build",@params.name,"ex.html")
     fs.readFile exercises, {encoding: "utf8"}, (err,content) =>
       @res.render('ide',exercises: content,name: @params.name)
 
