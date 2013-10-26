@@ -13,6 +13,6 @@ define (require) ->
 
       @reveal = Reveal
 
-      @ide = new IDE("#ide")
+      # @ide = new IDE("#ide")
 
     
