@@ -1,9 +1,11 @@
 pty = require("pty.js")
 path = require 'path'
+fs = require 'fs'
 
 # TODO: should handle "exit" event
 class TTY
-  constructor: (@so,@id,options,data) ->
+  constructor: (@so,@id,options,msg) ->
+    data = msg.data
     console.log ["TTY",data]
     cmd = data.run
     args = data.args || []
@@ -15,9 +17,11 @@ class TTY
     else
       cwd = process.env.HOME
 
-    console.log ["cwd",cwd]
+    # FIXME: just use sync version of write for now
+    if file = data.file
+      fs.writeFileSync(path.join(cwd,file.path),file.content)
 
-    @tty = pty.spawn cmd, args,
+    @tty = pty.spawn "/bin/sh", ["-c",cmd],
       name: "xterm-color"
       cols: options.w
       rows: options.h

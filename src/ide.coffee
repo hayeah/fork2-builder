@@ -98,6 +98,8 @@ define (require) ->
             path: file.path  
           }
           run: opts.run
+          # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.
+          name: @name
         }
       }
 
@@ -106,9 +108,8 @@ define (require) ->
     run: ->
       return unless @tty
       data = @getRunData()
-      # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.
-      @tty.exec({run: "go", args: ["run","hello.go"], name: @name})
-      console.log data
+      @tty.exec(data)
+      
 
 
     start: ->
