@@ -7,13 +7,14 @@ end
 guard :shell do
   watch(%r"tutorials/([^/]+)/.*") { |m|
     name = m[1]
-    system "./build-slidecast.coffee -i tutorials/#{name} -o tutorials-build/#{name}"
+    puts "#{m[0]} changed"
+    system "./build-tutorial #{name}"
   }
 end
 
 guard 'livereload' do
   watch(%r{^build/.*})
-  # watch(%r{^tutorials-build/.*})
+  watch(%r{^tutorials-build/.*html$})
   watch(%r{views/.*})
   watch(%r{server.coffee})
 end
