@@ -1,0 +1,23 @@
+#!/bin/bash
+
+name="$1"
+inputDir="tutorials/$1"
+outputDir="tutorials-build/$1"
+
+# Template Compile Example
+# ./compile-template.coffee -i tutorials/golang/ex1.hbs -r tutorials/golang
+
+rsync -Pa "$inputDir"/ "$outputDir"
+
+echo find "$inputDir" -name "*.hbs"
+templates=$(find "$inputDir" -name "*.hbs")
+
+mkdir -p $outputDir
+
+for template in $templates; do
+  filename=`basename $template | cut -d "." -f 1`
+  cmd="./compile-template.coffee -i $template -o ${outputDir}/${filename}.html -r $inputDir "
+  echo $cmd
+  $cmd
+done
+
