@@ -2,8 +2,8 @@ define (require) ->
   require("jquery.layout")
   ace = require("ace")
   modelist = require 'ace/ext/modelist'
-  TerminalSpawner = require "ide/terminal-spawner"
-  termSpawner = new TerminalSpawner("/webso/pty")
+  PTYClient = require "pty-client"
+  ptyClient = new PTYClient("/webso/pty")
 
   template = """
   <div class="ide">
@@ -61,8 +61,8 @@ define (require) ->
 
       @ace = ace.edit(@$editor.get(0))
 
-      termSpawner.spawn @$term, null, (tty) =>
-        @tty = tty
+      ptyClient.spawn @$term, null, (pty) =>
+        @tty = pty
 
     # displays element as tutorial instruction text
     setTutorialInstruction: (el) ->
