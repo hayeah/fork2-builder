@@ -4,9 +4,14 @@ fs = require 'fs'
 
 # TODO: should handle "exit" event
 class TTY
-  constructor: (@so,@id,options,msg) ->
-    data = msg.data
-    console.log ["TTY",data]
+  # @param data (Object) Data to pass into exec call
+  # @param data.run (String) Command to run
+  # @param data.file (Hash)  Overwrite the file at file.path with file.content before exec.
+  # @param data.args ([Object]) (Optional) Arguments for the command to run
+  constructor: (@so,@id,msg) ->
+    console.log ["TTY",msg]
+    {data,options} = msg
+
     cmd = data.run
     args = data.args || []
 
@@ -82,5 +87,5 @@ module.exports = class PTYServer
     if oldtty = @ttys[id]
       oldtty.kill()
 
-    tty = new TTY(@so,id,msg.options,msg.data)
+    tty = new TTY(@so,id,msg)
     @ttys[id] = tty

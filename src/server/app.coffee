@@ -38,12 +38,9 @@ class App
 
     @handle "get", "/", require("./actions/home")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
+    @handle "get", "/terminal", require("./actions/terminal")
     @handle "get", "/ide/:name", require("./actions/ide")
     @handle "get", '/:name', require("./actions/slides")
-
-    # @handle "get", "/terminal", ShowTerm
-    
-    
 
   start: (port) ->
     @server = http.createServer(@express)

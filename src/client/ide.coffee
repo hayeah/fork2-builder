@@ -91,16 +91,13 @@ define (require) ->
       @ace.getSession().setMode mode
 
       @getRunData = => {
-        type: "edit"
-        data: {
-          file: {
-            content: @ace.getSession().getValue()
-            path: file.path  
-          }
-          run: opts.run
-          # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.
-          name: @name
+        file: {
+          content: @ace.getSession().getValue()
+          path: file.path  
         }
+        run: opts.run
+        # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.
+        name: @name
       }
 
     # TODO: should be a mode method... probably.
@@ -109,8 +106,6 @@ define (require) ->
       return unless @tty
       data = @getRunData()
       @tty.exec(data)
-      
-
 
     start: ->
       @$start_dialog.hide()

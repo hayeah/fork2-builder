@@ -34,6 +34,9 @@ define (require) ->
     input: (data) ->
       @tty.write data
 
+    # @param data (Object) Data to pass into exec call
+    # @param data.run (String) Command to run
+    # @param data.args ([Object]) (Optional) Arguments for the command to run
     exec: (data) ->
       w = @tty.cols
       h = @tty.rows
