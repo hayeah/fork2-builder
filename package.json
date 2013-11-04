@@ -1,17 +1,14 @@
 {
   "name": "fork2",
-  "version": "0.0.0",
-  "description": "fork 2",
+  "version": "0.0.1",
+  "description": "Fork A Programmer - Interactive Programming Lessons",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "Howard Yeh",
+  "license": "MIT",
   "devDependencies": {
-    "browserify": "~2.34.1",
-    "coffeeify": "~0.5.1",
-    "debowerify": "~0.1.8",
     "requirejs": "~2.1.9",
     "mocha": "~1.13.0",
     "coffee-script": "~1.6.3",
