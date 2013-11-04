@@ -18,7 +18,7 @@ module.exports = class Edit
   #
   # Outputs a JSON object that the IDE uses to show the file and configure
   # the runner.
-  # 
+  #
   # Example:
   #
   # {type: "edit"
@@ -51,7 +51,7 @@ module.exports = class Edit
   # a SafeString specific the the current instance of handlebars. This is why we need
   # to proxy the safe string factory via the particular instance of handlebars we are using
   # instead of the default handlebars instance.
-  safe: (str) -> 
+  safe: (str) ->
     @hbs.safe(str)
 
   # Builds a script tag that embeds a json data.

@@ -6,7 +6,7 @@ hbs = require("handlebars")
 
 markdown = (options) ->
   input = options.fn(this)
-  
+
   # sync version
   # output = marked(input)
 
@@ -48,10 +48,10 @@ buildHelper = (klass) ->
     process.sync()
 
 edit = buildHelper(require("./directives/edit"))
-  
+
 
 # TODO: refactor this to be a separate file
-directives = 
+directives =
   code: code
   md: markdown
   markdown: markdown
@@ -60,11 +60,11 @@ directives =
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
     @hbs = hbs.create()
-    
+
     # Add utility functions to this instance of handlebars
     #
     # returns html safe string
-    @hbs.escape = (str) => 
+    @hbs.escape = (str) =>
       @hbs.Utils.escapeExpression(str)
 
     # mark a string as not to escape
@@ -75,7 +75,7 @@ class TemplateCompiler
       @register(name,fn)
 
   # Registers a function as handlebars helper. Also injects the
-  # root context of the TemplateCompiler into the `options` argument when 
+  # root context of the TemplateCompiler into the `options` argument when
   # the helper is invoked.
   register: (name,fn) ->
     @hbs.registerHelper(name,withRoot(fn,@root,@hbs))

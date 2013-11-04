@@ -35,7 +35,7 @@ define (require) ->
 
   require "lib/source-code-pro"
   Terminal = require "termjs"
-  
+
   class PTYClientInstance
     constructor: (@so,el,w,h) ->
       id += 1
@@ -50,7 +50,7 @@ define (require) ->
       @tty.open @$.get(0)
 
       # FIXME: what happens if we try to send data before exec?
-      @tty.on "data", (data) => 
+      @tty.on "data", (data) =>
         @output(data)
 
     output: (data) ->

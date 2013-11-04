@@ -20,7 +20,7 @@ define (require) ->
         <div class="ide-terminal">
         </div>
       </div>
-      
+
       <div class="ide-start-dialog">
         <div class="ide-start-dialog-content">
           <a class="btn btn-primary btn-lg">Start Exercises</a>
@@ -93,7 +93,7 @@ define (require) ->
       @getRunData = => {
         file: {
           content: @ace.getSession().getValue()
-          path: file.path  
+          path: file.path
         }
         run: opts.run
         # HACK,FIXME: For the demo, we are just going to determine the working directory by tutorial name.

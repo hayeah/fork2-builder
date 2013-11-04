@@ -50,6 +50,6 @@ server:
 
 watch:
 	watchy -w src/ -- make build
-	
+
 clean:
 	rm -r $(build)

@@ -14,8 +14,8 @@ class Code
         html = "<pre><code>#{source}</code></pre>"
         cb(null,@hbs.safe(html))
     ], cb
-    
+
 
 
 module.exports = Code
-  
+

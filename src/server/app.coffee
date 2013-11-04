@@ -23,12 +23,12 @@ class App
     projectRoot = process.cwd()
     @express.set("root",projectRoot)
 
-    hbsViewEngine = ehbs 
+    hbsViewEngine = ehbs
       defaultLayout: 'main'
       extname: '.hbs.html'
       layoutsDir: "#{serverDir}/views/layouts"
       partialsDir: "#{serverDir}/views/partials"
-    
+
     @express.engine('.hbs.html', hbsViewEngine)
 
     @express.set('views', "#{serverDir}/views")
@@ -51,7 +51,7 @@ class App
     console.log "Process #{process.pid} Listening to port #{port}"
 
   handle: (verb,path,action) ->
-    handler = (req,res) => 
+    handler = (req,res) =>
       new action(req,res,@express).handle()
 
     @express[verb](path, handler)

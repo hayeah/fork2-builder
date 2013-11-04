@@ -29,5 +29,5 @@ define (require) ->
       @ide.setTutorialInstruction(section.$)
       @ide.dispatch(section.ideAction())
 
-  return Tutorial      
-    
+  return Tutorial
+

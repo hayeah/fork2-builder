@@ -15,4 +15,4 @@ define (require) ->
 
       # @ide = new IDE("#ide")
 
-    
+

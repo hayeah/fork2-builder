@@ -25,7 +25,7 @@ module.exports = class PTYServer
     tty.input(msg.data)
 
   # spawns a tty, using data as runner spec.
-  # @param ptyID (Integer) 
+  # @param ptyID (Integer)
   #
   # The received msg is something like:
   # msg: { id: 1, options: { w: 80, h: 24 }, data: { run: '/bin/bash' } }
