@@ -1,3 +1,5 @@
+#!/usr/bin/env coffee
+
 class ControllerAction
   constructor: (@req,@res) ->
     @params = @req.params
