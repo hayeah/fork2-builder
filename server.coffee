@@ -57,8 +57,17 @@ class App
   setupExpress: ->
     @express = express()
 
-    @express.engine('.hbs.html', ehbs({defaultLayout: 'main',extname: '.hbs.html'}))
+    hbsViewEngine = ehbs 
+      defaultLayout: 'main'
+      extname: '.hbs.html'
+      layoutsDir: "#{__dirname}/views/layouts"
+      partialsDir: "#{__dirname}/views/partials"
+    
+    @express.engine('.hbs.html', hbsViewEngine)
+
+    @express.set('views', "#{__dirname}/views")
     @express.set('view engine', '.hbs.html')
+    console.log "static: #{__dirname}"
     @express.use(express.static(__dirname))
 
     @handle "get", "/", Home
