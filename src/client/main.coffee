@@ -33,5 +33,3 @@ requirejs.config
     "jquery.ui.mouse": ["jquery.ui.widget"]
     "jquery.ui.draggable": ["jquery.ui.mouse"]
 
-# require(["app"])
-
