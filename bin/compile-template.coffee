@@ -1,7 +1,7 @@
 #!/usr/bin/env coffee
 fs = require 'fs'
 
-Compiler = require './lib/template-compiler'
+Compiler = require '../lib/template-compiler'
 
 argv = require("optimist")
   .usage("Compile a template")
