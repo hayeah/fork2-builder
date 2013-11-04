@@ -6,6 +6,11 @@ http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")
 PTYServer = require "./pty-server"
+path = require 'path'
+
+pkgRoot = path.normalize(path.join __dirname, "../..")
+serverDir = path.join pkgRoot, "src/server"
+console.log "pkg root: #{pkgRoot}"
 
 class App
   constructor: () ->
@@ -14,21 +19,22 @@ class App
   setupExpress: ->
     @express = express()
 
-    root = process.cwd()
-    @express.set("root",root)
+    # project root is the directory
+    projectRoot = process.cwd()
+    @express.set("root",projectRoot)
 
     hbsViewEngine = ehbs 
       defaultLayout: 'main'
       extname: '.hbs.html'
-      layoutsDir: "#{root}/views/layouts"
-      partialsDir: "#{root}/views/partials"
+      layoutsDir: "#{serverDir}/views/layouts"
+      partialsDir: "#{serverDir}/views/partials"
     
     @express.engine('.hbs.html', hbsViewEngine)
 
-    @express.set('views', "#{root}/views")
+    @express.set('views', "#{serverDir}/views")
     @express.set('view engine', '.hbs.html')
-    console.log "static: #{root}"
-    @express.use(express.static(root))
+    console.log "static: #{pkgRoot}"
+    @express.use(express.static(pkgRoot))
 
     @handle "get", "/", require("./actions/home")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
