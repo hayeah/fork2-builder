@@ -2,8 +2,45 @@ pty = require("pty.js")
 path = require 'path'
 fs = require 'fs'
 
+# Multiplexes PTYs over a single socket.io connection.
+# When a connection is broken, kill all PTYs.
+module.exports = class PTYServer
+  # @param socket (Socket) websocket of connected client
+  constructor: (@so) ->
+    # track spawned ttys
+    @ttys = {}
+
+    @so.on "data", (msg) =>
+      @proxyInput(msg)
+
+    @so.on "exec", (msg) =>
+      @exec msg
+
+  # @params msg.id (Integer) the tty id to write to
+  # @params msg.data (Bytes) on the wire data chunk to write to tty
+  proxyInput: (msg) ->
+    id = msg.id
+    tty = @ttys[id]
+    return unless tty
+    tty.input(msg.data)
+
+  # spawns a tty, using data as runner spec.
+  # @param ptyID (Integer) 
+  #
+  # The received msg is something like:
+  # msg: { id: 1, options: { w: 80, h: 24 }, data: { run: '/bin/bash' } }
+  exec: (msg) ->
+    id = msg.id
+
+    # if there's a previously running tty, close that first.
+    if oldtty = @ttys[id]
+      oldtty.kill()
+
+    tty = new PTYServerInstance(@so,id,msg)
+    @ttys[id] = tty
+
 # TODO: should handle "exit" event
-class TTY
+class PTYServerInstance
   # @param data (Object) Data to pass into exec call
   # @param data.run (String) Command to run
   # @param data.file (Hash)  Overwrite the file at file.path with file.content before exec.
@@ -51,41 +88,3 @@ class TTY
   # kill the tty and its process
   kill: ->
     @tty.destroy() if @tty
-
-
-# Multiplexes PTYs over a single socket.io connection.
-# When a connection is broken, kill all PTYs.
-module.exports = class PTYServer
-  # @param socket (Socket) websocket of connected client
-  constructor: (@so) ->
-    # track spawned ttys
-    @ttys = {}
-
-    @so.on "data", (msg) =>
-      @proxyInput(msg)
-
-    @so.on "exec", (msg) =>
-      @exec msg
-
-  # @params msg.id (Integer) the tty id to write to
-  # @params msg.data (Bytes) on the wire data chunk to write to tty
-  proxyInput: (msg) ->
-    id = msg.id
-    tty = @ttys[id]
-    return unless tty
-    tty.input(msg.data)
-
-  # spawns a tty, using data as runner spec.
-  # @param ptyID (Integer) 
-  #
-  # The received msg is something like:
-  # msg: { id: 1, options: { w: 80, h: 24 }, data: { run: '/bin/bash' } }
-  exec: (msg) ->
-    id = msg.id
-
-    # if there's a previously running tty, close that first.
-    if oldtty = @ttys[id]
-      oldtty.kill()
-
-    tty = new TTY(@so,id,msg)
-    @ttys[id] = tty
