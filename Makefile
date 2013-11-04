@@ -1,5 +1,5 @@
-src := src
-build := build
+src := src/client
+build := build/client
 bower := bower_components
 bundle := bundle
 optimize := uglify2
@@ -45,3 +45,5 @@ $(build)/build.js: $(src)/build.coffee
 test:
 	mocha --compilers coffee:coffee-script test
 	
+clean:
+	rm -r $(build)
