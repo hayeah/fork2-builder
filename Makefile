@@ -4,7 +4,7 @@ bower := bower_components
 bundle := bundle
 optimize := uglify2
 
-.PHONY: bundle build test
+.PHONY: bundle build test server
 
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
@@ -44,6 +44,9 @@ $(build)/build.js: $(src)/build.coffee
 
 test:
 	mocha --compilers coffee:coffee-script test
+
+server:
+	nodemon ./bin/server.coffee
 	
 clean:
 	rm -r $(build)
