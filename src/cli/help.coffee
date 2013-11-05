@@ -9,7 +9,7 @@ class Help
 
     commandName = args[0]
     if command = @commands[commandName]
-      command.parser.showHelp()
+      command.parser().showHelp()
     else
       @help()
 

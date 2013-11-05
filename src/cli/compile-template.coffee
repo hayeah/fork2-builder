@@ -9,9 +9,10 @@ class CompileTemplate
   fork2 compile-template -i INPUT -o OUTPUT -r PROJECT_ROOT
   """
 
-  constructor: ->
+  parser: ->
+    return @_parser if @_parser
     usage = "#{@summary}\n\n#{@doc}"
-    @parser = require("optimist")
+    @_parser = require("optimist")
       .usage(usage)
       .alias("i","input")
       .describe("i","input file")
@@ -21,7 +22,7 @@ class CompileTemplate
       .describe("r","root path with which to compile template")
 
   run: (args) ->
-    args = @parser.parse(args)
+    args = @parser().parse(args)
 
     args.input &&
       inFile = fs.createReadStream(args.input)
