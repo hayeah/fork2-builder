@@ -1,6 +1,7 @@
 commands = {
   help: require("./help")
   "compile-template": require("./compile-template")
+  "server": require("./server")
 }
 
 class CLI
