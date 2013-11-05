@@ -10,8 +10,9 @@ class CompileTemplate
   """
 
   constructor: ->
+    usage = "#{@summary}\n\n#{@doc}"
     @parser = require("optimist")
-      .usage("Compile a template")
+      .usage(usage)
       .alias("i","input")
       .describe("i","input file")
       .alias("o","output")

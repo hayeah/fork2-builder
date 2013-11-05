@@ -9,8 +9,6 @@ class Help
 
     commandName = args[0]
     if command = @commands[commandName]
-      console.log command.summary
-      console.log command.doc
       command.parser.showHelp()
     else
       @help()
