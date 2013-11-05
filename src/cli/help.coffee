@@ -1,6 +1,8 @@
 version = require '../version'
 
 class Help
+  name: "help"
+
   summary: "Show detailed help for a command"
 
   run: (args) ->

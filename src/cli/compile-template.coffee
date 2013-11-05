@@ -3,6 +3,8 @@ fs = require 'fs'
 TemplateCompiler = require '../compiler/template-compiler'
 
 class CompileTemplate extends require("./base")
+  name: "compile-template"
+
   summary: "Compiles a single content template."
 
   doc: """

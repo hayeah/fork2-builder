@@ -1,10 +1,17 @@
 module.exports = class Base
+  # The subcommand name used to invoke a command
+  name: "abstract"
+
+  # One line summary to describe this command.
   summary: "abstract"
+
+  # DocString to describe this command.
   doc: "abstract"
 
   usage: ->
     usage = "#{@summary}\n\n#{@doc}"
 
+  # Subclass should override this to configure its command line parser.
   configParser: ->
     throw "abstract"
 

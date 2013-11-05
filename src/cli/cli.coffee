@@ -1,8 +1,13 @@
-commands = {
-  help: require("./help")
-  "compile-template": require("./compile-template")
-  "server": require("./server")
-}
+cmds = [
+  require("./help")
+  require("./compile-template")
+  require("./server")
+]
+
+# register subcommands
+commands = {}
+for cmd in cmds
+  commands[cmd.name] = cmd
 
 class CLI
   commands: commands

@@ -1,4 +1,6 @@
 class Server extends require("./base")
+  name: "server"
+
   summary: "Starts the fork2 web server."
 
   doc: """
