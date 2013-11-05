@@ -13,7 +13,7 @@ module.exports = class Base
 
   # Subclass should override this to configure its command line parser.
   configParser: ->
-    throw "abstract"
+    # do nothing
 
   # optimist has only a singleton parser. We need to make sure that the subcommands don't step on each other.
   buildParser: ->
@@ -21,8 +21,10 @@ module.exports = class Base
     usage = "#{@summary}\n\n#{@doc}"
     @parser = require("optimist").usage(usage)
     @configParser()
+    return @parser
 
   parse: (args) ->
+    @buildParser()
     @parser.parse(args)
 
   help: ->
