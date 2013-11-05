@@ -4,7 +4,7 @@ bower := bower_components
 bundle := bundle
 optimize := uglify2
 
-.PHONY: bundle build test server watch
+.PHONY: bundle build test run watch
 
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
@@ -45,11 +45,11 @@ $(build)/build.js: $(src)/build.coffee
 test:
 	mocha --compilers coffee:coffee-script test
 
-server:
-	nodemon ./bin/server.coffee
+run: build
+	fork2 run sample-content
 
 watch:
-	watchy -w src/ -- make build
+	watchy -w src/ -- make run
 
 clean:
 	rm -r $(build)
