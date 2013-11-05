@@ -2,18 +2,15 @@ fs = require 'fs'
 
 TemplateCompiler = require '../compiler/template-compiler'
 
-class CompileTemplate
+class CompileTemplate extends require("./base")
   summary: "Compiles a single content template."
 
   doc: """
   fork2 compile-template -i INPUT -o OUTPUT -r PROJECT_ROOT
   """
 
-  parser: ->
-    return @_parser if @_parser
-    usage = "#{@summary}\n\n#{@doc}"
-    @_parser = require("optimist")
-      .usage(usage)
+  configParser: ->
+    @parser
       .alias("i","input")
       .describe("i","input file")
       .alias("o","output")
@@ -22,7 +19,7 @@ class CompileTemplate
       .describe("r","root path with which to compile template")
 
   run: (args) ->
-    args = @parser().parse(args)
+    args = @parse(args)
 
     args.input &&
       inFile = fs.createReadStream(args.input)
