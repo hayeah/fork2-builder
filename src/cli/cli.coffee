@@ -1,6 +1,7 @@
 cmds = [
   require("./help")
   require("./compile-template")
+  require("./build-project")
   require("./server")
 ]
 

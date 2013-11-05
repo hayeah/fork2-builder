@@ -32,6 +32,7 @@
     "socket.io": "~0.9.16",
     "tty.js": "~0.2.13",
     "pty.js": "~0.2.3",
-    "execSync": "~1.0.1-pre"
+    "execSync": "~1.0.1-pre",
+    "glob": "~3.2.6"
   }
 }
