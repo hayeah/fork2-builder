@@ -4,8 +4,7 @@
   "description": "Fork A Programmer - Interactive Programming Lessons",
   "main": "main.js",
   "bin": {
-    "fork2-compile": "./compile-template.coffee",
-    "fork2-server": "./server.coffee"
+    "fork2": "./bin/fork2"
   },
   "scripts": {
     "prepublish": "make build",
