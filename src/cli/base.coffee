@@ -1,3 +1,5 @@
+sh = require "execSync"
+
 module.exports = class Base
   # The subcommand name used to invoke a command
   name: "abstract"
@@ -30,3 +32,9 @@ module.exports = class Base
   help: ->
     @buildParser()
     @parser.showHelp()
+
+  sh: (cmd) ->
+    console.log cmd
+    code = sh.run(cmd)
+    if code != 0
+      throw "Abnormal exit: #{cmd}"
