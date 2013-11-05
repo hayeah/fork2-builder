@@ -13,15 +13,15 @@ serverDir = path.join pkgRoot, "src/server"
 console.log "pkg root: #{pkgRoot}"
 
 class App
-  constructor: () ->
+  # @params options.content [Path] The directory of a built project.
+  constructor: (@options) ->
+    @contentRoot = @options.contentRoot
     @setupExpress()
 
   setupExpress: ->
     @express = express()
 
-    # project root is the directory
-    projectRoot = process.cwd()
-    @express.set("root",projectRoot)
+    @express.set("root",@contentRoot)
 
     hbsViewEngine = ehbs
       defaultLayout: 'main'
@@ -39,8 +39,8 @@ class App
     @handle "get", "/", require("./actions/home")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
     @handle "get", "/terminal", require("./actions/terminal")
-    @handle "get", "/ide/:name", require("./actions/ide")
-    @handle "get", '/:name', require("./actions/slides")
+    @handle "get", "/ide", require("./actions/ide")
+    @handle "get", '/slides', require("./actions/slides")
 
   start: (port) ->
     @server = http.createServer(@express)

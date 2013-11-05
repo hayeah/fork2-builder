@@ -4,11 +4,8 @@ path = require "path"
 Base = require './base'
 
 module.exports = class ShowSlideCast extends Base
-  build_path: ->
-    path.join(@root,"tutorials-build",@params.name)
-
   index_html: (cb) ->
-    file = path.join(@build_path(),"index.html")
+    file = path.join(@root,"index.html")
     fs.readFile file, {encoding: "utf8"}, cb
 
   handle: ->

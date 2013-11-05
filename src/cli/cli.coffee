@@ -3,6 +3,7 @@ cmds = [
   require("./compile-template")
   require("./build-project")
   require("./server")
+  require("./run")
 ]
 
 # register subcommands
