@@ -1,6 +1,5 @@
 path = require "path"
 glob = require 'glob'
-sh = require "execSync"
 
 class BuildProject extends require("./base")
   name: "build-project"
@@ -8,7 +7,9 @@ class BuildProject extends require("./base")
   summary: "Builds a given project to an output path."
 
   doc: """
-  fork2 build-project $PROJECT_PATH $OUTPUT_PATH
+  fork2 build-project $PROJECT_PATH [$OUTPUT_PATH]
+
+  $OUTPUT_PATH defaults to $PROJECT_PATH/.workspace
   """
 
   # TODO. rebuild option should remove the otuput path before build.
@@ -18,9 +19,12 @@ class BuildProject extends require("./base")
     inPath = args._[0]
     outPath = args._[1]
 
-    if !inPath || !outPath
+    if !inPath
       @help()
       return
+
+    if !outPath
+      outPath = path.join inPath, ".workspace"
 
     # TODO check if input path is valid
     inPath = @ensureTrailingSlash(inPath)
@@ -50,13 +54,7 @@ class BuildProject extends require("./base")
     inPath = @ensureTrailingSlash(inPath)
     # with the trailing slash in inPath, rsync copies the content of inPath to
     # outPath without creating a subdirectory in outPath.
-    code = @sh("rsync -Pa #{inPath} #{outPath}")
-
-  sh: (cmd) ->
-    console.log cmd
-    code = sh.run(cmd)
-    if code != 0
-      throw "Abnormal exit: #{cmd}"
+    code = @sh("rsync --exclude '.workspace' -Pa #{inPath} #{outPath}")
 
 
 module.exports = new BuildProject()
