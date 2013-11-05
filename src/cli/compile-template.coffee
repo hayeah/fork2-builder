@@ -38,10 +38,4 @@ class CompileTemplate
     c.compile (err) ->
       console.log err if err
 
-  help: ->
-    console.log @summary
-    console.log @doc
-    @parser.help()
-
-
 module.exports = new CompileTemplate()
