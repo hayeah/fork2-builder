@@ -11,7 +11,10 @@ js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
 css_files := $(shell find $(src)/css -type f)
 
-bundle: build $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
+bundle: build $(bundle)/ace $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
+
+$(bundle)/ace:
+	rsync -Pa $(build)/bower_components/ace-builds/src-min-noconflict/ $(bundle)/ace
 
 $(bundle)/%.js: $(build)/build-%.js $(build)/%.js
 	r.js -o $< optimize=$(optimize)	out=$@
