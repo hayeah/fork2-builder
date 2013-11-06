@@ -1,6 +1,7 @@
 node_modules
-bower_components
-build
+/bower_components
+/build
 Gemfile.lock
 scratch
 notes*
+.DS_Store
