@@ -14,6 +14,7 @@ css_files := $(shell find $(src)/css -type f)
 bundle: build $(bundle)/ace $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
 
 $(bundle)/ace:
+	@mkdir -p $(bundle)
 	rsync -Pa $(build)/bower_components/ace-builds/src-min-noconflict/ $(bundle)/ace
 
 $(bundle)/%.js: $(build)/build-%.js $(build)/%.js
