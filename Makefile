@@ -13,7 +13,7 @@ css_files := $(shell find $(src)/css -type f)
 
 bundle: build $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
 
-$(bundle)/%.js: $(build)/build-%.js
+$(bundle)/%.js: $(build)/build-%.js $(build)/%.js
 	r.js -o $< optimize=$(optimize)	out=$@
 
 $(bundle)/%.css: $(build)/%.css
