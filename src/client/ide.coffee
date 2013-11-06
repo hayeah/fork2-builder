@@ -1,7 +1,9 @@
 define (require) ->
+  require "ace"
+  require "ace-modelist"
+
   require("jquery.layout")
-  ace = require("ace")
-  modelist = require 'ace/ext/modelist'
+  modelist = ace.require 'ace/ext/modelist'
   PTYClient = require "pty-client"
   ptyClient = new PTYClient("/webso/pty")
 

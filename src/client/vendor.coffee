@@ -6,7 +6,7 @@ define [
   # IDE
   "jquery.layout"
   "ace"
-  'ace/ext/modelist'
+  'ace-modelist'
 
   # PTY
   "socketio"

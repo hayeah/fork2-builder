@@ -1,11 +1,4 @@
 requirejs.config
-  packages: [
-    {
-      name: "ace"
-      location: "bower_components/ace/lib/ace"
-      main: "ace"
-    }
-  ]
   paths:
     reveal: "bower_components/reveal.js/js/reveal"
     jquery: "bower_components/jquery/jquery"
@@ -19,8 +12,13 @@ requirejs.config
     "jquery.ui.draggable": "bower_components/jquery-ui/ui/jquery.ui.draggable"
     "termjs": "bower_components/term.js/src/term"
     "socketio": "bower_components/socket.io-client/dist/socket.io"
+    "ace": "bower_components/ace-builds/src-noconflict/ace"
+    "ace-modelist": "bower_components/ace-builds/src-noconflict/ext-modelist"
 
   shim:
+    ace:
+      exports: "ace"
+    "ace-modelist": ["ace"]
     underscore:
       exports: "_"
     reveal:
