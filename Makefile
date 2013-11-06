@@ -33,14 +33,15 @@ $(build)/main.css: $(css_files)
 # Compile CoffeeScript to JavaScript
 js: $(js_files)
 
+# Compile the r.js build configuration as JSON
+# This should precede the normal coffeescript build
+$(build)/build%.js: $(src)/build%.coffee
+	@mkdir -p $(@D)
+	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
+
 $(build)/%.js: $(src)/%.coffee
 	@mkdir -p $(@D)
 	coffee -m -c -o $(@D) $<
-
-# Compile the r.js build configuration as JSON
-$(build)/build.js: $(src)/build.coffee
-	@mkdir -p $(@D)
-	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
 
 test:
 	mocha --compilers coffee:coffee-script test
