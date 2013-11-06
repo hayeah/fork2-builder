@@ -12,13 +12,11 @@ define (require) ->
       JSON.parse @$action.html()
 
   class Tutorial
-    constructor: (el) ->
+    constructor: (el,@ide) ->
       @$ = $(el)
       @$sections = $.find("section")
       @sections = for e in @$sections
         new Section(e)
-
-    setIDE: (@ide) ->
 
     goto_first: ->
       @goto(0)

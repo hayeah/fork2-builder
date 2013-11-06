@@ -7,6 +7,8 @@ define (require) ->
   PTYClient = require "pty-client"
   ptyClient = new PTYClient("/webso/pty")
 
+  Tutorial = require "ide/tutorial"
+
   template = """
   <div class="ide">
     <div class="ui-layout-center ide-workarea">
@@ -71,8 +73,8 @@ define (require) ->
       @$tutorial_container.html(el)
 
     # set the tutorial content
-    setTutorial: (@tutorial) ->
-      @tutorial.setIDE(this)
+    setTutorialContent: (el) ->
+      @tutorial = new Tutorial(el,this);
       @tutorial.goto_first()
 
     # dynamically dispatches an IDE action
@@ -89,8 +91,9 @@ define (require) ->
       file = opts.file
       match = modelist.getModeForPath(file.path)
       mode = match.mode
-      @ace.getSession().setValue file.content
       @ace.getSession().setMode mode
+
+      @ace.getSession().setValue file.content
 
       @getRunData = => {
         file: {

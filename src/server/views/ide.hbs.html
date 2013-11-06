@@ -6,11 +6,10 @@
 
 <script type="text/javascript">
   //<![CDATA[
-  require(["ide","ide/tutorial"],function (IDE,Tutorial) {
+  require(["ide"],function (IDE,Tutorial) {
     ide = new IDE("#ide");
     ide.start();
-    tutorial = new Tutorial(".ide-exercises");
-    ide.setTutorial(tutorial);
+    ide.setTutorialContent(".ide-exercises");
   });
   //]]>
 </script>
