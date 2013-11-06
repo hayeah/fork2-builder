@@ -11,8 +11,13 @@ js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
 css_files := $(shell find $(src)/css -type f)
 
-bundle: build
-	r.js -o $(build)/build.js dir=$(bundle) optimize=$(optimize)
+bundle: build $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
+
+$(bundle)/%.js: $(build)/build-%.js
+	r.js -o $< optimize=$(optimize)	out=$@
+
+$(bundle)/%.css: $(build)/%.css
+	lessc -x $< $@
 
 build: js css
 	@rsync -qPa $(bower) $(build)
@@ -54,3 +59,4 @@ watch:
 
 clean:
 	rm -r $(build)
+	rm -r $(bundle)
