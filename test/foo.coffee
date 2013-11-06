@@ -1,5 +1,5 @@
 assert = require "assert"
-should = require('should')
+# should = require('should')
 
 describe "Foo", ->
   it "should foobar", ->
