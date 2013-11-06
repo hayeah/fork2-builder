@@ -1,4 +1,6 @@
-Working on this right now!
+# Installation
+
+    npm install fork2
 
 # License
 
