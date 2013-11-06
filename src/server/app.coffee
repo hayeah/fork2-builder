@@ -6,6 +6,7 @@ http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")
 PTYServer = require "./pty-server"
+fs = require 'fs'
 path = require 'path'
 
 pkgRoot = path.normalize(path.join __dirname, "../..")
@@ -23,8 +24,17 @@ class App
 
     @express.set("root",@contentRoot)
 
+    # If pkgRoot/bundle exists, then use the bundled client assets.
+    # Use a layout template that uses the client assets. Else use the
+    # client assets in build.
+    # FIXME hmmm... should probably use a --dev flag instead
+    if fs.existsSync(path.join(pkgRoot,"bundle"))
+      defaultLayout = "main-bundle"
+    else
+      defaultLayout = "main"
+
     hbsViewEngine = ehbs
-      defaultLayout: 'main'
+      defaultLayout: defaultLayout
       extname: '.hbs.html'
       layoutsDir: "#{serverDir}/views/layouts"
       partialsDir: "#{serverDir}/views/partials"
