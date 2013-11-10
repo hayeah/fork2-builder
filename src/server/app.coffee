@@ -48,9 +48,10 @@ class App
 
     @handle "get", "/", require("./actions/home")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
-    @handle "get", "/terminal", require("./actions/terminal")
-    @handle "get", "/ide", require("./actions/ide")
-    @handle "get", '/slides', require("./actions/slides")
+    # @handle "get", "/terminal", require("./actions/terminal")
+    # @handle "get", "/ide", require("./actions/ide")
+    # @handle "get", '/slides', require("./actions/slides")
+    @handle "get", '/:permalink', require("./actions/show")
 
   start: (port) ->
     @server = http.createServer(@express)
@@ -62,7 +63,7 @@ class App
 
   handle: (verb,path,action) ->
     handler = (req,res) =>
-      new action(req,res,@express).handle()
+      new action(req,res,@contentRoot,@express).handle()
 
     @express[verb](path, handler)
 

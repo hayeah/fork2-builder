@@ -1,7 +1,6 @@
 module.exports = class BaseAction
-  constructor: (@req,@res,@express) ->
+  constructor: (@req,@res,@root,@express) ->
     @params = @req.params
-    @root = @express.get("root")
 
   get: (key) ->
     @express.get(key)
