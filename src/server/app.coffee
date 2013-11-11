@@ -2,6 +2,8 @@
 #   handle: ->
 #     @res.render("terminal")
 
+require "global"
+
 http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")
