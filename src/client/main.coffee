@@ -14,7 +14,6 @@ requirejs.config
     "socketio": "bower_components/socket.io-client/dist/socket.io"
     "ace": "bower_components/ace-builds/src-noconflict/ace"
     "ace-modelist": "bower_components/ace-builds/src-noconflict/ext-modelist"
-    "highlightjs": "bower_components/highlightjs/highlight.pack"
 
   shim:
     ace:
