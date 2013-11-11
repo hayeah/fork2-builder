@@ -1,3 +1,9 @@
 path = require 'path'
-global.should = require("chai").should()
-global.ROOT = path.normalize(path.join(__dirname,"..")) + "/"
+chai = require("chai")
+global.should = chai.should()
+global.assert = chai.assert
+root = path.normalize(path.join(__dirname,"..")) + "/"
+
+test = root + "test/"
+global.SRC = root + "src/"
+global.FIXTURES = test + "fixtures"
