@@ -51,8 +51,6 @@ class App
     @handle "get", "/", require("./actions/home")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
     # @handle "get", "/terminal", require("./actions/terminal")
-    # @handle "get", "/ide", require("./actions/ide")
-    # @handle "get", '/slides', require("./actions/slides")
     @handle "get", '/:permalink', require("./actions/show")
 
   start: (port) ->
