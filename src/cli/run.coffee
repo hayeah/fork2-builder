@@ -19,8 +19,12 @@ class Run extends require("./base")
   run: (args) ->
     args = @parse(args)
     contentRoot = path.normalize(args._[0] || process.cwd())
+    @startServer(contentRoot,args.port)
+
+  startServer: (root,port) ->
     app = require("../server/app").create
-      contentRoot: contentRoot
-    app.start(args.port)
+      contentRoot: root
+    app.start(port)
+
 
 module.exports = new Run()

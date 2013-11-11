@@ -34,7 +34,11 @@ class Server extends require("./base")
     @runProject(args.port)
 
   runProject: (port) ->
-    @sh("fork2 run #{@workspacePath} --port=#{port}")
+    # @sh("fork2 run #{@workspacePath} --port=#{port}")
+    # app = require("../server/app").create
+    #   contentRoot: @projectPath
+    # app.start(port)
+    require("./run").startServer(@workspacePath,port)
 
   buildProject: ->
     @sh("fork2 build-project #{@projectPath}")
