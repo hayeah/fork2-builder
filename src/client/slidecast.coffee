@@ -1,7 +1,11 @@
 define (require) ->
+  hljs = require "highlightjs"
   Reveal = require "reveal"
   $ = require "jquery"
   IDE = require "ide"
+
+  $ ->
+    hljs.initHighlighting()
 
   class SlideCast
     constructor: ->
