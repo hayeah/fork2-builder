@@ -48,7 +48,7 @@ class App
     console.log "static: #{pkgRoot}"
     @express.use(express.static(pkgRoot))
 
-    @handle "get", "/", require("./actions/home")
+    @handle "get", "/", require("./actions/index")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
     # @handle "get", "/terminal", require("./actions/terminal")
     @handle "get", '/:permalink', require("./actions/show")
