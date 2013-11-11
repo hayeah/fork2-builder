@@ -48,6 +48,10 @@ $(build)/build%.js: $(src)/build%.coffee
 	@mkdir -p $(@D)
 	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
 
+$(build)/%.js: $(src)/%.js
+	@mkdir -p $(@D)
+	cp $< $@
+
 $(build)/%.js: $(src)/%.coffee
 	@mkdir -p $(@D)
 	coffee -m -c -o $(@D) $<
