@@ -5,8 +5,9 @@ fs = require 'fs'
 # Multiplexes PTYs over a single socket.io connection.
 # When a connection is broken, kill all PTYs.
 module.exports = class PTYServer
-  # @param socket (Socket) websocket of connected client
-  constructor: (@so) ->
+  # @param so (Socket) websocket of connected client
+  # @param root (Path) the project workspace this server is running as.
+  constructor: (@so,@root) ->
     # track spawned ttys
     @ttys = {}
 
@@ -25,7 +26,8 @@ module.exports = class PTYServer
     tty.input(msg.data)
 
   # spawns a tty, using data as runner spec.
-  # @param ptyID (Integer)
+  # @param msg (JSON) PTYClient request to exec something.
+  # @param msg.id (Integer) the id for a PTYServerInstance
   #
   # The received msg is something like:
   # msg: { id: 1, options: { w: 80, h: 24 }, data: { run: '/bin/bash' } }
@@ -36,28 +38,27 @@ module.exports = class PTYServer
     if oldtty = @ttys[id]
       oldtty.kill()
 
-    tty = new PTYServerInstance(@so,id,msg)
+    tty = new PTYServerInstance(@so,@root,id,msg)
     @ttys[id] = tty
 
 # TODO: should handle "exit" event
 class PTYServerInstance
-  # @param data (Object) Data to pass into exec call
+  # @param so (Socket) see PTYServer
+  # @param root (Path) see PTYServer
+  # @param msg (JSON)  see PTYServer#exec
+  # @param msg.data (Object) Data to pass into exec call
   # @param data.run (String) Command to run
   # @param data.file (Hash)  Overwrite the file at file.path with file.content before exec.
   # @param data.args ([Object]) (Optional) Arguments for the command to run
-  constructor: (@so,@id,msg) ->
+  constructor: (@so,@root,@id,msg) ->
     console.log ["TTY",msg]
     {data,options} = msg
 
     cmd = data.run
     args = data.args || []
 
-    # FIXME: this is just for demo. Please remove later.
-    # name is the tutorial name we are running
-    if name = data.name
-      cwd = path.join process.cwd(), "tutorials-build", name
-    else
-      cwd = process.env.HOME
+    cwd = @root
+    console.log ["exec cwd:",cwd]
 
     # FIXME: just use sync version of write for now
     if file = data.file

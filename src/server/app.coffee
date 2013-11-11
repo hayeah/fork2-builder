@@ -57,8 +57,8 @@ class App
     @server = http.createServer(@express)
     @server.listen(port || 3000)
     @socket = require("socket.io").listen(@server)
-    @socket.of("/webso/pty").on "connection", (so) ->
-      new PTYServer(so)
+    @socket.of("/webso/pty").on "connection", (so) =>
+      new PTYServer(so,@contentRoot)
     console.log "Process #{process.pid} Listening to port #{port}"
 
   handle: (verb,path,action) ->
