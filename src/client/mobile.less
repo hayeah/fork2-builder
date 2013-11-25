@@ -31,5 +31,12 @@
 
   code.linewrap {
     white-space: pre-wrap;
+    // The following two rules together have the effect:
+    //
+    // 1) wrap won't break a word in half
+    // 2) long continuous sequence of letters DOES break.
+
+    // word-break: break-all;
+    word-wrap: break-word; //
   }
 }
