@@ -28,34 +28,41 @@ withRoot = (fn,root,hbs) ->
     options.hbs = hbs
     fn.apply(this,args)
 
-path = require 'path'
-Code = require './directives/code'
-code = (filepath,options) ->
-  fullpath = path.join(options.root,filepath)
-  processor = new Code(fullpath,options)
-  processor.process.sync(processor)
+# path = require 'path'
+# Code = require './directives/code'
+# code = (filepath,options) ->
+#   fullpath = path.join(options.root,filepath)
+#   processor = new Code(fullpath,options)
+#   processor.process.sync(processor)
+
+
 
 # Build a synchronous handlebars helper function from a directive class
 buildHelper = (klass) ->
   return ->
     args = Array.prototype.slice.call(arguments,0)
     options = args[args.length-1]
+
+    # initialize an instance of the directive with options
     directive = new klass(options)
+
+    # remove options from process args
+    process_args = args[0...args.length-1]
     process = (cb) ->
-      args.push(cb)
-      directive.process.apply(directive,args)
+      process_args.push(cb)
+      directive.process.apply(directive,process_args)
 
     process.sync()
 
-edit = buildHelper(require("./directives/edit"))
-
+# edit = buildHelper(require("./directives/edit"))
+code = buildHelper(require("./directives/code"))
 
 # TODO: refactor this to be a separate file
 directives =
   code: code
   md: markdown
   markdown: markdown
-  edit: edit
+  # edit: edit
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->

@@ -6,12 +6,31 @@ hljs = require "highlight.js"
 modelist = require "../../utils/modelist"
 
 class Code
-  constructor: (@path,@options) ->
+  constructor: (@options) ->
     @hbs = @options.hbs
+    @lang = @options.lang
 
-  process: (cb) ->
+  # @param path {Path} optional. The path to read piece of code from. Relative to project root.
+  #
+  # If path is not given, the block should yield the source code.
+  process: (@path,cb) ->
+    console.log @path, cb
+
+    if !cb
+      cb = @path
+      @path = null
+
+    # cb(null,"some random code")
+    # return
+
+    console.log "process", arguments
     async.waterfall [
-      (cb) => fs.readFile @path,{encoding: "utf8"}, cb
+      (cb) =>
+        if @path
+          fs.readFile @path,{encoding: "utf8"}, cb
+        else
+          source = @options.fn()
+          cb(null,source)
       (source,cb) =>
         source = @prepareSource(source)
         html = "<pre><code>#{source}</code></pre>"
@@ -21,14 +40,21 @@ class Code
   # Return the source code as html content. Highlight it there's a match highlighter.
   # @return (HTML)
   prepareSource: (source) ->
-    if lang = @languageName(@path)
+    if @lang
+      lang = @lang
+    else if @path
+      lang = @guessLanguageName(@path)
+    else
+      lang = null
+
+    if lang
       code = @highlight(lang,source)
     else
       code = @hbs.escape source
 
   # Uses ace editor's modelist to guess language name from a given filename.
   # @return (String|null) the language name, or null if there's no associated mode.
-  languageName: (path) ->
+  guessLanguageName: (path) ->
     match = modelist.getModeForPath(path)
 
     if match.name == "text"
