@@ -28,8 +28,8 @@ module.exports = class Show extends require('./base')
 
   # Map of content type to view template
   templates: {
-    "deck": "slidecast"
-    "lab": "ide"
+    # "deck": "slidecast"
+    # "lab": "ide"
     "page": "page"
   }
 
