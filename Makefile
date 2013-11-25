@@ -27,11 +27,11 @@ build: js css
 	@rsync -qPa $(bower) $(build)
 	@rsync -qPa $(src)/lib $(build)
 
-css: $(build)/main.css
+css: $(build)/main.css $(build)/mobile.css
 
-$(build)/main.css: $(css_files)
+$(build)/%.css: $(src)/%.less $(css_files)
 	@mkdir -p $(build)
-	lessc $(src)/main.less $@
+	lessc $< $@
 
 # css: $(css_files)
 #
