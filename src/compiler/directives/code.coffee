@@ -8,7 +8,7 @@ modelist = require "../../utils/modelist"
 class Code
   constructor: (@options) ->
     @hbs = @options.hbs
-    @lang = @options.lang
+    @lang = @options.hash.lang
     @root = @options.root
 
   # @param path {Path} optional. The path to read piece of code from. Relative to project root.
