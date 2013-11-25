@@ -1,13 +1,7 @@
 glob = require 'glob'
 path = require 'path'
-module.exports = class Show extends require('./base')
-  handle: ->
-    @_handle (err,httpcode=500) =>
-      if err
-        @res.status(httpcode)
-        @res.end(err) if err
-
-  _handle: (cb) ->
+module.exports = class Index extends require('./base')
+  handle: (cb) ->
     files = glob.sync path.join(@root,"*.html")
 
     links = for filePath in files

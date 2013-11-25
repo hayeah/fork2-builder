@@ -5,12 +5,7 @@ path = require "path"
 glob = require 'glob'
 
 module.exports = class Show extends require('./base')
-  handle: ->
-    @_handle (err) =>
-      @res.end(err) if err
-
-
-  _handle: (cb) ->
+  handle: (cb) ->
     permalink = @params.permalink
 
     contentPath = @contentFilePath(permalink)

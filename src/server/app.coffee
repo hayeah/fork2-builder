@@ -64,7 +64,7 @@ class App
 
   handle: (verb,path,action) ->
     handler = (req,res) =>
-      new action(req,res,this).handle()
+      (new action(req,res,this)).process()
 
     @express[verb](path, handler)
 

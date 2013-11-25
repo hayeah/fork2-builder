@@ -4,6 +4,17 @@ module.exports = class BaseAction
     @root = @app.contentRoot
     @params = @req.params
 
+  # Processes a HTTP request by delegating to the @handle method.
+  process: ->
+    @handle (err,httpcode=500) =>
+      if err
+        @res.status(httpcode)
+        @res.end(err) if err
+
+  # Action logic to override in subclass.
+  handle: (cb) ->
+    cb("abstract method")
+
   get: (key) ->
     @express.get(key)
 
