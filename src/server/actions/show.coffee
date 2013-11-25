@@ -6,11 +6,11 @@ glob = require 'glob'
 
 module.exports = class Show extends require('./base')
   handle: ->
-    @render (err) =>
+    @_handle (err) =>
       @res.end(err) if err
 
 
-  render: (cb) ->
+  _handle: (cb) ->
     permalink = @params.permalink
 
     contentPath = @contentFilePath(permalink)
@@ -29,7 +29,7 @@ module.exports = class Show extends require('./base')
         cb(err)
         return
 
-      @res.render(template,content:content)
+      @render(template,content:content)
 
   # Map of content type to view template
   templates: {

@@ -64,7 +64,7 @@ class App
 
   handle: (verb,path,action) ->
     handler = (req,res) =>
-      new action(req,res,@contentRoot,@express).handle()
+      new action(req,res,this).handle()
 
     @express[verb](path, handler)
 
