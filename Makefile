@@ -27,6 +27,9 @@ build: js css
 	@rsync -qPa $(bower) $(build)
 	@rsync -qPa $(src)/lib $(build)
 
+build/bower:
+	@rsync -qPa $(bower) $(build)
+
 css: $(build)/main.css $(build)/mobile.css
 
 $(build)/%.css: $(src)/%.less $(css_files)
