@@ -13,8 +13,7 @@ module.exports = class Show extends require('./base')
     links = for filePath in files
       basename = path.basename(filePath)
       # <permalink>.<type>.html
-      console.log basename
-      re = /([^.]+)\.([^.]+)\.html$/
+      re = /([^.]+)(\.[^.]+)?\.html$/
       m = basename.match(re)
       continue unless m
       permalink = m[1]
@@ -22,9 +21,6 @@ module.exports = class Show extends require('./base')
         href: permalink
         text: permalink.humanize().titleize()
       }
-
-    console.log links
-    console.log ["humanize","abc".humanize]
 
     @res.render("index",links: links)
 
