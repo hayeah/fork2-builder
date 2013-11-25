@@ -1,4 +1,6 @@
 marked = require 'marked'
+hljs = require "highlight.js"
+
 async = require 'async'
 sync = require 'sync'
 hbs = require("handlebars")
@@ -94,7 +96,10 @@ class TemplateCompiler
     ), cb
 
   renderMarkedDown: (input,cb) ->
-    marked input, {}, cb
+    marked input, {
+      highlight:  (code, lang) ->
+        hljs.highlight(lang, code).value
+      }, cb
 
   # cb(err,streamData:String)
   readInput: (cb) ->
