@@ -7,8 +7,17 @@ pre {
   code {
     font-size: 10px;
     padding: 0px;
-    width: 200%;
+
   }
   border-radius: 0px;
   overflow: scroll;
+
+  // override bootstraps pre code wrap behaviour
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
+
+  code {
+    white-space: pre;
+  }
 }
