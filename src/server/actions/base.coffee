@@ -21,6 +21,12 @@ module.exports = class BaseAction
   # we want to exclude tablets from mobile view
   mobileRE = /mobile/i
   isMobile: ->
+    switch @req.query.display
+      when "mobile"
+        return true
+      when "desktop"
+        return false
+
     ua = @req.headers["user-agent"] || ""
 
     if mobileRE.exec(ua)
@@ -34,6 +40,9 @@ module.exports = class BaseAction
     if @isMobile()
       opts.layout = "mobile"
       opts.isMobile = true
+
+    console.log @params
+    console.log opts
 
     opts = opts.merge(locals)
 
