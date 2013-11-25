@@ -6,10 +6,21 @@ define ["jquery"], ($) ->
     """
 
   class CodeBlock
+    # applies to "pre code"
     constructor: (el) ->
-      @$ = $(el)
+      @$code = @$ = $(el)
+      @setupToggleWrap()
 
-      # inject toggleWrap
+    setupToggleWrap: ->
+      # There is a span containing all the text content of the code block. Its
+      # width, happily, is the maximum length of a line in the block.
+      span = @$code.find("> span")
+      # if the code container is large enough to contain the code snippet, we
+      # don't show the wrap toggle.
+      if @$code.width() > span.width()
+        return
+
+      # inject the toggle button
       @$toggleWrapButton = $(toggleWrapButtonHTML)
       @$.append(@$toggleWrapButton)
       @$toggleWrapButton.click =>

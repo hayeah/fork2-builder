@@ -30,7 +30,8 @@ class Code
           cb(null,source)
       (source,cb) =>
         source = @prepareSource(source)
-        html = "<pre><code>#{source}</code></pre>"
+        # the span wrapper is used to measure the width of the code block
+        html = "<pre><code><span>#{source}</span></code></pre>"
         cb(null,@hbs.safe(html))
     ], cb
 
