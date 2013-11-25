@@ -15,6 +15,8 @@ requirejs.config
     "ace": "bower_components/ace-builds/src-noconflict/ace"
     "ace-modelist": "bower_components/ace-builds/src-noconflict/ext-modelist"
 
+    "fastclick": "bower_components/fastclick/lib/fastclick"
+
   shim:
     ace:
       exports: "ace"

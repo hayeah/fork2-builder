@@ -22,6 +22,7 @@
     "ace": "~1.1.1",
     "bootstrap": "~3.0.0",
     "ace-builds": "https://github.com/ajaxorg/ace-builds.git#~1.1.1",
-    "html5-boilerplate": "~4.3.0"
+    "html5-boilerplate": "~4.3.0",
+    "fastclick": "~0.6.10"
   }
 }
