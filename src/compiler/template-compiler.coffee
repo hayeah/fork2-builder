@@ -15,15 +15,6 @@ withRoot = (fn,root,hbs) ->
     options.hbs = hbs
     fn.apply(this,args)
 
-# path = require 'path'
-# Code = require './directives/code'
-# code = (filepath,options) ->
-#   fullpath = path.join(options.root,filepath)
-#   processor = new Code(fullpath,options)
-#   processor.process.sync(processor)
-
-
-
 # Build a synchronous handlebars helper function from a directive class
 buildHelper = (mod) ->
   klass = require(mod)

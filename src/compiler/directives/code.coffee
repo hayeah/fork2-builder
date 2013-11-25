@@ -9,25 +9,22 @@ class Code
   constructor: (@options) ->
     @hbs = @options.hbs
     @lang = @options.lang
+    @root = @options.root
 
   # @param path {Path} optional. The path to read piece of code from. Relative to project root.
   #
   # If path is not given, the block should yield the source code.
-  process: (@path,cb) ->
-    console.log @path, cb
-
+  process: (inputPath,cb) ->
     if !cb
-      cb = @path
+      cb = inputPath
       @path = null
+    else
+      @path = inputPath
 
-    # cb(null,"some random code")
-    # return
-
-    console.log "process", arguments
     async.waterfall [
       (cb) =>
         if @path
-          fs.readFile @path,{encoding: "utf8"}, cb
+          fs.readFile path.join(@root,@path),{encoding: "utf8"}, cb
         else
           source = @options.fn()
           cb(null,source)
