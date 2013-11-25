@@ -54,7 +54,7 @@ buildHelper = (klass) ->
 
     process.sync()
 
-# edit = buildHelper(require("./directives/edit"))
+edit = buildHelper(require("./directives/edit"))
 code = buildHelper(require("./directives/code"))
 
 # TODO: refactor this to be a separate file
@@ -62,7 +62,7 @@ directives =
   code: code
   md: markdown
   markdown: markdown
-  # edit: edit
+  edit: edit
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->

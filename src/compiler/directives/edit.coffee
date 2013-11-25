@@ -25,7 +25,9 @@ module.exports = class Edit
   #  files: [{path: "hello.rb",content: "..."}]
   #  test: ...
   #  run: "ruby hello.rb"}
-  process: (@filePath,@options,cb) ->
+  process: (@filePath,cb) ->
+    cb(null,"edit disabled for now")
+    return
     @fullPath = path.join(@options.root,@filePath)
 
     async.waterfall [
