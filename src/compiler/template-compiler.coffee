@@ -1,20 +1,7 @@
 marked = require 'marked'
 async = require 'async'
 sync = require 'sync'
-
 hbs = require("handlebars")
-
-markdown = (options) ->
-  input = options.fn(this)
-
-  # sync version
-  # output = marked(input)
-
-  # async version
-  render = (cb) ->
-    marked input, {}, cb
-
-  output = render.sync(null)
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
@@ -38,7 +25,8 @@ withRoot = (fn,root,hbs) ->
 
 
 # Build a synchronous handlebars helper function from a directive class
-buildHelper = (klass) ->
+buildHelper = (mod) ->
+  klass = require(mod)
   return ->
     args = Array.prototype.slice.call(arguments,0)
     options = args[args.length-1]
@@ -54,8 +42,9 @@ buildHelper = (klass) ->
 
     process.sync()
 
-edit = buildHelper(require("./directives/edit"))
-code = buildHelper(require("./directives/code"))
+edit = buildHelper("./directives/edit")
+code = buildHelper("./directives/code")
+markdown = buildHelper("./directives/markdown")
 
 # TODO: refactor this to be a separate file
 directives =
