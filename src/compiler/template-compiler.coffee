@@ -72,6 +72,7 @@ class TemplateCompiler
     async.waterfall [
       @readInput.bind(@)
       @renderhbs.bind(@)
+      @renderMarkedDown.bind(@)
       @writeOutput.bind(@)
     ], cb
 
@@ -91,6 +92,9 @@ class TemplateCompiler
         console.log e.stack
         throw e
     ), cb
+
+  renderMarkedDown: (input,cb) ->
+    marked input, {}, cb
 
   # cb(err,streamData:String)
   readInput: (cb) ->
