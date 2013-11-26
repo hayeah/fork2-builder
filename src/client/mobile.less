@@ -2,45 +2,4 @@
 
 @import (less) "bower_components/highlightjs/styles/default.css";
 
-#page-content pre {
-  position: relative;
-
-  .code-toggle-wrap {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-  }
-
-  padding: 5px 2px;
-  code {
-    font-size: 10px;
-    padding: 0px;
-
-  }
-  border-radius: 0px;
-  overflow: scroll;
-
-  // override bootstraps pre code wrap behaviour
-  white-space: pre;
-  word-break: normal;
-  word-wrap: normal;
-
-  code {
-    white-space: pre;
-  }
-
-  code.linewrap {
-    white-space: pre-wrap;
-    // The following two rules together have the effect:
-    //
-    // 1) wrap won't break a word in half
-    // 2) long continuous sequence of letters DOES break.
-
-    // word-break: break-all;
-    word-wrap: break-word; //
-  }
-}
-
-#page-content p {
-  padding: 0 5px;
-}
+@import (less) "css/mobile/page.less";
