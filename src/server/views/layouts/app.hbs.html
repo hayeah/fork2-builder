@@ -2,16 +2,26 @@
 <html>
   <head>
     <title>Fork 2</title>
+    {{#if useBundle}}
+    <link rel="stylesheet" type="text/css" href="/bundle/app.css">
+    {{else}}
     <link rel="stylesheet" type="text/css" href="/build/client/app.css">
-    <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    {{/if}}
   </head>
-  <script type="text/javascript">
-      require(["app/vendor"],function() {
-          require(["app"]);
-      });
-  </script>
   <body>
     {{{body}}}
     <!-- <script src="http://localhost:35729/livereload.js"></script>  -->
+
+    {{#if useBundle}}
+    <script src="/bundle/app-vendor.js"></script>
+    <script src="/bundle/app.js"></script>
+    {{else}}
+    <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require(["app/vendor"],function() {
+            require(["app"]);
+        });
+    </script>
+    {{/if}}
   </body>
 </html>
