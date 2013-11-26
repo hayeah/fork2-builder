@@ -2,9 +2,14 @@
 <html>
   <head>
     <title>Fork 2</title>
-    <link rel="stylesheet" type="text/css" href="/build/client/main.css">
-    <script data-main="/build/client/main.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    <link rel="stylesheet" type="text/css" href="/build/client/app.css">
+    <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
   </head>
+  <script type="text/javascript">
+      require(["app/vendor"],function() {
+          require(["app"]);
+      });
+  </script>
   <body>
     {{{body}}}
     <!-- <script src="http://localhost:35729/livereload.js"></script>  -->

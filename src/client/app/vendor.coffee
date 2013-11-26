@@ -1,17 +1,16 @@
 define [
-  "almond"
   "underscore"
   "jquery"
 
   # IDE
-  "jquery.layout"
-  "ace"
-  'ace-modelist'
+  # "jquery.layout"
+  # "ace"
+  # 'ace-modelist'
 
   # PTY
-  "socketio"
-  "termjs"
+  # "socketio"
+  # "termjs"
 
   # SlideCast
-  "reveal"
+  # "reveal"
   ], ->
