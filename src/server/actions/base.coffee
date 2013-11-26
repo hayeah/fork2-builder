@@ -41,9 +41,6 @@ module.exports = class BaseAction
       opts.layout = "mobile"
       opts.isMobile = true
 
-    console.log @params
-    console.log opts
-
     opts = opts.merge(locals)
 
     @res.render(view,opts)
