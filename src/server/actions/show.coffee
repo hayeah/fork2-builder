@@ -5,12 +5,7 @@ path = require "path"
 glob = require 'glob'
 
 module.exports = class Show extends require('./base')
-  handle: ->
-    @render (err) =>
-      @res.end(err) if err
-
-
-  render: (cb) ->
+  handle: (cb) ->
     permalink = @params.permalink
 
     contentPath = @contentFilePath(permalink)
@@ -29,24 +24,31 @@ module.exports = class Show extends require('./base')
         cb(err)
         return
 
-      @res.render(template,content:content)
+      @render(template,content:content)
 
   # Map of content type to view template
   templates: {
-    "deck": "slidecast"
-    "lab": "ide"
+    # "deck": "slidecast"
+    # "lab": "ide"
+    "page": "page"
   }
 
   readContent: (path,cb) ->
     fs.readFile path, {encoding: "utf8"}, cb
 
   # Gets the type of the content by examining <type> for file paths
-  # of the format <permalink>.<type>.html
+  # of the format <permalink>[.<type>].html
+  #
+  # If the type info is not in the file path, then it defaults to "page".
   #
   # @return (String) The type of a content as given by its path.
   contentType: (contentFilePath) ->
     filename = path.basename(contentFilePath)
-    type = filename.split(".")[1]
+    parts = type = filename.split(".")
+    if parts.length == 2 && parts[1] == "html"
+      return "page"
+    else
+      parts[1]
 
   # Finds a content file that matches the permalink.
   contentFilePath: (permalink) ->

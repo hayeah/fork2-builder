@@ -1,20 +1,9 @@
 marked = require 'marked'
+hljs = require "highlight.js"
+
 async = require 'async'
 sync = require 'sync'
-
 hbs = require("handlebars")
-
-markdown = (options) ->
-  input = options.fn(this)
-
-  # sync version
-  # output = marked(input)
-
-  # async version
-  render = (cb) ->
-    marked input, {}, cb
-
-  output = render.sync(null)
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
@@ -28,27 +17,27 @@ withRoot = (fn,root,hbs) ->
     options.hbs = hbs
     fn.apply(this,args)
 
-path = require 'path'
-Code = require './directives/code'
-code = (filepath,options) ->
-  fullpath = path.join(options.root,filepath)
-  processor = new Code(fullpath,options)
-  processor.process.sync(processor)
-
 # Build a synchronous handlebars helper function from a directive class
-buildHelper = (klass) ->
+buildHelper = (mod) ->
+  klass = require(mod)
   return ->
     args = Array.prototype.slice.call(arguments,0)
     options = args[args.length-1]
+
+    # initialize an instance of the directive with options
     directive = new klass(options)
+
+    # remove options from process args
+    process_args = args[0...args.length-1]
     process = (cb) ->
-      args.push(cb)
-      directive.process.apply(directive,args)
+      process_args.push(cb)
+      directive.process.apply(directive,process_args)
 
     process.sync()
 
-edit = buildHelper(require("./directives/edit"))
-
+edit = buildHelper("./directives/edit")
+code = buildHelper("./directives/code")
+markdown = buildHelper("./directives/markdown")
 
 # TODO: refactor this to be a separate file
 directives =
@@ -85,6 +74,7 @@ class TemplateCompiler
     async.waterfall [
       @readInput.bind(@)
       @renderhbs.bind(@)
+      @renderMarkedDown.bind(@)
       @writeOutput.bind(@)
     ], cb
 
@@ -104,6 +94,12 @@ class TemplateCompiler
         console.log e.stack
         throw e
     ), cb
+
+  renderMarkedDown: (input,cb) ->
+    marked input, {
+      highlight:  (code, lang) ->
+        hljs.highlight(lang, code).value
+      }, cb
 
   # cb(err,streamData:String)
   readInput: (cb) ->

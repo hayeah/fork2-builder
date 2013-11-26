@@ -31,12 +31,12 @@ class App
     # client assets in build.
     # FIXME hmmm... should probably use a --dev flag instead
     if fs.existsSync(path.join(pkgRoot,"bundle"))
-      defaultLayout = "main-bundle"
+      @express.locals.useBundle = true
     else
-      defaultLayout = "main"
+      @express.locals.useBundle = false
 
     hbsViewEngine = ehbs
-      defaultLayout: defaultLayout
+      defaultLayout: "app"
       extname: '.hbs.html'
       layoutsDir: "#{serverDir}/views/layouts"
       partialsDir: "#{serverDir}/views/partials"
@@ -49,6 +49,7 @@ class App
     @express.use(express.static(pkgRoot))
 
     @handle "get", "/", require("./actions/index")
+    @handle "get", "/mobile", require("./actions/mobile")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
     # @handle "get", "/terminal", require("./actions/terminal")
     @handle "get", '/:permalink', require("./actions/show")
@@ -63,7 +64,7 @@ class App
 
   handle: (verb,path,action) ->
     handler = (req,res) =>
-      new action(req,res,@contentRoot,@express).handle()
+      (new action(req,res,this)).process()
 
     @express[verb](path, handler)
 
