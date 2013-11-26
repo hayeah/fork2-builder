@@ -47,7 +47,7 @@ js: $(js_files)
 
 # Compile the r.js build configuration as JSON
 # This should precede the normal coffeescript build
-$(build)/build%.js: $(src)/build%.coffee
+$(build)/build/%.js: $(src)/build/%.coffee
 	@mkdir -p $(@D)
 	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
 
