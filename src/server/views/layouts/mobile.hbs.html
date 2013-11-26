@@ -33,18 +33,30 @@
         <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script>
         -->
 
-        <link rel="stylesheet" href="/build/client/mobile.css">
-        <script data-main="/build/client/main.js" src="/build/client/bower_components/requirejs/require.js"></script>
-        <script type="text/javascript">
-            require(["mobile/vendor"],function() {
-                require(["mobile"]);
-            });
-        </script>
+        {{#if useBundle}}
+            <link rel="stylesheet" type="text/css" href="/bundle/mobile.css">
+        {{else}}
+            <link rel="stylesheet" type="text/css" href="/build/client/mobile.css">
+        {{/if}}
 
         <!--  <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->
 
     </head>
     <body>
     {{{body}}}
+
+    {{#if useBundle}}
+    <script src="/bundle/mobile.js"></script>
+    <script type="text/javascript">
+        require(["mobile"]);
+    </script>
+    {{else}}
+    <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require(["mobile/vendor"],function() {
+            require(["mobile"]);
+        });
+    </script>
+    {{/if}}
     </body>
 </html>

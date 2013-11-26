@@ -31,12 +31,12 @@ class App
     # client assets in build.
     # FIXME hmmm... should probably use a --dev flag instead
     if fs.existsSync(path.join(pkgRoot,"bundle"))
-      defaultLayout = "main-bundle"
+      @express.locals.useBundle = true
     else
-      defaultLayout = "main"
+      @express.locals.useBundle = false
 
     hbsViewEngine = ehbs
-      defaultLayout: defaultLayout
+      defaultLayout: "app"
       extname: '.hbs.html'
       layoutsDir: "#{serverDir}/views/layouts"
       partialsDir: "#{serverDir}/views/partials"

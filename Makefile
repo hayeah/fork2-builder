@@ -11,13 +11,13 @@ js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
 css_files := $(shell find $(src)/css -type f)
 
-bundle: build $(bundle)/ace $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
+bundle: build $(bundle)/mobile.js $(bundle)/mobile.css $(bundle)/app.js $(bundle)/app-vendor.js $(bundle)/app.css
 
 $(bundle)/ace:
 	@mkdir -p $(bundle)
 	rsync -Pa $(build)/bower_components/ace-builds/src-min-noconflict/ $(bundle)/ace
 
-$(bundle)/%.js: $(build)/build-%.js $(build)/%.js
+$(bundle)/%.js: $(build)/build/%.js
 	r.js -o $< optimize=$(optimize)	out=$@
 
 $(bundle)/%.css: $(build)/%.css
@@ -30,7 +30,7 @@ build: js css
 build/bower:
 	@rsync -qPa $(bower) $(build)
 
-css: $(build)/main.css $(build)/mobile.css
+css: $(build)/app.css $(build)/mobile.css
 
 $(build)/%.css: $(src)/%.less $(css_files)
 	@mkdir -p $(build)
@@ -47,7 +47,7 @@ js: $(js_files)
 
 # Compile the r.js build configuration as JSON
 # This should precede the normal coffeescript build
-$(build)/build%.js: $(src)/build%.coffee
+$(build)/build/%.js: $(src)/build/%.coffee
 	@mkdir -p $(@D)
 	coffee --bare -c -p $< | sed '1d ; s/^});/}/ ; s/^({/{/' > $@
 
