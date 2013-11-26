@@ -11,7 +11,7 @@ js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
 css_files := $(shell find $(src)/css -type f)
 
-bundle: build $(bundle)/ace $(bundle)/app.js $(bundle)/vendor.js $(bundle)/main.css
+bundle: build $(bundle)/mobile.js $(bundle)/mobile.css $(bundle)/app.js $(bundle)/app-vendor.js $(bundle)/app.css
 
 $(bundle)/ace:
 	@mkdir -p $(bundle)
