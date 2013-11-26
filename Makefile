@@ -30,7 +30,7 @@ build: js css
 build/bower:
 	@rsync -qPa $(bower) $(build)
 
-css: $(build)/main.css $(build)/mobile.css
+css: $(build)/app.css $(build)/mobile.css
 
 $(build)/%.css: $(src)/%.less $(css_files)
 	@mkdir -p $(build)
