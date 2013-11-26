@@ -1,6 +1,6 @@
 {
-  baseUrl: "."
-  mainConfigFile: "main.js"
+  baseUrl: "../"
+  mainConfigFile: "../requirejs-config.js"
   optimize: "uglify2"
-  name: "vendor"
+  name: "app/vendor"
 }

@@ -1,8 +1,7 @@
 {
-  baseUrl: "."
-  mainConfigFile: "main.js"
+  baseUrl: "../"
+  mainConfigFile: "../requirejs-config.js"
   optimize: "uglify2"
   name: "app"
-  exclude: ["vendor"]
-  insertRequire: ["app"]
+  exclude: ["app/vendor"]
 }

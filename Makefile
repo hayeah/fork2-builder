@@ -17,7 +17,7 @@ $(bundle)/ace:
 	@mkdir -p $(bundle)
 	rsync -Pa $(build)/bower_components/ace-builds/src-min-noconflict/ $(bundle)/ace
 
-$(bundle)/%.js: $(build)/build-%.js $(build)/%.js
+$(bundle)/%.js: $(build)/build/%.js
 	r.js -o $< optimize=$(optimize)	out=$@
 
 $(bundle)/%.css: $(build)/%.css
