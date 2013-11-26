@@ -1,4 +1,4 @@
-# bundled app
+# desktop app
 define [
   "ide"
   "slidecast"
