@@ -16,7 +16,8 @@
     "requirejs": "~2.1.9",
     "mocha": "~1.13.0",
     "coffee-script": "~1.6.3",
-    "chai": "~1.8.1"
+    "chai": "~1.8.1",
+    "less": "~1.5.1"
   },
   "dependencies": {
     "express": "~3.4.1",
