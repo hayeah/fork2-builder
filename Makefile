@@ -9,7 +9,7 @@ optimize := uglify2
 coffee_files := $(shell find $(src) -type f -name '*.coffee')
 js_files := $(coffee_files:$(src)/%.coffee=$(build)/%.js)
 
-css_files := $(shell find $(src)/css -type f)
+css_files := $(shell find $(src)/css -type f -name '.less')
 
 bundle: build $(bundle)/mobile.js $(bundle)/mobile.css $(bundle)/app.js $(bundle)/app-vendor.js $(bundle)/app.css
 
@@ -30,7 +30,7 @@ build: js css
 build/bower:
 	@rsync -qPa $(bower) $(build)
 
-css: $(build)/app.css $(build)/mobile.css
+css: $(build)/css/app.css $(build)/css/mobile.css
 
 $(build)/%.css: $(src)/%.less $(css_files)
 	@mkdir -p $(build)
