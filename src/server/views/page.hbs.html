@@ -1,3 +1,12 @@
 <div id="page-view">
+  <div>
+    {{#with unit.previous}}{{#if .}}
+    <a href="{{permalink}}">Previous - {{title}}</a>
+    {{/if}}{{/with}}
+
+    {{#with unit.next}}{{#if .}}
+    <a href="{{permalink}}">Next - {{title}}</a>
+    {{/if}}{{/with}}
+  </div>
   {{{content}}}
 </div>

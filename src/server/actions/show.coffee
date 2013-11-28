@@ -21,7 +21,7 @@ module.exports = class Show extends require('./base')
       if err
         cb(err,500)
 
-      @render(template,content:content)
+      @render(template,unit: unit, content:content)
 
   # Map of content type to view template
   templates: {
