@@ -1,3 +1,6 @@
+Course = require "../../models/course"
+path = require 'path'
+
 module.exports = class BaseAction
   constructor: (@req,@res,@app) ->
     @express = @app.express
@@ -9,7 +12,12 @@ module.exports = class BaseAction
     @handle (err,httpcode=500) =>
       if err
         @res.status(httpcode)
-        @res.end(err) if err
+        if err instanceof Error
+          message = err.message
+        else
+          message = err
+
+        @res.end(message)
 
   # Action logic to override in subclass.
   handle: (cb) ->
@@ -33,6 +41,11 @@ module.exports = class BaseAction
       true
     else
       false
+
+  # Get the Course model for the current running project.
+  # @return {Course}
+  course: ->
+    @_course ||= Course.load(path.join(@root,"course.json"))
 
   render: (view,locals={}) ->
     opts = Object.extended({})

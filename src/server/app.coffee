@@ -2,7 +2,7 @@
 #   handle: ->
 #     @res.render("terminal")
 
-require "./global"
+require "../monkey"
 
 http = require("http")
 express = require('express')
