@@ -15,6 +15,9 @@ class Unit
 
   title: null
 
+  # Path of the content file
+  path: null
+
   # @param course {Course} The course that includes this unit
   # @param path {Path} The file to read the content for this unit.
   # @param previous {Unit} The unit that comes before this course within the course.

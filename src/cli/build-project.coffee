@@ -1,5 +1,6 @@
 path = require "path"
 glob = require 'glob'
+Course = require "../models/course"
 
 class BuildProject extends require("./base")
   name: "build-project"
@@ -27,34 +28,34 @@ class BuildProject extends require("./base")
       outPath = path.join inPath, ".workspace"
 
     # TODO check if input path is valid
-    inPath = @ensureTrailingSlash(inPath)
-    outPath = @ensureTrailingSlash(outPath)
+    @inPath = @ensureTrailingSlash(inPath)
+    @outPath = @ensureTrailingSlash(outPath)
 
-    @rsyncToOutput(inPath,outPath)
+    @course = Course.load(path.join(@inPath,"course.json"))
 
-    @compileTemplates(inPath,outPath)
+    @sh("mkdir -p #{@outPath}")
+    @compileAll()
+    @cp("course.json")
+
+  # cp file at path from source to output
+  cp: (file) ->
+    from = path.join @inPath, file
+    to = path.join @outPath, file
+    @sh "cp #{from} #{to}"
 
   ensureTrailingSlash: (dir) ->
     # path.normalize ensures that repeating "//" become "/".
     # Doing the following we ensure a trailing slash.
     path.normalize(dir + "/")
 
-  compileTemplates: (inDir,outDir) ->
-    pat = path.join(inDir,"**/*.hbs")
-    options = {}
-    matches = glob.sync pat, options
-    for template in matches
-      basename = path.basename(template,".hbs")
-      output = path.join(outDir,basename) + ".html"
-      cmd = "fork2 compile-template --root='#{inDir}' --input='#{template}' --output='#{output}'"
-      @sh(cmd)
+  compileAll: ->
+    for unit in @course.units
+      input = path.join @inPath, unit.path
+      output = path.join @outPath, unit.permalink+".html"
+      @compileTemplate(input,output)
 
-  # copy all project content to output path
-  rsyncToOutput: (inPath,outPath) ->
-    inPath = @ensureTrailingSlash(inPath)
-    # with the trailing slash in inPath, rsync copies the content of inPath to
-    # outPath without creating a subdirectory in outPath.
-    code = @sh("rsync --exclude '.workspace' -Pa #{inPath} #{outPath}")
-
+  compileTemplate: (inFile,outFile) ->
+    cmd = "fork2 compile-template --root='#{@inPath}' --input='#{inFile}' --output='#{outFile}'"
+    @sh cmd
 
 module.exports = new BuildProject()

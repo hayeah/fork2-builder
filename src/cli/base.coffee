@@ -1,3 +1,5 @@
+require '../monkey'
+
 sh = require "execSync"
 
 module.exports = class Base
