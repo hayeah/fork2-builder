@@ -10,6 +10,7 @@ class Unit
   # @attr permalink {String}
   permalink: null
 
+  # @attr {String} the type of content this is. Defaults to "page".
   type: null
 
   title: null

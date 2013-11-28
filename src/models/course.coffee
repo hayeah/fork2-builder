@@ -16,6 +16,14 @@ class Course
       @units.push unit
       prev_unit = unit
 
+  # @return {Unit} the first unit of the course with that permalink
+  findByPermalink: (permalink) ->
+    for unit in @units
+      return unit if unit.permalink == permalink
+
+    return null
+
+
 # Loads course from given path as json
 # @return Course
 Course.load = (path) ->
