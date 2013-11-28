@@ -12,7 +12,12 @@ module.exports = class BaseAction
     @handle (err,httpcode=500) =>
       if err
         @res.status(httpcode)
-        @res.end(err) if err
+        if err instanceof Error
+          message = err.message
+        else
+          message = err
+
+        @res.end(message)
 
   # Action logic to override in subclass.
   handle: (cb) ->
@@ -39,7 +44,7 @@ module.exports = class BaseAction
 
   # Get the Course model for the current running project.
   # @return {Course}
-  currentCourse: ->
+  course: ->
     @_course ||= Course.load(path.join(@root,"course.json"))
 
   render: (view,locals={}) ->
