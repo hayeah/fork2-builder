@@ -1,5 +1,7 @@
 # desktop app
-define [], ->
+define [
+  "views/page"
+  ], ->
   # "ide"
   # "slidecast"
   # "ace"
