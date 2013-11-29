@@ -1,6 +1,30 @@
 @import (less) "bs.less";
 @import (less) "bower_components/highlightjs/styles/default.css";
 
+@margin-width: 25em;
+@content-width: 50em;
+
+#main {
+  width: 75em;
+  margin: auto;
+  border: 1px solid black;
+}
+
+#page-view {
+  width: 50em;
+}
+
+#page-view .margin-box {
+  position: relative;
+  .margin-box-content {
+    position: absolute;
+    top: 0;
+    width: @margin-width;
+    left: @content-width;
+    padding: 0 5px;
+  }
+}
+
 // @import (less) "css/lib/layout-default-latest.css";
 
 // reveal.css introduces some global styles. Doesn't seem to break when bootstrap resets everything.

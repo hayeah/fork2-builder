@@ -5,11 +5,13 @@
     {{#if useBundle}}
     <link rel="stylesheet" type="text/css" href="/bundle/app.css">
     {{else}}
-    <link rel="stylesheet" type="text/css" href="/build/client/app.css">
+    <link rel="stylesheet" type="text/css" href="/build/client/css/app.css">
     {{/if}}
   </head>
   <body>
-    {{{body}}}
+    <div id="main">
+        {{{body}}}
+    </div>
     <!-- <script src="http://localhost:35729/livereload.js"></script>  -->
 
     {{#if useBundle}}
