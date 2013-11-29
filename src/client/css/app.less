@@ -7,7 +7,7 @@
 #main {
   width: 75em;
   margin: auto;
-  border: 1px solid black;
+  border: 0px solid black;
 }
 
 #page-view {
@@ -22,6 +22,13 @@
     width: @margin-width;
     left: @content-width;
     padding: 0 5px;
+  }
+}
+
+// reference and anchor
+#page-view {
+  .ref {
+    vertical-align: super;
   }
 }
 
