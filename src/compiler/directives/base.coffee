@@ -1,7 +1,11 @@
+marked = require 'marked'
+
 class Base
   # @param options {Hash} The options object given to a mustache helper.
   # @param options.root {Path} The project root.
+  # @param options.hbs {Path} The Handlebars instance used to render this template.
   constructor: (@options) ->
+    @hbs = @options.hbs
     @root = @options.root
     # Is this directive being invoked as a block helper?
     @isBlock = !!@options.fn
@@ -10,9 +14,17 @@ class Base
   # object as the context for the block content.
   #
   # @return {String}
-  contentString: (context=null) ->
+  contentString: (context={}) ->
     if fn = @options.fn
       fn(context || this)
+
+  # Recursively render the block content as template.
+  # @return {HTMLString}
+  content: (context={}) ->
+    content = @contentString()
+    template = @hbs.compile(content)
+    hbsOutput = template(context)
+    marked(hbsOutput,{})
 
   process: ->
     throw "abstract"
