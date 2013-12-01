@@ -46,6 +46,7 @@ directives =
   markdown: markdown
   edit: edit
   margin: buildHelper("./directives/margin")
+  tag: buildHelper("./directives/tag")
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
