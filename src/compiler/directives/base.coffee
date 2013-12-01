@@ -5,6 +5,7 @@ class Base
   # @param options.root {Path} The project root.
   # @param options.hbs {Path} The Handlebars instance used to render this template.
   constructor: (@options) ->
+    @compiler = @options.compiler
     @hbs = @options.hbs
     @root = @options.root
     # Is this directive being invoked as a block helper?
@@ -40,6 +41,10 @@ class Base
   # instead of the default handlebars instance.
   safe: (str) ->
     @hbs.safe(str)
+
+  # Delay outputing a markdown string until the end
+  appendToEnd: (str) ->
+    @compiler.appendToEnd(str)
 
   process: ->
     throw "abstract"
