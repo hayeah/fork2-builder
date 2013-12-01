@@ -9,6 +9,7 @@ module.exports = class BaseAction
 
   # Processes a HTTP request by delegating to the @handle method.
   process: ->
+    console.log @req.route
     @handle (err,httpcode=500) =>
       if err
         @res.status(httpcode)
