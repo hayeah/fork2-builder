@@ -1,6 +1,6 @@
 # desktop app
 define [
-  "views/page"
+  "views/page/desktop"
   ], ->
   # "ide"
   # "slidecast"

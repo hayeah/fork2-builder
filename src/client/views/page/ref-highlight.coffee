@@ -1,9 +1,7 @@
-view_id = "#page-view"
-
 define [], () ->
-  class PageView
-    constructor: (el) ->
-      @$ = $(el)
+  class RefHighlight
+    constructor: () ->
+      # @$ = $(el)
       @highlightCurrentContent()
 
       $(window).on 'hashchange', =>
@@ -16,9 +14,8 @@ define [], () ->
       if hash = window.location.hash
         @currentContent = $(hash)
         @currentContent.addClass("active")
-        console.log ["highlight",@currentContent]
 
-  $ ->
-    window.pv = new PageView(view_id)
+  plugin = ->
+    window.pv = new RefHighlight()
 
-
+  return plugin

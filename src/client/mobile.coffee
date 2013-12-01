@@ -1,5 +1,5 @@
 define [
-  "mobile/views/page"
+  "views/page/mobile"
   ], (FastClick) ->
 
   # $ ->
