@@ -1,0 +1,16 @@
+@import (less) "ref.less";
+
+#page-view {
+  width: 50em;
+}
+
+#page-view .margin-box {
+  position: relative;
+  .margin-box-content {
+    position: absolute;
+    top: 0;
+    width: @margin-width;
+    left: @content-width;
+    padding: 0 5px;
+  }
+}
