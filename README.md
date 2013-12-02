@@ -1,11 +1,30 @@
+This authoring tool helps you create workshop-like courses.
+
+# Requirements
+
+For now, this project needs coffee script. To install coffeescript globally for your user, run
+
+    npm install -g coffee-script
+
+We'll remove this requirement in future versions.
+
 # Installation
+
+Install the stable release from NPM
 
     npm install fork2
 
-# Project Layout
+Or install the latest master from git
 
-basic-types.slides.html
-basic-types-ex.lab.html # exercises ide
+    npm install https://github.com/hayeah/fork2-builder.git
+
+If you want to develop the builder itself, see the HACKING guide.
+
+# Documentation
+
+[Link to wiki]
+
+# Permalink
 
 project content files
 

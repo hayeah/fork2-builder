@@ -44,8 +44,7 @@ directives =
   code: buildHelper("./directives/code")
   md: markdown
   markdown: markdown
-  footnote: buildHelper("./directives/footnote-ref")
-  "footnote-for": buildHelper("./directives/footnote-for")
+  footnote: buildHelper("./directives/footnote")
   margin: buildHelper("./directives/margin")
   tag: buildHelper("./directives/tag")
 
