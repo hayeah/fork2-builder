@@ -116,7 +116,11 @@ class TemplateCompiler
   renderMarkedDown: (input,cb) ->
     marked input, {
       highlight:  (code, lang) ->
-        hljs.highlight(lang, code).value
+        if lang
+          hljs.highlight(lang, code).value
+        else
+          # FIXME do i need to escape here?
+          code
       }, cb
 
   # cb(err,streamData:String)
