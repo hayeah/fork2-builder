@@ -9,12 +9,12 @@ hbs = require("handlebars")
 # @param root (Path) the root path for template compilation
 # @param hbs (Handlebars) the instance of handlebars.js doing compilation
 # @return The wrapped helper function
-withRoot = (fn,root,hbs) ->
+withRoot = (fn,vars) ->
   return ->
     args = arguments
     options = args[args.length-1]
-    options.root = root
-    options.hbs = hbs
+    for key,val of vars
+      options[key] = val
     fn.apply(this,args)
 
 # Build a synchronous handlebars helper function from a directive class
@@ -35,16 +35,18 @@ buildHelper = (mod) ->
 
     process.sync()
 
-edit = buildHelper("./directives/edit")
-code = buildHelper("./directives/code")
+# edit = buildHelper("./directives/edit")
 markdown = buildHelper("./directives/markdown")
+footnote =
 
 # TODO: refactor this to be a separate file
 directives =
-  code: code
+  code: buildHelper("./directives/code")
   md: markdown
   markdown: markdown
-  edit: edit
+  footnote: buildHelper("./directives/footnote")
+  margin: buildHelper("./directives/margin")
+  tag: buildHelper("./directives/tag")
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
@@ -67,13 +69,14 @@ class TemplateCompiler
   # root context of the TemplateCompiler into the `options` argument when
   # the helper is invoked.
   register: (name,fn) ->
-    @hbs.registerHelper(name,withRoot(fn,@root,@hbs))
+    @hbs.registerHelper(name,withRoot(fn,{root: @root,hbs: @hbs, compiler: this}))
 
   # cb(err)
   compile: (cb) ->
     async.waterfall [
       @readInput.bind(@)
       @renderhbs.bind(@)
+      @appendTails.bind(@)
       @renderMarkedDown.bind(@)
       @writeOutput.bind(@)
     ], cb
@@ -95,10 +98,29 @@ class TemplateCompiler
         throw e
     ), cb
 
+  # Add a markdown string to be appended at the end.
+  appendToEnd: (string) ->
+    @_appendedTexts ||= []
+    @_appendedTexts.push string
+
+  # render the delayed output to the end of rendered handlebars template.
+  appendTails: (input,cb) ->
+    output =
+      if @_appendedTexts
+        tail = @_appendedTexts.join("\n")
+        "#{input}\n#{tail}"
+      else
+        input
+    cb(null,output)
+
   renderMarkedDown: (input,cb) ->
     marked input, {
       highlight:  (code, lang) ->
-        hljs.highlight(lang, code).value
+        if lang
+          hljs.highlight(lang, code).value
+        else
+          # FIXME do i need to escape here?
+          code
       }, cb
 
   # cb(err,streamData:String)

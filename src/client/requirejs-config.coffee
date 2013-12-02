@@ -4,6 +4,7 @@ requirejs.config
     jquery: "bower_components/jquery/jquery"
     underscore: "bower_components/underscore/underscore"
     almond: "bower_components/almond/almond"
+    "jquery.fastclick": "bower_components/jquery-fast-click/jQuery.fastClick"
     "jquery.layout": "lib/jquery.layout-latest"
     "jquery.ui.core": "bower_components/jquery-ui/ui/jquery.ui.core"
     "jquery.ui.widget": "bower_components/jquery-ui/ui/jquery.ui.widget"

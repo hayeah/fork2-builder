@@ -1,4 +1,6 @@
-define ["jquery"], ($) ->
+define [
+  "jquery.fastclick"
+  ], ->
   toggleWrapButtonHTML = """
     <button type="button" class="code-toggle-wrap btn btn-default">
       <span class="glyphicon glyphicon-transfer"></span>
@@ -23,7 +25,9 @@ define ["jquery"], ($) ->
       # inject the toggle button
       @$toggleWrapButton = $(toggleWrapButtonHTML)
       @$.append(@$toggleWrapButton)
-      @$toggleWrapButton.click =>
+      # @$toggleWrapButton.click =>
+
+      @$toggleWrapButton.fastClick =>
         @toggleWrap()
 
     toggleWrap: ->

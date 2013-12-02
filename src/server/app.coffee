@@ -24,6 +24,8 @@ class App
   setupExpress: ->
     @express = express()
 
+    @express.use(express.favicon())
+
     @express.set("root",@contentRoot)
 
     # If pkgRoot/bundle exists, then use the bundled client assets.

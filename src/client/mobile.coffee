@@ -1,7 +1,6 @@
 define [
-  "fastclick"
-  "mobile/views/page"
+  "views/page/mobile"
   ], (FastClick) ->
 
-  $ ->
-    FastClick.attach(document.body)
+  # $ ->
+  #   FastClick.attach(document.body)
