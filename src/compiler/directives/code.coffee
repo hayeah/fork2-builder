@@ -11,23 +11,12 @@ class Code
     @lang = @options.hash.lang
     @root = @options.root
 
-  # @param path {Path} optional. The path to read piece of code from. Relative to project root.
-  #
-  # If path is not given, the block should yield the source code.
-  process: (inputPath,cb) ->
-    if !cb
-      cb = inputPath
-      @path = null
-    else
-      @path = inputPath
-
+  # @param filepath {Path} The path to read piece of code from. Relative to project root.
+  process: (filepath,cb) ->
+    @path = filepath
     async.waterfall [
       (cb) =>
-        if @path
-          fs.readFile path.join(@root,@path),{encoding: "utf8"}, cb
-        else
-          source = @options.fn()
-          cb(null,source)
+        fs.readFile path.join(@root,@path),{encoding: "utf8"}, cb
       (source,cb) =>
         source = @prepareSource(source)
         # the span wrapper is used to measure the width of the code block
@@ -44,6 +33,8 @@ class Code
       lang = @guessLanguageName(@path)
     else
       lang = null
+
+    console.log "lang", lang
 
     if lang
       code = @highlight(lang,source)
