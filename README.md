@@ -12,30 +12,47 @@ We'll remove this requirement in future versions.
 
 Install the stable release from NPM
 
-    npm install fork2
+    npm install -g fork2
 
 Or install the latest master from git
 
-    npm install https://github.com/hayeah/fork2-builder.git
+    npm install -g https://github.com/hayeah/fork2-builder.git
 
-If you want to develop the builder itself, see the HACKING guide.
+If the install had been successful, running the fork2 command should output some help message,
+
+```
+> fork2
+Fork2 Version 0.0.1
+The available commands are:
+
+  help - Show detailed help for a command
+  compile-template - Compiles a single content template.
+  build-project - Builds a given project to an output path.
+  run - Runs a built project.
+```
+
+# Local Path Installation
+
+NPM allows you do install a package on your local path. To install fork2 that way, just cd into the path you want, and run
+
+    npm install fork2
+
+To get access to the fork2 bins, be sure to add the local node_modules bin path to your PATH environment variable. Like so,
+
+    export PATH=$PATH:./node_modules/.bin
+
+# To Build And Run a project
+
+fork2 build $PROJECT_PATH $OUTPUT_PATH
+fork2 run $OUTPUT_PATH
 
 # Documentation
 
-[Link to wiki]
+[See the wiki](https://github.com/hayeah/fork2-builder/wiki/Fork2-Builder-Documentation)
 
-# Permalink
+# Contributing
 
-project content files
-
-    <permalink>.<content-type>.html
-
-local server urls
-
-    / # show projcet index
-    /<permalink> # show content. It matches a file in workspace, and determine the type by looking at files suffix
-
-where `<permalink>` must be unique.
+[See the HACKING guide](https://github.com/hayeah/fork2-builder/blob/master/HACKING.md.
 
 # License
 
