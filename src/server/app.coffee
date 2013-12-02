@@ -7,7 +7,7 @@ require "../monkey"
 http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")
-PTYServer = require "./pty-server"
+# PTYServer = require "./pty-server"
 fs = require 'fs'
 path = require 'path'
 
@@ -59,9 +59,9 @@ class App
   start: (port) ->
     @server = http.createServer(@express)
     @server.listen(port || 3000)
-    @socket = require("socket.io").listen(@server)
-    @socket.of("/webso/pty").on "connection", (so) =>
-      new PTYServer(so,@contentRoot)
+    # @socket = require("socket.io").listen(@server)
+    # @socket.of("/webso/pty").on "connection", (so) =>
+    #   new PTYServer(so,@contentRoot)
     console.log "Process #{process.pid} Listening to port #{port}"
 
   handle: (verb,path,action) ->

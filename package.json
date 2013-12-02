@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "description": "Fork A Programmer - Interactive Programming Lessons",
   "main": "main.js",
+  "files":  [
+    "bin",
+    "src",
+    "fonts",
+    "bundle"
+  ],
   "bin": {
     "fork2": "./bin/fork2"
   },
@@ -14,16 +20,13 @@
   "license": "MIT",
   "devDependencies": {
     "requirejs": "~2.1.9",
-    "mocha": "~1.13.0",
     "coffee-script": "~1.6.3",
-    "chai": "~1.8.1",
     "less": "~1.5.1",
     "bower": "~1.2.7"
   },
   "dependencies": {
     "express": "~3.4.1",
     "express3-handlebars": "~0.5.0",
-    "coffee-script": "~1.6.3",
     "handlebars": "~1.0.12",
     "async": "~0.2.9",
     "optimist": "~0.6.0",
@@ -31,11 +34,7 @@
     "marked": "~0.2.9",
     "highlight.js": "~7.3.0",
     "sync": "~0.2.2",
-    "socket.io": "~0.9.16",
-    "tty.js": "~0.2.13",
-    "pty.js": "~0.2.3",
     "execSync": "~1.0.1-pre",
-    "glob": "~3.2.6",
     "sugar": "~1.4.1"
   }
 }
