@@ -2,7 +2,6 @@
 
 fs = require "fs"
 path = require "path"
-glob = require 'glob'
 
 module.exports = class Show extends require('./base')
   handle: (cb) ->

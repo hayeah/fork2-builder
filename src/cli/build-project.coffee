@@ -1,5 +1,4 @@
 path = require "path"
-glob = require 'glob'
 Course = require "../models/course"
 
 class BuildProject extends require("./base")
