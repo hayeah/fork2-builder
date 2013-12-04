@@ -2,6 +2,12 @@
 
     git clone <URL>
 
+# Prereqs
+
+Install coffee-script globally.
+
+    npm install -g coffee-script
+
 # Get development dependencies
 
 Install server side dependencies:
@@ -9,6 +15,8 @@ Install server side dependencies:
     npm install
 
 Be sure to add `./node_modules/.bin` to your $PATH so you get the executables installed by npm (e.g. bower, coffee, lessc).
+
+    export PATH=$PATH:./node_modules/.bin
 
 Then install client side Javascript dependencies:
 
@@ -28,6 +36,10 @@ To create the bundled client-side assets
 
     make bundle
 
-Or to build the bundle without optimizing with uglify
+Or to build the bundle without optimizing with uglify, to inspect the output,
 
     make bundle optimize=none
+
+# Pitfall
+
+When you are developing, you want `fork2 run` to use the js and css assets created by `make build`. Be sure to remove `bundle` if you've run `make bundle`, otherwise the fork2 server would serve the bundled assets.
