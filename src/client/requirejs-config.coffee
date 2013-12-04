@@ -32,6 +32,7 @@ requirejs.config
     termjs:
       exports: "Terminal"
     bootstrap: "jquery"
+    "jquery.fastclick": ["jquery"]
     "jquery.layout": ["jquery.ui.draggable"]
     "jquery.ui.core": ["jquery"]
     "jquery.ui.widget": ["jquery.ui.core"]
