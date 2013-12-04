@@ -8,7 +8,7 @@ class Run extends require("./base")
   doc: """
   fork2 run [PROJECT_BUILD_PATH] [--port PORT]
 
-  PROJECT_BUILD_PATH defaults to curren working directory
+  PROJECT_BUILD_PATH defaults to `pwd`/.workspace
   """
 
   configParser: ->
@@ -18,7 +18,7 @@ class Run extends require("./base")
 
   run: (args) ->
     args = @parse(args)
-    contentRoot = path.normalize(args._[0] || process.cwd())
+    contentRoot = path.normalize(args._[0] || path.join(process.cwd(),".workspace"))
     @startServer(contentRoot,args.port)
 
   startServer: (root,port) ->
