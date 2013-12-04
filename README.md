@@ -31,7 +31,7 @@ The available commands are:
   run - Runs a built project.
 ```
 
-# Local Path Installation
+### Local Path Installation
 
 NPM allows you do install a package on your local path. To install fork2 that way, just cd into the path you want, and run
 
@@ -43,8 +43,10 @@ To get access to the fork2 bins, be sure to add the local node_modules bin path 
 
 # To Build And Run a project
 
+```
 fork2 build $PROJECT_PATH $OUTPUT_PATH
 fork2 run $OUTPUT_PATH
+```
 
 # Documentation
 
@@ -52,7 +54,7 @@ fork2 run $OUTPUT_PATH
 
 # Contributing
 
-[See the HACKING guide](https://github.com/hayeah/fork2-builder/blob/master/HACKING.md.
+[See the HACKING guide](https://github.com/hayeah/fork2-builder/blob/master/HACKING.md).
 
 # License
 
