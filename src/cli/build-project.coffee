@@ -7,8 +7,9 @@ class BuildProject extends require("./base")
   summary: "Builds a given project to an output path."
 
   doc: """
-  fork2 build-project $PROJECT_PATH [$OUTPUT_PATH]
+  fork2 build-project [$PROJECT_PATH] [$OUTPUT_PATH]
 
+  $PROJECT_PATH defaults to current path. (i.e. `pwd`)
   $OUTPUT_PATH defaults to $PROJECT_PATH/.workspace
   """
 
@@ -20,8 +21,7 @@ class BuildProject extends require("./base")
     outPath = args._[1]
 
     if !inPath
-      @help()
-      return
+      inPath = path.join process.cwd()
 
     if !outPath
       outPath = path.join inPath, ".workspace"
