@@ -44,8 +44,7 @@ To get access to the fork2 bins, be sure to add the local node_modules bin path 
 # To Build And Run a project
 
 ```
-fork2 build $PROJECT_PATH $OUTPUT_PATH
-fork2 run $OUTPUT_PATH
+cd $PROJECT && fork2 build && fork2 run --port 3000
 ```
 
 # Documentation
