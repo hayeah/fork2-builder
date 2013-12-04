@@ -19,11 +19,11 @@
     <script src="/bundle/app.js"></script>
     {{else}}
     <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    {{/if}}
     <script type="text/javascript">
         require(["app/vendor"],function() {
             require(["app"]);
         });
     </script>
-    {{/if}}
   </body>
 </html>

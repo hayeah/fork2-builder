@@ -47,16 +47,13 @@
 
     {{#if useBundle}}
     <script src="/bundle/mobile.js"></script>
-    <script type="text/javascript">
-        require(["mobile"]);
-    </script>
     {{else}}
     <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    {{/if}}
     <script type="text/javascript">
         require(["mobile/vendor"],function() {
             require(["mobile"]);
         });
     </script>
-    {{/if}}
     </body>
 </html>
