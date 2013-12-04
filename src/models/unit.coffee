@@ -1,4 +1,5 @@
 path = require 'path'
+_s = require "underscore.string"
 # @class {Unit} Represents a single content page in a course.
 class Unit
   # @attr {Unit} previous unit of a course
@@ -26,9 +27,7 @@ class Unit
       @previous.next = this
 
     @_parse_path()
-    @title = @permalink.humanize().titleize()
-
-
+    @title = _s.titleize _s.humanize(@permalink)
 
   # Parses the content file path. Its format is `<permalink>[.<type>].hbs`
   _parse_path: ->

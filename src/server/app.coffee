@@ -2,8 +2,6 @@
 #   handle: ->
 #     @res.render("terminal")
 
-require "../monkey"
-
 http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")

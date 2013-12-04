@@ -1,5 +1,6 @@
 Course = require "../../models/course"
 path = require 'path'
+_ = require "lodash"
 
 module.exports = class BaseAction
   constructor: (@req,@res,@app) ->
@@ -49,13 +50,13 @@ module.exports = class BaseAction
     @_course ||= Course.load(path.join(@root,"course.json"))
 
   render: (view,locals={}) ->
-    opts = Object.extended({})
+    defaults = {}
 
     if @isMobile()
-      opts.layout = "mobile"
-      opts.isMobile = true
+      defaults.layout = "mobile"
+      defaults.isMobile = true
 
-    opts = opts.merge(locals)
+    opts = _.defaults(locals,defaults)
 
     @res.render(view,opts)
 

@@ -34,6 +34,7 @@
   , "highlight.js": "~7.5.0"
   , "sync": "~0.2.2"
   , "execSync": "~1.0.1-pre"
-  , "sugar": "~1.4.1"
+  , "lodash": "~2.4.1"
+  , "underscore.string": "~2.3.3"
   }
 }
