@@ -2,7 +2,7 @@ fs = require 'fs'
 path = require 'path'
 async = require 'async'
 
-hljs = require "highlight.js"
+highlight = require "../highlight"
 modelist = require "../../utils/modelist"
 
 class Code
@@ -26,7 +26,7 @@ class Code
 
   # Return the source code as html content. Highlight it there's a match highlighter.
   # @return (HTML)
-  prepareSource: (source) ->
+  prepareSource: (code) ->
     if @lang
       lang = @lang
     else if @path
@@ -34,12 +34,7 @@ class Code
     else
       lang = null
 
-    console.log "lang", lang
-
-    if lang
-      code = @highlight(lang,source)
-    else
-      code = @hbs.escape source
+    highlight(code,lang,@hbs)
 
   # Uses ace editor's modelist to guess language name from a given filename.
   # @return (String|null) the language name, or null if there's no associated mode.

@@ -1,6 +1,6 @@
 marked = require 'marked'
-hljs = require "highlight.js"
 
+highlight = require "./highlight"
 async = require 'async'
 sync = require 'sync'
 hbs = require("handlebars")
@@ -115,12 +115,8 @@ class TemplateCompiler
 
   renderMarkedDown: (input,cb) ->
     marked input, {
-      highlight:  (code, lang) ->
-        if lang
-          hljs.highlight(lang, code).value
-        else
-          # FIXME do i need to escape here?
-          code
+      highlight: (code,lang) =>
+        highlight(code,lang,@hbs)
       }, cb
 
   # cb(err,streamData:String)
