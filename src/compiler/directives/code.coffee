@@ -14,6 +14,9 @@ class Code
   # @param filepath {Path} The path to read piece of code from. Relative to project root.
   process: (filepath,cb) ->
     @path = filepath
+    if !(@path and cb)
+      throw "no path is given to read source code from."
+      return
     async.waterfall [
       (cb) =>
         fs.readFile path.join(@root,@path),{encoding: "utf8"}, cb
