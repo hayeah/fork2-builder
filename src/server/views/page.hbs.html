@@ -1,11 +1,22 @@
 <div id="page-view">
-  <div>
+  <div class="btn-group">
+
+    <a href="/" type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-home"></span>
+    </a>
+
     {{#with unit.previous}}{{#if .}}
-    <a href="{{permalink}}">Previous - {{title}}</a>
+    <a href="{{permalink}}" type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-arrow-left"></span>
+      {{title}}
+    </a>
     {{/if}}{{/with}}
 
     {{#with unit.next}}{{#if .}}
-    <a href="{{permalink}}">Next - {{title}}</a>
+    <a href="{{permalink}}" type="button" class="btn btn-default">
+      <span class="glyphicon glyphicon-arrow-right"></span>
+      {{title}}
+    </a>
     {{/if}}{{/with}}
   </div>
   {{{content}}}
