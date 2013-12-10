@@ -1,6 +1,6 @@
 # Getting the source
 
-    git clone <URL>
+    git clone https://github.com/hayeah/fork2-builder.git
 
 # Prereqs
 
@@ -9,6 +9,10 @@ Install coffee-script globally.
     npm install -g coffee-script
 
 # Get development dependencies
+
+First, cd into the root of the cloned repository.
+
+    cd fork2-builder
 
 Install server side dependencies:
 
@@ -28,7 +32,23 @@ It's easier to work on fork2-server by installing it as a linked npm package (so
 
     npm link
 
-To rebuild client-side assets:
+After that, you should be able to run the fork2 command.
+
+    > fork2
+
+    Fork2 Version 0.0.2
+    The available commands are:
+
+    help - Show detailed help for a command
+    compile-template - Compiles a single content template.
+    build-project - Builds a given project to an output path.
+    run - Runs a built project.
+
+    `fork2 help <command>` to show detailed help for a subcommand.
+
+# Building Client-Side
+
+To build client-side assets:
 
     make build
 
