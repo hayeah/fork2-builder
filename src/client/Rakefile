@@ -45,6 +45,8 @@ rule /^#{js_build}\/.+\.js$/ do |t|
   shell "rake #{task} > #{t.name} || rm #{t.name}"
 end
 
+task "build" => ["js","css"]
+
 desc "build all js files"
 task "js" => [
   "#{js_build}/app.js",
