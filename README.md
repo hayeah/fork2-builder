@@ -16,7 +16,7 @@ Install the stable release from NPM
 
 Or install the latest master from git
 
-    npm install -g https://github.com/hayeah/fork2-builder.git
+    npm install -g git+https://github.com/hayeah/fork2-builder.git
 
 If the install had been successful, running the fork2 command should output some help message,
 
