@@ -1,40 +1,39 @@
-define [
-  "jquery.fastclick"
-  ], ->
-  toggleWrapButtonHTML = """
-    <button type="button" class="code-toggle-wrap btn btn-default">
-      <span class="glyphicon glyphicon-transfer"></span>
-    </button>
-    """
+require("jquery.fastclick")
 
-  class CodeBlock
-    # applies to "pre code"
-    constructor: (el) ->
-      @$code = @$ = $(el)
-      @setupToggleWrap()
+toggleWrapButtonHTML = """
+  <button type="button" class="code-toggle-wrap btn btn-default">
+    <span class="glyphicon glyphicon-transfer"></span>
+  </button>
+  """
 
-    setupToggleWrap: ->
-      # There is a span containing all the text content of the code block. Its
-      # width, happily, is the maximum length of a line in the block.
-      span = @$code.find("> span")
-      # if the code container is large enough to contain the code snippet, we
-      # don't show the wrap toggle.
-      if @$code.width() > span.width()
-        return
+class CodeBlock
+  # applies to "pre code"
+  constructor: (el) ->
+    @$code = @$ = $(el)
+    @setupToggleWrap()
 
-      # inject the toggle button
-      @$toggleWrapButton = $(toggleWrapButtonHTML)
-      @$.append(@$toggleWrapButton)
-      # @$toggleWrapButton.click =>
+  setupToggleWrap: ->
+    # There is a span containing all the text content of the code block. Its
+    # width, happily, is the maximum length of a line in the block.
+    span = @$code.find("> span")
+    # if the code container is large enough to contain the code snippet, we
+    # don't show the wrap toggle.
+    if @$code.width() > span.width()
+      return
 
-      @$toggleWrapButton.fastClick =>
-        @toggleWrap()
+    # inject the toggle button
+    @$toggleWrapButton = $(toggleWrapButtonHTML)
+    @$.append(@$toggleWrapButton)
+    # @$toggleWrapButton.click =>
 
-    toggleWrap: ->
-      console.log "toggle linewrap"
-      @$.toggleClass("linewrap")
+    @$toggleWrapButton.fastClick =>
+      @toggleWrap()
 
-  # jquery-esque plugin, without polluting the $.fn namespace.
-  plugin = (el) ->
-    $(el).each (i,e) ->
-      $(e).data("codeblock",new CodeBlock(e))
+  toggleWrap: ->
+    console.log "toggle linewrap"
+    @$.toggleClass("linewrap")
+
+# jquery-esque plugin, without polluting the $.fn namespace.
+module.exports = plugin = (el) ->
+  $(el).each (i,e) ->
+    $(e).data("codeblock",new CodeBlock(e))

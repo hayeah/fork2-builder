@@ -3,28 +3,13 @@ require "json"
 require "active_support"
 
 desc "build javascript"
-
 task :js => [
   "build/app-vendor.js",
   "build/app.js",
-  #{ }"build/mobile.js",
+  "build/mobile.js",
   # "build/mobile-vendor.js",
 
 ]
-
-# list bower dependencies
-# DEPS = JSON.parse(`bower list -p`)
-
-def deps(mods)
-  mods.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-end
-
-def browserify(entry,mods=[])
-  cmd = "browserify -t coffeeify --extension='.coffee' --no-detect-globals #{deps_opts(mods)} #{entry}"
-end
-
-# browserify --no-detect-globals -t coffeeify --extension='.coffee'
-
 
 file "build/app-vendor.js" => ["app-vendor.json"] do |t|
   puts "#{t.name} => #{t.source}"
@@ -43,20 +28,10 @@ file "build/app.js" => ["app.coffee","app-vendor.coffee"] do |t|
   sh cmd
 end
 
-# rule "build/mobile.js" do |t|
-
-#   entry = File.basename(t.name, ".js") + ".coffee"
-#   cmd = browserify(entry,"app-vendor")
-#   sh cmd
-
-#   # list bower dependencies
-#   # deps = JSON.parse(`bower list -p`)
-#   # deps_opts = deps.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-
-#   # # enable coffee script
-#   # coffee_script_opts = "-t coffeeify --extensions='.coffee'"
-
-#   # cmd =  "browserify --no-detect-globals #{coffee_script_opts} #{deps_opts} > bundle.js"
-#   # puts cmd
-#   # sh cmd
-# end
+file "build/mobile.js" => ["mobile.coffee","mobile-vendor.coffee"] do |t|
+  vendor_libs = JSON.parse(File.read("mobile-vendor.json"))
+  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{requires} mobile.coffee -o #{t.name} "
+  # puts cmd
+  sh cmd
+end

@@ -1,14 +1,8 @@
 # Add
 id = "#page-view"
 codeblock = require("./codeblock")
+refHighlight = require("./ref-highlight")
 
 $ ->
   codeblock $(id).find("pre code")
-
-# define [
-#   "views/page/codeblock"
-#   "views/page/ref-highlight"
-#   ], (codeblock,refHighlight) ->
-#   $ ->
-#     codeblock $(id).find("pre code")
-#     refHighlight()
+  refHighlight()
