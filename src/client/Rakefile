@@ -2,36 +2,51 @@
 require "json"
 require "active_support"
 
-desc "build javascript"
-task :js => [
-  "build/app-vendor.js",
-  "build/app.js",
-  "build/mobile.js",
-  # "build/mobile-vendor.js",
-
-]
-
-file "build/app-vendor.js" => ["app-vendor.json"] do |t|
-  puts "#{t.name} => #{t.source}"
-  vendor_libs = JSON.parse(File.read("app-vendor.json"))
-  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify --no-detect-globals #{requires} -o #{t.name} "
-  puts cmd
-  sh cmd
+def shell(cmd)
+  $stderr.puts cmd
+  system cmd
+  if not $?.success?
+    raise "error exit"
+  end
 end
 
-file "build/app.js" => ["app.coffee","app-vendor.coffee"] do |t|
+desc "build js app vendor libraries"
+task "app-vendor" => ["app-vendor.json"] do |t|
+  vendor_libs = JSON.parse(File.read("app-vendor.json"))
+  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "browserify --no-detect-globals #{requires}"
+  shell cmd
+end
+
+desc "build js app"
+task "app" => ["app.coffee","app-vendor.coffee"] do |t|
   vendor_libs = JSON.parse(File.read("app-vendor.json"))
   externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{externals} app.coffee -o #{t.name} "
-  # puts cmd
-  sh cmd
+  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{externals} app.coffee"
+  shell cmd
 end
 
-file "build/mobile.js" => ["mobile.coffee","mobile-vendor.coffee"] do |t|
+desc "build mobile js app"
+task "mobile" => ["mobile.coffee","mobile-vendor.coffee"] do |t|
   vendor_libs = JSON.parse(File.read("mobile-vendor.json"))
   requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{requires} mobile.coffee -o #{t.name} "
-  # puts cmd
-  sh cmd
+  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{requires} mobile.coffee"
+  shell cmd
 end
+
+build = "build"
+js_build = "#{build}/js"
+
+rule /^#{js_build}\/.+\.js$/ do |t|
+  shell "mkdir -p #{js_build}"
+  task = File.basename(t.name,".js")
+  shell "rake #{task} > #{t.name} || rm #{t.name}"
+end
+
+desc "build all js files"
+task "js" => [
+  "#{js_build}/app.js",
+  "#{js_build}/app-vendor.js",
+  "#{js_build}/mobile.js"
+]
+
