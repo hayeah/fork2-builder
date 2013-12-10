@@ -36,6 +36,8 @@ end
 
 build = "build"
 js_build = "#{build}/js"
+css_build = "#{build}/css"
+css_src = "css"
 
 rule /^#{js_build}\/.+\.js$/ do |t|
   shell "mkdir -p #{js_build}"
@@ -50,3 +52,18 @@ task "js" => [
   "#{js_build}/mobile.js"
 ]
 
+task "css" => [
+  "#{css_build}/app.css",
+  "#{css_build}/mobile.css"
+]
+
+css_source = lambda { |target| 
+  name = File.basename(target,".css")
+  (["#{css_src}/#{name}.less"] + Dir[css_src+"/**/*.less"]).uniq
+}
+
+rule /^#{css_build}\/.*css$/ => [css_source] do |t|
+  entry = t.prerequisites[0]
+  shell "mkdir -p #{css_build}"
+  shell "lessc #{entry} #{t.name}"
+end
