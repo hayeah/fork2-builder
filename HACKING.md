@@ -8,43 +8,31 @@ Install coffee-script globally.
 
     npm install -g coffee-script
 
-# Get development dependencies
+Add locally installed npm bin to PATH (do this for a shell session, or in your shell init file).
+
+    export PATH=$PATH:./node_modules/.bin
+
+# Install
 
 First, cd into the root of the cloned repository.
 
     cd fork2-builder
 
-Install server side dependencies:
+Install project dependencies locally:
 
-    npm install
+    ./install.sh
 
-Be sure to add `./node_modules/.bin` to your $PATH so you get the executables installed by npm (e.g. bower, coffee, lessc).
+Everything is installed within the directory of the repo. [See the script](https://github.com/hayeah/fork2-builder/blob/master/install.sh). Finally, link the repo as npm package ([see npm-link](https://npmjs.org/doc/cli/npm-link.html)):
 
-    export PATH=$PATH:./node_modules/.bin
+    sudo npm link
 
-Then install client side Javascript dependencies:
+# Uninstall Everything
 
-    bower install
+    # uninstall the linked package
+    sudo npm rm -g fork2
 
-# Developing
-
-It's easier to work on fork2-server by installing it as a linked npm package (so changes made to the source are immediately available in the installed package). For details, see [npm-link](https://npmjs.org/doc/cli/npm-link.html). In the project root, do:
-
-    npm link
-
-After that, you should be able to run the fork2 command.
-
-    > fork2
-
-    Fork2 Version 0.0.2
-    The available commands are:
-
-    help - Show detailed help for a command
-    compile-template - Compiles a single content template.
-    build-project - Builds a given project to an output path.
-    run - Runs a built project.
-
-    `fork2 help <command>` to show detailed help for a subcommand.
+    # delete the fork2-builder repo
+    rm -r fork2-builder
 
 # Building Client-Side
 
