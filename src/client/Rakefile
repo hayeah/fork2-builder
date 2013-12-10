@@ -39,12 +39,6 @@ js_build = "#{build}/js"
 css_build = "#{build}/css"
 css_src = "css"
 
-rule /^#{js_build}\/.+\.js$/ do |t|
-  shell "mkdir -p #{js_build}"
-  task = File.basename(t.name,".js")
-  shell "rake #{task} > #{t.name} || rm #{t.name}"
-end
-
 task "build" => ["js","css"]
 
 desc "build all js files"
@@ -58,6 +52,17 @@ task "css" => [
   "#{css_build}/app.css",
   "#{css_build}/mobile.css"
 ]
+
+js_sources = lambda { |target| 
+  name = File.basename(target,".js")
+  (["#{css_src}/#{name}.less"] + Dir[css_src+"/**/*.less"]).uniq
+}
+
+rule /^#{js_build}\/.+\.js$/ do |t|
+  shell "mkdir -p #{js_build}"
+  task = File.basename(t.name,".js")
+  shell "rake #{task} > #{t.name} || rm #{t.name}"
+end
 
 css_source = lambda { |target| 
   name = File.basename(target,".css")
