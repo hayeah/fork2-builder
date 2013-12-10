@@ -1,9 +1,6 @@
 view_id = "#page-view"
 
-define [
-  "views/page/ref-highlight"
-  ], (refHighlight) ->
-  $ ->
-    refHighlight()
+refHighlight = require("./ref-highlight")
 
-
+$ ->
+  refHighlight()
