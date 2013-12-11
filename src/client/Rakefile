@@ -1,0 +1,78 @@
+require "json"
+require "active_support"
+
+def shell(cmd)
+  $stderr.puts cmd
+  system cmd
+  if not $?.success?
+    raise "error exit"
+  end
+end
+
+build = "build"
+js_build = "#{build}/js"
+css_build = "#{build}/css"
+css_src = "src/css"
+js_src = "src"
+coffee_files = Dir[js_src + "/**/*.coffee"]
+
+task "build" => ["js","css"]
+
+desc "build all js files"
+task "js" => [
+  js_build,
+  "#{js_build}/app.js",
+  "#{js_build}/app-vendor.js",
+  "#{js_build}/mobile.js",
+]
+
+file "#{js_build}/mobile.js" => ["#{js_src}/mobile-vendor.json",*coffee_files] do |t|
+  entry = "#{js_src}/mobile.coffee"
+  vendor_libs = JSON.parse(File.read("#{js_src}/mobile-vendor.json"))
+  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "browserify -t coffeeify --extension='.coffee' --no-detect-globals #{requires} #{entry} -o #{t.name}"
+  shell cmd rescue  shell "rm #{t.name}"
+end
+
+file "#{js_build}/app-vendor.js" => ["#{js_src}/app-vendor.json"] do |t|
+  vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
+  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "browserify --no-detect-globals #{requires} -o #{t.name}"
+  shell cmd rescue "rm #{t.name}"
+end
+
+file "#{js_build}/app.js" => ["#{js_src}/app-vendor.json",*coffee_files] do |t|
+  p t.prerequisites
+  vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
+  entry = "#{js_src}/app.coffee"
+  externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{externals} #{entry} -o #{t.name}"
+  shell cmd rescue "rm #{t.name}"
+end
+
+task "css" => [
+  "#{css_build}/app.css",
+  "#{css_build}/mobile.css"
+]
+
+js_sources = lambda { |target| 
+  name = File.basename(target,".js")
+  (["#{js_src}/#{name}.coffee"] + Dir[js_src+"/**/*.coffee"]).uniq
+}
+
+rule /^#{js_build}\/.+\.js$/ do |t|
+  shell "mkdir -p #{js_build}"
+  task = File.basename(t.name,".js")
+  shell "rake #{task} > #{t.name} || rm #{t.name}"
+end
+
+css_source = lambda { |target| 
+  name = File.basename(target,".css")
+  (["#{css_src}/#{name}.less"] + Dir[css_src+"/**/*.less"]).uniq
+}
+
+rule /^#{css_build}\/.*css$/ => [css_source] do |t|
+  entry = t.prerequisites[0]
+  shell "mkdir -p #{css_build}"
+  shell "lessc #{entry} #{t.name}"
+end

@@ -1,0 +1,3 @@
+{ "jquery": "bower_components/jquery/jquery.js"
+, "underscore": "bower_components/underscore"
+}

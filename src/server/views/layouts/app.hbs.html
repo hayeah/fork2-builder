@@ -18,12 +18,8 @@
     <script src="/bundle/app-vendor.js"></script>
     <script src="/bundle/app.js"></script>
     {{else}}
-    <script data-main="/build/client/requirejs-config.js" src="/build/client/bower_components/requirejs/require.js"></script>
+    <script src="/src/client/build/app-vendor.js"></script>
+    <script src="/src/client/build/app.js"></script>
     {{/if}}
-    <script type="text/javascript">
-        require(["app/vendor"],function() {
-            require(["app"]);
-        });
-    </script>
   </body>
 </html>
