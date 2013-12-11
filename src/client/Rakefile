@@ -39,9 +39,13 @@ file "#{js_build}/mobile.js" => ["#{js_src}/mobile-vendor.json",*js_sources] do 
 end
 
 file "#{js_build}/app-vendor.js" => ["#{js_src}/app-vendor.json"] do |t|
+  # Too many weird edge cases with different build tools people use, that it's more robust to just cat together the vendor files instead of using browserify.
+  # For example, browserify can't require the react.js build.
   vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
-  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "#{browserify} #{requires} -o #{t.name}"
+
+  # requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  srcs = vendor_libs.to_a.map { |dep| dep[1] }.join " "
+  cmd = "cat #{srcs} > #{t.name}"
   shell cmd rescue "rm #{t.name}"
 end
 
