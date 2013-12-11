@@ -57,7 +57,7 @@ class Base
   # @return {HTMLString}
   content: (context={}) ->
     content = @contentString()
-    renderContentString(content,context)
+    @renderContentString(content,context)
 
   # Escapes a string to make it HTML safe. See note on `safe` about marking
   # a string as safe.
