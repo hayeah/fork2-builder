@@ -48,6 +48,7 @@ directives =
   tag: buildHelper("./directives/tag")
   "quiz-choose-many": buildHelper("./directives/quiz-choose-many")
   "quiz-input": buildHelper("./directives/quiz-input")
+  img: buildHelper("./directives/img")
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
