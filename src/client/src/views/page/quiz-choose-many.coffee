@@ -11,14 +11,15 @@ shuffle = (arr) ->
     arr[j] = tempi
   return arr
 
-template_multi = require("./quiz-multi.hbs")
+template = require("./quiz-choose-many.hbs")
+
 class Choice
   constructor: (el,@answer) ->
     @$checkbox = $(el)
     @$wrapper = $(el).parent("div")
 
   verify: ->
-    ok = @$checkbox.is(":checked") == @answer.accept
+    ok = @$checkbox.is(":checked") == !!@answer.accept
     if ok
       @$wrapper.removeClass("error")
     else
@@ -30,18 +31,10 @@ class QuizChooseMany
   constructor: (el,@data) ->
     @$ = $(el)
 
-    @accepts = for choice in @data.accept
-      choice.accept = true
-      choice
-    @rejects = for choice in @data.reject
-      choice.accept = false
-      choice
-    @allChoices = shuffle(@accepts.concat @rejects)
-
     @$view = @render()
     @$.append(@$view)
     @checkboxes = @$view.find(":checkbox").map (i,el) =>
-      answer = @allChoices[i]
+      answer = @data[i]
       new Choice(el,answer)
 
     @$result = @$view.find(".quiz-result")
@@ -50,7 +43,7 @@ class QuizChooseMany
       @verify()
 
   render: ->
-    $(template_multi(choices: @allChoices))
+    $(template(entries: @data))
 
   verify: ->
     ok = true

@@ -13,17 +13,6 @@ class QuizChooseMany extends Base
     cb(null,output)
 
   normalize: (data) ->
-    {
-      accept: @normalizeOptions(data.accept)
-      reject: @normalizeOptions(data.reject)
-    }
-
-  normalizeOptions: (data) ->
-    for option in data
-      console.log option
-      if typeof option == "string"
-        {text: option}
-      else
-        option
+    return data
 
 module.exports = QuizChooseMany
