@@ -37,7 +37,6 @@ buildHelper = (mod) ->
 
 # edit = buildHelper("./directives/edit")
 markdown = buildHelper("./directives/markdown")
-footnote =
 
 # TODO: refactor this to be a separate file
 directives =
@@ -47,6 +46,8 @@ directives =
   footnote: buildHelper("./directives/footnote")
   margin: buildHelper("./directives/margin")
   tag: buildHelper("./directives/tag")
+  "quiz-choose-many": buildHelper("./directives/quiz-choose-many")
+  "quiz-input": buildHelper("./directives/quiz-input")
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->

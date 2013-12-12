@@ -1,4 +1,5 @@
 marked = require 'marked'
+yaml = require "js-yaml"
 
 class Base
   # @param options {Hash} The options object given to a mustache helper.
@@ -12,7 +13,7 @@ class Base
     @isBlock = !!@options.fn
     @hash = @options.hash
 
-  # Return the block content as raw string. If given an object, use that
+  # Returns the block content as raw string. If given an object, use that
   # object as the context for the block content.
   #
   # @return {String}
@@ -20,13 +21,43 @@ class Base
     if fn = @options.fn
       fn(context || this)
 
+  ###
+  Splits block content into sections seperated by the divider "\n---\n"
+  @return {[String]}
+  ###
+  splitSections: ->
+    @contentString().split("\n---\n")
+
+  ###
+  Splits block content into text content and yaml trailer data. Returns raw
+  content string and the parsed trailer yaml as data.
+
+  The format looks like:
+
+  {{#some-tag}}
+  tag block content
+  ---
+  yaml data
+  {{/some-tag}}
+  ###
+  # @return {[String,YamlObject]}
+  splitContentTrailerData: ->
+    [content, yamlstring] = @splitSections()
+    return [content, yaml.safeLoad(yamlstring)]
+
   # Recursively render the block content as template.
+  # @param {String} contentString the template to render.
+  # @return {HTMLString}
+  renderContentString: (contentString,context={}) ->
+    template = @hbs.compile(contentString)
+    hbsOutput = template(context)
+    marked(hbsOutput,{})
+
+  # Returns the block content as rendered template.
   # @return {HTMLString}
   content: (context={}) ->
     content = @contentString()
-    template = @hbs.compile(content)
-    hbsOutput = template(context)
-    marked(hbsOutput,{})
+    @renderContentString(content,context)
 
   # Escapes a string to make it HTML safe. See note on `safe` about marking
   # a string as safe.

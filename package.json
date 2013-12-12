@@ -35,5 +35,6 @@
   , "execSync": "~1.0.1-pre"
   , "lodash": "~2.4.1"
   , "underscore.string": "~2.3.3"
+  , "js-yaml": "~2.1.3"
   }
 }

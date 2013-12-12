@@ -15,6 +15,8 @@ css_build = "#{build}/css"
 css_src = "src/css"
 js_src = "src"
 coffee_files = Dir[js_src + "/**/*.coffee"]
+hbs_files = Dir[js_src + "/**/*.hbs"]
+js_sources = coffee_files + hbs_files
 
 task "build" => ["js","css"]
 
@@ -26,27 +28,33 @@ task "js" => [
   "#{js_build}/mobile.js",
 ]
 
-file "#{js_build}/mobile.js" => ["#{js_src}/mobile-vendor.json",*coffee_files] do |t|
+browserify = "browserify  -t hbsfy -t coffeeify --extension='.coffee' --no-detect-globals"
+
+file "#{js_build}/mobile.js" => ["#{js_src}/mobile-vendor.json",*js_sources] do |t|
   entry = "#{js_src}/mobile.coffee"
   vendor_libs = JSON.parse(File.read("#{js_src}/mobile-vendor.json"))
   requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify -t coffeeify --extension='.coffee' --no-detect-globals #{requires} #{entry} -o #{t.name}"
+  cmd = "#{browserify} #{requires} #{entry} -o #{t.name}"
   shell cmd rescue  shell "rm #{t.name}"
 end
 
 file "#{js_build}/app-vendor.js" => ["#{js_src}/app-vendor.json"] do |t|
+  # Too many weird edge cases with different build tools people use, that it's more robust to just cat together the vendor files instead of using browserify.
+  # For example, browserify can't require the react.js build.
   vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
-  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify --no-detect-globals #{requires} -o #{t.name}"
+
+  # requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  srcs = vendor_libs.to_a.map { |dep| dep[1] }.join " "
+  cmd = "cat #{srcs} > #{t.name}"
   shell cmd rescue "rm #{t.name}"
 end
 
-file "#{js_build}/app.js" => ["#{js_src}/app-vendor.json",*coffee_files] do |t|
+file "#{js_build}/app.js" => ["#{js_src}/app-vendor.json",*js_sources] do |t|
   p t.prerequisites
   vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
   entry = "#{js_src}/app.coffee"
   externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "browserify  -t coffeeify --extension='.coffee' --no-detect-globals #{externals} #{entry} -o #{t.name}"
+  cmd = "#{browserify} #{externals} #{entry} -o #{t.name} --debug"
   shell cmd rescue "rm #{t.name}"
 end
 
@@ -55,7 +63,7 @@ task "css" => [
   "#{css_build}/mobile.css"
 ]
 
-js_sources = lambda { |target| 
+js_sources = lambda { |target|
   name = File.basename(target,".js")
   (["#{js_src}/#{name}.coffee"] + Dir[js_src+"/**/*.coffee"]).uniq
 }
@@ -66,7 +74,7 @@ rule /^#{js_build}\/.+\.js$/ do |t|
   shell "rake #{task} > #{t.name} || rm #{t.name}"
 end
 
-css_source = lambda { |target| 
+css_source = lambda { |target|
   name = File.basename(target,".css")
   (["#{css_src}/#{name}.less"] + Dir[css_src+"/**/*.less"]).uniq
 }
