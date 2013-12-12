@@ -48,6 +48,10 @@ class App
     console.log "static: #{pkgRoot}"
     @express.use(express.static(pkgRoot))
 
+    assetsPath = path.resolve(path.join @contentRoot, "assets")
+    console.log "assets: #{assetsPath}"
+    @express.use("/assets",express.static(assetsPath))
+
     @handle "get", "/", require("./actions/index")
     @handle "get", "/mobile", require("./actions/mobile")
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")

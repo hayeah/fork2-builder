@@ -35,12 +35,17 @@ class BuildProject extends require("./base")
     @sh("mkdir -p #{@outPath}")
     @compileAll()
     @cp("course.json")
+    @copy_assets()
 
   # cp file at path from source to output
   cp: (file) ->
     from = path.join @inPath, file
     to = path.join @outPath, file
     @sh "cp #{from} #{to}"
+
+  copy_assets: () ->
+    assetsPath = @inPath + "assets"
+    @sh "rsync -Pa --delete #{assetsPath}/ #{@outPath}assets"
 
   ensureTrailingSlash: (dir) ->
     # path.normalize ensures that repeating "//" become "/".
