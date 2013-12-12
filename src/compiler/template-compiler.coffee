@@ -47,6 +47,7 @@ directives =
   margin: buildHelper("./directives/margin")
   tag: buildHelper("./directives/tag")
   "quiz-choose-many": buildHelper("./directives/quiz-choose-many")
+  "quiz-input": buildHelper("./directives/quiz-input")
 
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->

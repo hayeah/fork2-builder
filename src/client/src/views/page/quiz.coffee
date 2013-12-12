@@ -1,4 +1,11 @@
 QuizChooseMany = require("./quiz-choose-many")
+QuizInput = require("./quiz-input")
+# QuizChooseMany = require("./quiz-choose-many")
+
+controls = {
+  "choose-many": QuizChooseMany
+  "input": QuizInput
+}
 
 class Quiz
   constructor: (el) ->
@@ -6,7 +13,9 @@ class Quiz
     @type = @$.data("quiz-type")
     data = @$.data("quiz-data")
 
-    @control = new QuizChooseMany(el,data)
+    controlType = controls[@type]
+    return if !controlType
+    @control = new controlType(el,data)
 
 
 module.exports = plugin = ->

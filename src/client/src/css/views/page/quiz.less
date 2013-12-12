@@ -1,16 +1,22 @@
 .quiz {
   border: 1px solid black;
+  .quiz-result {
+    color: green;
+    &.error {
+      color: red;
+    }
+  }
 }
 
 .quiz .quiz-choose-many {
   div.error {
     color: red;
   }
+}
 
-  .quiz-result {
-    color: green;
-    &.error {
-      color: red;
-    }
+.quiz .quiz-input {
+  .quiz-input-entry {
+    margin-bottom: 1.5em;
+    padding-left: 1em;
   }
 }
