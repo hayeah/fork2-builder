@@ -1,9 +1,12 @@
 <div class="quiz-choose-many">
 
   {{#each entries}}
-    <div>
-      <input type="checkbox" value="hoho"/>
-      {{text}}
+    <div class="entry">
+      <div>
+        <input type="checkbox" value="hoho"/>
+        {{{text}}}
+        <div class="error-message hidden"></div>
+      </div>
     </div>
   {{/each}}
 

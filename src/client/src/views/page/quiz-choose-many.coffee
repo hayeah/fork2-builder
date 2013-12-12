@@ -15,15 +15,22 @@ template = require("./quiz-choose-many.hbs")
 
 class Choice
   constructor: (el,@answer) ->
-    @$checkbox = $(el)
-    @$wrapper = $(el).parent("div")
+    @$ = $(el)
+    @$checkbox = @$.find(":checkbox")
+    @$errorMessage = @$.find(".error-message")
 
   verify: ->
     ok = @$checkbox.is(":checked") == !!@answer.accept
     if ok
-      @$wrapper.removeClass("error")
+      @$.removeClass("error")
+      @$errorMessage.addClass("hidden")
+
     else
-      @$wrapper.addClass("error")
+      @$.addClass("error")
+      if msg = @answer.error
+        @$errorMessage.html(msg)
+        @$errorMessage.removeClass("hidden")
+
 
     return ok
 
@@ -33,7 +40,7 @@ class QuizChooseMany
 
     @$view = @render()
     @$.append(@$view)
-    @checkboxes = @$view.find(":checkbox").map (i,el) =>
+    @checkboxes = @$view.find(".entry").map (i,el) =>
       answer = @data[i]
       new Choice(el,answer)
 
@@ -58,6 +65,6 @@ class QuizChooseMany
       @$result.html("bummer :(")
       @$result.addClass("error")
 
-    return good
+    return ok
 
 module.exports = QuizChooseMany

@@ -6,13 +6,15 @@ class QuizChooseMany extends Base
     trailer = @normalize(trailer)
     content = @renderContentString(rawContent)
     output = """
-    <div class="quiz" data-quiz-type="choose-many" data-quiz-data='#{JSON.stringify(trailer)}'>
+    <div class="quiz" data-quiz-type="choose-many" data-quiz-data='#{@escape JSON.stringify(trailer)}'>
       #{content}
     </div>
     """
     cb(null,output)
 
   normalize: (data) ->
-    return data
+    for entry in data
+      entry.text = @renderContentString(String(entry.text))
+      entry
 
 module.exports = QuizChooseMany
