@@ -1,25 +1,63 @@
-.quiz {
-  background: #EEE;
-  margin-bottom: 1em;
-  .quiz-result {
-    color: green;
-    &.error {
-      color: red;
-    }
-  }
+.bs-callout {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
 }
 
-.quiz .quiz-choose-many {
-  div.error {
-    color: red;
-  }
-  input {
-    float: left;
-  }
+.bs-callout-info {
+  background-color: #f4f8fa;
+  border-color: #bce8f1;
+}
 
-  .entry {
-    margin-bottom: 5px;
-    padding-left: 1em;
+.quiz {
+  .bs-callout();
+  .bs-callout-info();
+}
+
+.quiz {
+  // input {
+  //   float: left;
+  // }
+
+  .quiz-entry {
+    border: 0px solid black;
+    margin-bottom: 10px;
+
+    .quiz-checkbox {
+      color: #eee;
+      text-align: center;
+    }
+
+    .quiz-icons {
+      float: left;
+    }
+
+    .glyphicon-warning-sign {
+      color: #a94442;
+    }
+
+    .quiz-entry-content {
+      border-left: 3px solid #eee;
+      padding-left: 5px;
+      margin-left: 30px;
+    }
+
+    .quiz-result {
+      color: green;
+    }
+
+
+    &:hover {
+      .quiz-checkbox {
+        color: #bbb;
+      }
+    }
+
+    &.selected {
+      .quiz-checkbox {
+        color: #3c763d;
+      }
+    }
   }
 }
 

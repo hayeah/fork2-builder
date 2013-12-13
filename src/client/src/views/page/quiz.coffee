@@ -1,10 +1,12 @@
-QuizChooseMany = require("./quiz-choose-many")
+QuizMany = require("./quiz-many-jsx")
 QuizInput = require("./quiz-input")
 # QuizChooseMany = require("./quiz-choose-many")
 
+
+
 controls = {
-  "choose-many": QuizChooseMany
-  "input": QuizInput
+  "choose-many": QuizMany
+  # "input": QuizInput
 }
 
 class Quiz
@@ -13,9 +15,15 @@ class Quiz
     @type = @$.data("quiz-type")
     data = @$.data("quiz-data")
 
-    controlType = controls[@type]
-    return if !controlType
-    @control = new controlType(el,data)
+    @$wrapper = $("<div>")
+    @$.append(@$wrapper)
+
+    controlClass = controls[@type]
+    return if !controlClass
+    React.renderComponent \
+      controlClass({data: data}),
+      @$wrapper[0]
+    # @control = new controlType(el,data)
 
 
 module.exports = plugin = ->

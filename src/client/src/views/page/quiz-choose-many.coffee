@@ -31,7 +31,6 @@ class Choice
         @$errorMessage.html(msg)
         @$errorMessage.removeClass("hidden")
 
-
     return ok
 
 class QuizChooseMany
