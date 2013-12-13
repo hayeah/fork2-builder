@@ -18,9 +18,8 @@ class FootnoteContent extends Base
   renderContent: (id,cb) ->
     content = @content()
     output = """
-    <div class="ref-content" id="#{prefixID id}">[#{id}]: #{content}</div>
+    <div class="ref-content hidden" id="#{prefixID id}">#{content}</div>
     """
-    @appendToEnd(output)
-    cb(null,"")
+    cb(null,@safe(output))
 
 module.exports = FootnoteContent
