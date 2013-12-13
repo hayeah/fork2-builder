@@ -49,12 +49,12 @@ file "#{js_build}/app-vendor.js" => ["#{js_src}/app-vendor.json"] do |t|
   shell cmd rescue "rm #{t.name}"
 end
 
-file "#{js_build}/app.js" => ["#{js_src}/app-vendor.json",*js_sources] do |t|
+file "#{js_build}/app.js" => js_sources do |t|
   p t.prerequisites
-  vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
+  # vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
   entry = "#{js_src}/app.coffee"
-  externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "#{browserify} #{externals} #{entry} -o #{t.name} --debug"
+  #externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "#{browserify} #{entry} -o #{t.name} --debug"
   shell cmd rescue "rm #{t.name}"
 end
 
