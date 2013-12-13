@@ -12,21 +12,12 @@
 .quiz {
   .bs-callout();
   .bs-callout-info();
-  .quiz-result {
-    color: green;
-    &.error {
-      color: red;
-    }
-  }
 }
 
 .quiz {
-  div.error {
-    color: red;
-  }
-  input {
-    float: left;
-  }
+  // input {
+  //   float: left;
+  // }
 
   .quiz-entry {
     border: 0px solid black;
@@ -59,6 +50,12 @@
     &:hover {
       .quiz-checkbox {
         color: #bbb;
+      }
+    }
+
+    &.selected {
+      .quiz-checkbox {
+        color: #3c763d;
       }
     }
   }
