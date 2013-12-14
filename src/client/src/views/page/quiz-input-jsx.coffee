@@ -8,8 +8,6 @@ QuizInput = React.createClass {
     answer = @props.entry.accept
     answer == @props.answer
 
-  # Get user answer for the ith entry.
-  # @param {Synthetic} e The event dispatched
   onInput: (e) ->
     answer = e.target.value
     @props.setAnswer answer
