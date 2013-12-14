@@ -1,12 +1,12 @@
 QuizMany = require("./quiz-many-jsx")
-QuizInput = require("./quiz-input")
+QuizInput = require("./quiz-input-jsx")
 # QuizChooseMany = require("./quiz-choose-many")
 
 
 
 controls = {
   "choose-many": QuizMany
-  # "input": QuizInput
+  "input": QuizInput
 }
 
 class Quiz
