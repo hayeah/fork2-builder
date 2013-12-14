@@ -79,14 +79,15 @@ QuizMany = React.createClass {
       errorMsgcx = cx {
         "hidden": !showError || typeof entry.error != "string"
       }
-      div({className: entrycx, key: "entry-#{i}",onClick: @toggleSelect.bind(@,i)},
-        span({className: "quiz-icons"},
-          div({className: "glyphicon glyphicon-warning-sign #{warnIconcx}"}),
+      div({className: entrycx, key: "entry-#{i}",onClick: @toggleSelect.bind(@,i)}
+        span({className: "quiz-icons"}
+          div({className: "glyphicon glyphicon-warning-sign #{warnIconcx}"})
           div({className: "quiz-checkbox glyphicon glyphicon-ok"})
-          ),
-        div({className: "quiz-entry-content"},
-          div(dangerouslySetInnerHTML: {__html: entry.text}),
-          div({className: "alert alert-warning #{errorMsgcx}"},entry.error))
+          )
+        div({className: "quiz-entry-content"}
+          div(dangerouslySetInnerHTML: {__html: entry.text})
+          div({className: "alert alert-warning #{errorMsgcx}"},entry.error)
+          )
         )
 
     success = @isSuccess() # note: if quiz is not graded, success is "null"
@@ -102,13 +103,13 @@ QuizMany = React.createClass {
     else if success == false
       quizResultText = "Sorry, wrong answer."
 
-    div({},
-      rows,
-      button({onClick: @grade, className: "btn btn-primary"},"Verify"),
-      " ",
-      button({onClick: @reset, className: "btn btn-default #{cx 'hidden': !@state.isGraded}"},"Try Again"),
-      p({}),
-      div({className:"quiz-result alert #{quizResultcx}"},quizResultText),
+    div({}
+      rows
+      button({onClick: @grade, className: "btn btn-primary"},"Verify")
+      " "
+      button({onClick: @reset, className: "btn btn-default #{cx 'hidden': !@state.isGraded}"},"Try Again")
+      p({})
+      div({className:"quiz-result alert #{quizResultcx}"},quizResultText)
       )
 
 }
