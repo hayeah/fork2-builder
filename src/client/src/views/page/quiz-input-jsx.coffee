@@ -28,7 +28,7 @@ QuizInput = React.createClass {
     div({className: "quiz-entry"}
       span({className: "quiz-icons"}
         div({className: "glyphicon glyphicon-warning-sign #{warnIconcx}"})
-        div({className: "quiz-checkbox glyphicon glyphicon-edit"})
+        div({className: "glyphicon glyphicon-edit"})
       )
       div({className: "quiz-entry-content"}
         div(dangerouslySetInnerHTML: {__html: entry.text})

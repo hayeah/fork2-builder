@@ -20,21 +20,16 @@ QuizChoice = React.createClass {
     i = @props.index
     showError = @props.showError
 
-    entrycx = cx {
-      "quiz-entry": true
-      "selected": @props.answer
-      "error": showError
-    }
     warnIconcx = cx {
       "invisible": !showError
     }
     errorMsgcx = cx {
       "hidden": !showError || typeof entry.error != "string"
     }
-    div({className: entrycx, onClick: @toggle}
+    div({className: "quiz-entry", onClick: @toggle}
       span({className: "quiz-icons"}
         div({className: "glyphicon glyphicon-warning-sign #{warnIconcx}"})
-        div({className: "quiz-checkbox glyphicon glyphicon-ok"})
+        div({className: "quiz-check glyphicon glyphicon-ok #{cx "selected": @props.answer}"})
         )
       div({className: "quiz-entry-content"}
         div(dangerouslySetInnerHTML: {__html: entry.text})
