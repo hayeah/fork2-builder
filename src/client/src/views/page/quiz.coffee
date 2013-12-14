@@ -1,8 +1,6 @@
+QuizGrader = require("./quiz-grader")
 QuizMany = require("./quiz-many-jsx")
 QuizInput = require("./quiz-input-jsx")
-# QuizChooseMany = require("./quiz-choose-many")
-
-
 
 controls = {
   "choose-many": QuizMany
@@ -20,9 +18,10 @@ class Quiz
 
     controlClass = controls[@type]
     return if !controlClass
-    React.renderComponent \
-      controlClass({data: data}),
+    React.renderComponent(
+      QuizGrader({type: controlClass, data: data})
       @$wrapper[0]
+    )
     # @control = new controlType(el,data)
 
 
