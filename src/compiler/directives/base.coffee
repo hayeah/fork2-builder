@@ -73,10 +73,6 @@ class Base
   safe: (str) ->
     @hbs.safe(str)
 
-  # Delay outputing a markdown string until the end
-  appendToEnd: (str) ->
-    @compiler.appendToEnd(str)
-
   process: ->
     throw "abstract"
 
