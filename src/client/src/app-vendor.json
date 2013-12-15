@@ -1,4 +1,5 @@
 { "jquery": "bower_components/jquery/jquery.js"
 , "underscore": "bower_components/underscore/underscore.js"
 , "react": "bower_components/react/react-with-addons.js"
+, "bigfoot": "bower_components/bigfoot.js/bigfoot.js"
 }

@@ -1,10 +1,11 @@
 view_id = "#page-view"
 
-refHighlight = require("./ref-highlight")
-quiz = require("./quiz")
+# refHighlight = require("./ref-highlight")
+mods = [
+  require("./quiz")
+  require("./bigfoot")
+]
 
 $ ->
-  require("./footnote-display")(view_id)
-  require("./footnote-ref")(view_id)
-  # refHighlight()
-  quiz()
+  for mod in mods
+    mod(view_id)

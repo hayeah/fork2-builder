@@ -50,6 +50,10 @@ directives =
   "quiz-input": buildHelper("./directives/quiz-input")
   img: buildHelper("./directives/img")
 
+TRANSFORMERS = [
+  require("./directives/footnote").transform
+]
+
 class TemplateCompiler
   constructor: (@inStream,@outStream,@root) ->
     @hbs = hbs.create()
@@ -78,8 +82,8 @@ class TemplateCompiler
     async.waterfall [
       @readInput.bind(@)
       @renderhbs.bind(@)
-      @appendTails.bind(@)
       @renderMarkedDown.bind(@)
+      @applyTransforms.bind(@)
       @writeOutput.bind(@)
     ], cb
 
@@ -100,20 +104,12 @@ class TemplateCompiler
         throw e
     ), cb
 
-  # Add a markdown string to be appended at the end.
-  appendToEnd: (string) ->
-    @_appendedTexts ||= []
-    @_appendedTexts.push string
-
-  # render the delayed output to the end of rendered handlebars template.
-  appendTails: (input,cb) ->
-    output =
-      if @_appendedTexts
-        tail = @_appendedTexts.join("\n")
-        "#{input}\n#{tail}"
-      else
-        input
-    cb(null,output)
+  # apply a series of input transform
+  # Each transformer is a simple string -> string function.
+  # TODO: change the contract to through pipes.
+  applyTransforms: (input,cb) ->
+    pipe = async.compose.apply(@,TRANSFORMERS)
+    pipe(input,cb)
 
   renderMarkedDown: (input,cb) ->
     marked input, {

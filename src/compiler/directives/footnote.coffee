@@ -1,6 +1,8 @@
 Base = require "./base"
 
-prefixID = (id) -> "footnote-#{@escape id}"
+prefixID = (id) -> "fn:#{@escape id}"
+
+footnotes = []
 
 class FootnoteContent extends Base
   # @param id {String|Integer} The id for a footnote
@@ -12,14 +14,23 @@ class FootnoteContent extends Base
 
   renderReference: (id,cb) ->
     id = @escape id
-    output = "<a class='ref' href='##{prefixID id}'>[#{id}]</a>"
+    output = "<a rel='footnote' class='ref' href='##{prefixID id}'>[#{id}]</a>"
     cb(null,@safe(output))
 
   renderContent: (id,cb) ->
     content = @content()
     output = """
-    <div class="ref-content hidden" id="#{prefixID id}">#{content}</div>
+    <li class="footnote" id="#{prefixID id}">#{content}</li>
     """
-    cb(null,@safe(output))
+    footnotes.push @safe(output)
+    cb(null,"")
+
+FootnoteContent.transform = (input,cb) ->
+  html = """
+  <ol class="footnotes">
+    #{footnotes.join "\n"}
+  </ol>
+  """
+  cb null, "#{input}\n#{html}"
 
 module.exports = FootnoteContent
