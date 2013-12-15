@@ -21,12 +21,18 @@
   .make-row();
 }
 
-.page-outline {
+.page-sidebar {
+  .make-sm-column(4);
   .make-md-column(3);
+  .hidden-xs();
+}
+
+.page-outline {
   background: #f4f8fa;
 }
 
 .page-content {
+  .make-sm-column(8);
   .make-md-column(9);
 }
 
