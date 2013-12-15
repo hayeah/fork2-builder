@@ -33,8 +33,8 @@ browserify = "browserify  -t hbsfy -t coffeeify --extension='.coffee' --no-detec
 file "#{js_build}/mobile.js" => ["#{js_src}/mobile-vendor.json",*js_sources] do |t|
   entry = "#{js_src}/mobile.coffee"
   vendor_libs = JSON.parse(File.read("#{js_src}/mobile-vendor.json"))
-  requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
-  cmd = "#{browserify} #{requires} #{entry} -o #{t.name}"
+  # requires = vendor_libs.to_a.map { |dep| "-r ./#{dep[1]}:#{dep[0]}" }.join " "
+  cmd = "#{browserify} #{entry} -o #{t.name}"
   shell cmd rescue  shell "rm #{t.name}"
 end
 
@@ -50,7 +50,6 @@ file "#{js_build}/app-vendor.js" => ["#{js_src}/app-vendor.json"] do |t|
 end
 
 file "#{js_build}/app.js" => js_sources do |t|
-  p t.prerequisites
   # vendor_libs = JSON.parse(File.read("#{js_src}/app-vendor.json"))
   entry = "#{js_src}/app.coffee"
   #externals = vendor_libs.to_a.map { |dep| "-x ./#{dep[1]}:#{dep[0]}" }.join " "
