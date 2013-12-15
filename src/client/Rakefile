@@ -59,6 +59,7 @@ end
 
 task "css" => [
   "#{css_build}/app.css",
+  "#{css_build}/app-vendor.css",
   "#{css_build}/mobile.css"
 ]
 
@@ -78,8 +79,14 @@ css_source = lambda { |target|
   (["#{css_src}/#{name}.less"] + Dir[css_src+"/**/*.less"]).uniq
 }
 
+directory css_build
+
+file "#{css_build}/app-vendor.css" => ["#{css_src}/app-vendor.less","#{css_src}/bs.less",css_build] do |t|
+  entry = t.prerequisites[0]
+  shell "lessc #{entry} #{t.name}"
+end
+
 rule /^#{css_build}\/.*css$/ => [css_source] do |t|
   entry = t.prerequisites[0]
-  shell "mkdir -p #{css_build}"
   shell "lessc #{entry} #{t.name}"
 end
