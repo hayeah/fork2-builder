@@ -11,17 +11,28 @@ bower := bower_components
 bundle := bundle
 optimize := uglify2
 
-.PHONY: bundle build watch
+.PHONY: bundle build watch deps
 
 rebuild: clean build
 
-build: js css
+build: deps js css
 
 watch:
 	watchy -w src -- make build
 
 clean:
 	rm -r $(build)
+
+# npm and bower deps
+deps: node_modules bower_components
+
+node_modules: package.json
+	npm install
+	touch $@
+
+bower_components: bower.json | node_modules
+	bower install
+	touch $@
 
 # JS Build Rules
 js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js)
