@@ -4,16 +4,24 @@ js_src := src
 js_files := $(shell find $(js_src) -type f -name '*.coffee')
 
 css_build := $(build)/css
-css_src := src/src
-js_files := $(shell find $(js_src) -type f -name '*.less')
+css_src := src/css
+css_files := $(shell find $(js_src) -type f -name '*.less')
 
 bower := bower_components
 bundle := bundle
 optimize := uglify2
 
-.PHONY: bundle build test run watch
+.PHONY: bundle build watch
 
-build: ks
+rebuild: clean build
+
+build: js css
+
+watch:
+	watchy -w src -- make build
+
+clean:
+	rm -r $(build)
 
 # JS Build Rules
 js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js)
@@ -29,6 +37,10 @@ $(js_build)/%.js: $(js_src)/%.coffee $(js_files)
 	$(browserify) -o $@ $< || rm $@
 
 # CSS Build Rules
+css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css)
 
-clean:
-	rm -r $(build)
+$(css_build)/%.css: $(css_src)/%.less $(css_files)
+	lessc $< $@ --source-map-map-inline --source-map-less-inline
+
+$(css_build):
+	mkdir -p $(css_build)
