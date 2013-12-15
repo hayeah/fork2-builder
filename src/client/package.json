@@ -1,17 +1,19 @@
-{
-  "name": "client",
-  "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "BSD-2-Clause",
-  "dependencies": {
-    "browserify": "~2.36.1",
-    "coffeeify": "~0.5.2",
-    "handlebars": "~1.0.12",
-    "hbsfy": "~1.0.0"
+{ "name": "client"
+, "version": "0.0.1"
+, "description": ""
+, "main": "index.js"
+, "scripts":
+  { "test": "echo \"Error: no test specified\" && exit 1"
+  }
+, "author": "Howard Yeh"
+, "license": "BSD-2-Clause"
+, "devDependencies":
+  { "coffee-script": "~1.6.3"
+  , "less": "~1.5.1"
+  , "bower": "~1.2.7"
+  , "browserify": "~2.36.1"
+  , "coffeeify": "~0.5.2"
+  , "handlebars": "~1.0.12"
+  , "hbsfy": "~1.0.0"
   }
 }
