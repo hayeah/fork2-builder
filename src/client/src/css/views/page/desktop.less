@@ -1,8 +1,8 @@
-@import (less) "ref.less";
+// @import (less) "ref.less";
 @import (less) "quiz.less";
 
 #page-view {
-  width: 50em;
+
 }
 
 #page-view pre {
@@ -17,33 +17,47 @@
   border-radius: 0;
 }
 
-#page-view .margin-box {
-  position: relative;
-  .margin-box-content {
-    position: absolute;
-    top: 0;
-    width: @margin-width;
-    left: @content-width;
-    padding: 0 5px;
-  }
+.page-wrapper {
+  .make-row();
 }
 
-#page-view .footnote-display {
-  position: fixed;
-  bottom: 0px;
-  max-height: 150px;
-  width: @content-width;
-  background: #FFF;
-  padding: 10px;
-  border: 1px solid #EEE;
+.page-outline {
+  .make-md-column(3);
+  border: 1px solid black;
 
-  box-shadow: 0px -7px 5px -3px rgba(0,0,0,0.15);
-
-  overflow: auto;
-
-  .close {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
 }
+
+.page-content {
+  .make-md-column(9);
+}
+
+// #page-view .margin-box {
+//   position: relative;
+//   .margin-box-content {
+//     position: absolute;
+//     top: 0;
+//     width: @margin-width;
+//     left: @content-width;
+//     padding: 0 5px;
+//   }
+// }
+
+// #page-view .footnote-display {
+//   position: fixed;
+//   bottom: 0px;
+//   max-height: 150px;
+//   width: @content-width;
+//   background: #FFF;
+//   padding: 10px;
+//   border: 1px solid #EEE;
+
+//   box-shadow: 0px -7px 5px -3px rgba(0,0,0,0.15);
+
+//   overflow: auto;
+
+//   .close {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//   }
+// }
