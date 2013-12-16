@@ -56,6 +56,9 @@ TRANSFORMERS = [
 
 class TemplateCompiler
   constructor: (@root) ->
+    # for directives to put data
+    @data = {}
+
     @hbs = hbs.create()
 
     # Add utility functions to this instance of handlebars
@@ -108,7 +111,7 @@ class TemplateCompiler
   # TODO: change the contract to through pipes.
   applyTransforms: (input,cb) ->
     pipe = async.compose.apply(@,TRANSFORMERS)
-    pipe(input,cb)
+    pipe(this,input,cb)
 
   renderMarkedDown: (input,cb) ->
     marked input, {

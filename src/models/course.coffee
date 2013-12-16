@@ -16,7 +16,7 @@ class Course
 
     @units = []
     for path, i in data.content
-      unit = new Unit(this,path,prev_unit,@outline[i])
+      unit = new Unit(this,path,prev_unit,@outline?[i])
       @units.push unit
       prev_unit = unit
 
