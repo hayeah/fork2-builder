@@ -55,7 +55,7 @@ TRANSFORMERS = [
 ]
 
 class TemplateCompiler
-  constructor: (@inStream,@outStream,@root) ->
+  constructor: (@root) ->
     @hbs = hbs.create()
 
     # Add utility functions to this instance of handlebars
@@ -77,14 +77,13 @@ class TemplateCompiler
   register: (name,fn) ->
     @hbs.registerHelper(name,withRoot(fn,{root: @root,hbs: @hbs, compiler: this}))
 
-  # cb(err)
-  compile: (cb) ->
+  # @param {String} input The string to compile as template
+  # @param {Function(Error,String)} Callbacks with the compiled output string.
+  compile: (input,cb) ->
     async.waterfall [
-      @readInput.bind(@)
-      @renderhbs.bind(@)
+      @renderhbs.bind(@,input)
       @renderMarkedDown.bind(@)
       @applyTransforms.bind(@)
-      @writeOutput.bind(@)
     ], cb
 
   # @param content (String)
@@ -116,22 +115,5 @@ class TemplateCompiler
       highlight: (code,lang) =>
         highlight(code,lang,@hbs)
       }, cb
-
-  # cb(err,streamData:String)
-  readInput: (cb) ->
-    chunks = []
-    @inStream.on "data", (data) ->
-      # assume is a buffer
-      # TODO type check
-      chunks.push data.toString()
-    @inStream.on "end", ->
-      cb(null,chunks.join(""))
-    @inStream.on "error", (error) ->
-      cb(error)
-
-  # @param result (String)
-  # cb(err)
-  writeOutput: (result,cb) ->
-    @outStream.write(result,"utf8",cb)
 
 module.exports = TemplateCompiler
