@@ -1,45 +1,11 @@
 <div id="page-view">
-  <!-- <div class="btn-group">
-
-    <a href="/" type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-home"></span>
-    </a>
-
-    {{#with unit.previous}}{{#if .}}
-    <a href="{{permalink}}" type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-arrow-left"></span>
-      {{title}}
-    </a>
-    {{/if}}{{/with}}
-
-    {{#with unit.next}}{{#if .}}
-    <a href="{{permalink}}" type="button" class="btn btn-default">
-      <span class="glyphicon glyphicon-arrow-right"></span>
-      {{title}}
-    </a>
-    {{/if}}{{/with}}
-  </div>
- -->
   <div class="page-wrapper">
     <div class="page-sidebar">
       <div class="page-outline bs-sidenav affix-top" role="complementary">
       <ul class="nav nav-list">
-        <li><a class="reference internal nav-header" href="#">1. Meet Qt 5</a><ul class="nav nav-list">
-        <li><a class="reference internal" href="#preface">1.1. Preface</a></li>
-        <li><a class="reference internal" href="#qt5-introduction">1.2. Qt5 Introduction</a><ul class="nav nav-list">
-        <li><a class="reference internal" href="#digesting-an-user-interface">1.2.1. Digesting an User Interface</a></li>
-        <li><a class="reference internal" href="#qt-building-blocks">1.2.2. Qt Building Blocks</a></li>
-        </ul>
-        </li>
-        <li><a class="reference internal" href="#qt-essentials-modules">1.3. Qt Essentials Modules</a></li>
-        <li><a class="reference internal" href="#supported-platforms">1.4. Supported Platforms</a><ul class="nav nav-list">
-        <li><a class="reference internal" href="#id1">1.4.1. Qt Project</a></li>
-        </ul>
-        </li>
-        </ul>
-        </li>
-        </ul>
-
+        {{#each unit.headers}}
+          <li><a class="reference internal" href="#{{id}}">{{text}}</a></li>
+        {{/each}}
         </div>
     </div>
 
