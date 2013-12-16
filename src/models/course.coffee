@@ -8,6 +8,7 @@ class Course
 
   # @param data.content {[Path]} sequence of content files for this course.
   constructor: (data) ->
+    @metadata = data
     prev_unit = null
 
     @units = []
