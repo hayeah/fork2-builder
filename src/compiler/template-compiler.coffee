@@ -4,6 +4,7 @@ highlight = require "./highlight"
 async = require 'async'
 sync = require 'sync'
 hbs = require("handlebars")
+_s = require "underscore.string"
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
@@ -114,9 +115,14 @@ class TemplateCompiler
     pipe(this,input,cb)
 
   renderMarkedDown: (input,cb) ->
+    renderer = new marked.Renderer()
+    idfy = (str) -> _s.dasherize(str.toLowerCase())
+    renderer.header = (text,level) ->
+      "<h#{level} id='#{idfy(text)}'>#{text}</h#{level}>"
     marked input, {
       highlight: (code,lang) =>
         highlight(code,lang,@hbs)
+      renderer: renderer
       }, cb
 
 module.exports = TemplateCompiler
