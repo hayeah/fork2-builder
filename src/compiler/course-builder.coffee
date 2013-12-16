@@ -14,15 +14,14 @@ TemplateCompiler = require "./template-compiler"
 OutlineExtractor = require "./outline-extractor"
 
 class CourseBuilder
-  # @param {Path} metafilePath The course.json to read data from.
+  # @param {Path} rootPath The path to project.
   # @param {Path} opts.destPath The path to build project into.
-  constructor: (metafilePath,opts={}) ->
-    metafilePath = path.resolve(path.normalize(metafilePath))
-    @course = Course.load(metafilePath)
-    @rootPath = path.dirname(metafilePath)
-
-    # TODO allow overriding the destPath
+  constructor: (rootPath,opts={}) ->
+    @rootPath = rootPath
     @destPath = opts.destPath || path.join(@rootPath, ".workspace")
+
+    metafilePath = path.join rootPath, "course.json"
+    @course = Course.load(metafilePath)
 
   build: (cb) ->
     @sh "mkdir -p #{@destPath}"
