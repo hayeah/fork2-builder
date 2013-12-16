@@ -26,6 +26,9 @@ class FootnoteContent extends Base
     cb(null,"")
 
 FootnoteContent.transform = (input,cb) ->
+  if footnotes.length == 0
+    return input
+
   html = """
   <ol class="footnotes">
     #{footnotes.join "\n"}
