@@ -2,8 +2,6 @@ Base = require "./base"
 
 prefixID = (id) -> "fn:#{@escape id}"
 
-footnotes = []
-
 class FootnoteContent extends Base
   # @param id {String|Integer} The id for a footnote
   process: (id,cb) ->
@@ -22,10 +20,15 @@ class FootnoteContent extends Base
     output = """
     <li class="footnote" id="#{prefixID id}">#{content}</li>
     """
-    footnotes.push @safe(output)
+    @compiler.data["footnotes"] ||= []
+    @compiler.data["footnotes"].push @safe(output)
     cb(null,"")
 
-FootnoteContent.transform = (input,cb) ->
+FootnoteContent.transform = (compiler,input,cb) ->
+  footnotes = compiler.data["footnotes"] || []
+  if footnotes.length == 0
+    return input
+
   html = """
   <ol class="footnotes">
     #{footnotes.join "\n"}

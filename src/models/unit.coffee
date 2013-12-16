@@ -22,12 +22,15 @@ class Unit
   # @param course {Course} The course that includes this unit
   # @param path {Path} The file to read the content for this unit.
   # @param previous {Unit} The unit that comes before this course within the course.
-  constructor: (course,@path,@previous) ->
+  # @param headers {[Header]} The headers extracted from content (only for compiled content).
+  constructor: (course,@path,@previous,@headers) ->
     if @previous
       @previous.next = this
 
     @_parse_path()
-    @title = _s.titleize _s.humanize(@permalink)
+    # @title = _s.titleize _s.humanize(@permalink)
+    if @headers
+      @title = @headers[0].text
 
   # Parses the content file path. Its format is `<permalink>[.<type>].hbs`
   _parse_path: ->

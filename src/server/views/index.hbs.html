@@ -1,6 +1,15 @@
-<h1>Project Index</h1>
 <ul>
-{{#each units}}
- <li><a href="/{{permalink}}">{{title}}</a></li>
-{{/each}}
+  {{#each units}}
+  <li>
+    <a href="/{{permalink}}">{{title}}</a>
+    <ul>
+      {{#each headers}}
+      <li>
+        <a href="/{{../permalink}}#{{id}}">{{text}}</a>
+
+      </li>
+      {{/each}}
+    </ul>
+  </li>
+  {{/each}}
 </ul>

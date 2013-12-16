@@ -4,6 +4,7 @@ highlight = require "./highlight"
 async = require 'async'
 sync = require 'sync'
 hbs = require("handlebars")
+_s = require "underscore.string"
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
@@ -55,7 +56,10 @@ TRANSFORMERS = [
 ]
 
 class TemplateCompiler
-  constructor: (@inStream,@outStream,@root) ->
+  constructor: (@root) ->
+    # for directives to put data
+    @data = {}
+
     @hbs = hbs.create()
 
     # Add utility functions to this instance of handlebars
@@ -77,14 +81,13 @@ class TemplateCompiler
   register: (name,fn) ->
     @hbs.registerHelper(name,withRoot(fn,{root: @root,hbs: @hbs, compiler: this}))
 
-  # cb(err)
-  compile: (cb) ->
+  # @param {String} input The string to compile as template
+  # @param {Function(Error,String)} Callbacks with the compiled output string.
+  compile: (input,cb) ->
     async.waterfall [
-      @readInput.bind(@)
-      @renderhbs.bind(@)
+      @renderhbs.bind(@,input)
       @renderMarkedDown.bind(@)
       @applyTransforms.bind(@)
-      @writeOutput.bind(@)
     ], cb
 
   # @param content (String)
@@ -109,29 +112,17 @@ class TemplateCompiler
   # TODO: change the contract to through pipes.
   applyTransforms: (input,cb) ->
     pipe = async.compose.apply(@,TRANSFORMERS)
-    pipe(input,cb)
+    pipe(this,input,cb)
 
   renderMarkedDown: (input,cb) ->
+    renderer = new marked.Renderer()
+    idfy = (str) -> _s.dasherize(str.toLowerCase())
+    renderer.header = (text,level) ->
+      "<h#{level} id='#{idfy(text)}'>#{text}</h#{level}>"
     marked input, {
       highlight: (code,lang) =>
         highlight(code,lang,@hbs)
+      renderer: renderer
       }, cb
-
-  # cb(err,streamData:String)
-  readInput: (cb) ->
-    chunks = []
-    @inStream.on "data", (data) ->
-      # assume is a buffer
-      # TODO type check
-      chunks.push data.toString()
-    @inStream.on "end", ->
-      cb(null,chunks.join(""))
-    @inStream.on "error", (error) ->
-      cb(error)
-
-  # @param result (String)
-  # cb(err)
-  writeOutput: (result,cb) ->
-    @outStream.write(result,"utf8",cb)
 
 module.exports = TemplateCompiler
