@@ -53,7 +53,7 @@ module.exports = class BaseAction
     defaults = {}
 
     if @isMobile()
-      defaults.layout = "mobile"
+      # defaults.layout = "mobile"
       defaults.isMobile = true
 
     opts = _.defaults(locals,defaults)
