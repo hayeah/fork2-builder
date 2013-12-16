@@ -13,6 +13,7 @@
     "highlight.js": "~7.3.0",
     "jquery-fast-click": "https://github.com/dave1010/jquery-fast-click.git#~1.0.0",
     "bootstrap": "~3.0.3",
-    "bigfoot.js": "https://github.com/pxldot/bigfoot.git"
+    "bigfoot.js": "https://github.com/pxldot/bigfoot.git",
+    "react": "~0.5.1"
   }
 }
