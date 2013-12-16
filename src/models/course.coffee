@@ -6,14 +6,17 @@ class Course
   # @attr {[Unit]} units contained in the course.
   units: []
 
-  # @param data.content {[Path]} sequence of content files for this course.
+  # @param data.content {Path} sequence of content files for this course.
+  # @param data.$outline {[[Header]]} outline extracted from content. (only for built project)
   constructor: (data) ->
     @metadata = data
     prev_unit = null
 
+    @outline = @metadata["$outline"]
+
     @units = []
-    for path in data.content
-      unit = new Unit(this,path,prev_unit)
+    for path, i in data.content
+      unit = new Unit(this,path,prev_unit,@outline[i])
       @units.push unit
       prev_unit = unit
 
