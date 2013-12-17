@@ -42,6 +42,7 @@ markdown = buildHelper("./directives/markdown")
 # TODO: refactor this to be a separate file
 directives =
   code: buildHelper("./directives/code")
+  prompt: buildHelper("./directives/prompt")
   md: markdown
   markdown: markdown
   footnote: buildHelper("./directives/footnote")
