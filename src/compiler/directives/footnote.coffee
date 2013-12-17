@@ -27,7 +27,8 @@ class FootnoteContent extends Base
 FootnoteContent.transform = (compiler,input,cb) ->
   footnotes = compiler.data["footnotes"] || []
   if footnotes.length == 0
-    return input
+    cb null, input
+    return
 
   html = """
   <ol class="footnotes">
