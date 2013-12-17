@@ -17,6 +17,7 @@ class App
   # @params options.content [Path] The directory of a built project.
   constructor: (@options) ->
     @contentRoot = @options.contentRoot
+    @pkgRoot = pkgRoot
     @setupExpress()
 
   setupExpress: ->
@@ -57,6 +58,7 @@ class App
     @handle "get", '/bootstrap', require("./actions/bootstrap_demo")
     @handle "get", '/react', require("./actions/react_sandbox")
     # @handle "get", "/terminal", require("./actions/terminal")
+    @handle "get", '/sample/:name', require("./actions/sample")
     @handle "get", '/:permalink', require("./actions/show")
 
   start: (port) ->
