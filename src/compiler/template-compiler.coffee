@@ -121,9 +121,11 @@ class TemplateCompiler
     idfy = (str) -> _s.dasherize(str.toLowerCase())
     renderer.header = (text,level) ->
       "<h#{level} id='#{idfy(text)}'>#{text}</h#{level}>"
+    renderer.blockcode = (code,lang) =>
+      console.log "doing highlight"
+      result = highlight(code,lang,@hbs)
+      "<pre><code>#{result}</pre></code>"
     marked input, {
-      highlight: (code,lang) =>
-        highlight(code,lang,@hbs)
       renderer: renderer
       }, cb
 
