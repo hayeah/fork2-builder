@@ -43,6 +43,7 @@ markdown = buildHelper("./directives/markdown")
 directives =
   code: buildHelper("./directives/code")
   prompt: buildHelper("./directives/prompt")
+  aside: buildHelper("./directives/aside")
   md: markdown
   markdown: markdown
   footnote: buildHelper("./directives/footnote")

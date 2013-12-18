@@ -5,8 +5,7 @@ template = Handlebars.compile """
 <div class="prompt">
   {{~#each rows}}
   <div class="prompt-row">
-    <div class="prompt-prompt">{{../prompt}}</div>
-    <div class="prompt-input">{{input}}</div>
+    <div class="prompt-input"><span class="prompt-prompt">{{../prompt}}</span> {{input}}</div>
     <div class="prompt-output">{{output}}</div>
   </div>
   {{~/each}}
@@ -16,7 +15,6 @@ template = Handlebars.compile """
 class Prompt extends Base
   process: (prompt,cb) ->
     sections = @splitSections()
-    console.log sections
     i = 0
     rows = []
     while i < sections.length
@@ -26,7 +24,6 @@ class Prompt extends Base
       i += 2
 
     output = template(rows: rows, prompt: prompt).trim()
-    console.log output
     cb(null,output.trim())
 
 module.exports = Prompt
