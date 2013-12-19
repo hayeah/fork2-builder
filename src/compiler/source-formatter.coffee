@@ -56,7 +56,10 @@ class SourceFormatter
   format: (decorators,cb) ->
     async.waterfall [
       @initDOM.bind(@)
-      @filter.bind(@,decorators["filter"] || [])
+      (cb) =>
+        @filter(decorators["filter"] || [])
+        @normalizeDOM()
+        cb(null)
       (cb) =>
         cb(null,@$.html())
     ], cb
@@ -71,10 +74,10 @@ class SourceFormatter
       cb(null)
 
   $wrapper: ->
-    @$(".highlight pre")
+    @$("root > div")
 
   $lines: ->
-    @$(".highlight pre > span")
+    @$("pre > span")
 
   # pygmentize -f html -P classprefix=pyg- -P full=True  -P linespans=line  doc/template-examples/code/example.rb
   colorSyntax: (cb) ->
@@ -95,7 +98,7 @@ class SourceFormatter
 
   # Pluck out sources using tags. Will also remove source tags.
   # @callback {[Error,String]}
-  filter: (filter,cb) ->
+  filter: (filter) ->
     source = @taggedSource
     source.selectAll()
 
@@ -122,7 +125,22 @@ class SourceFormatter
       $line = @$("#ln-#{i+1}") # pygment's numbering starts at 1
       $line.remove()
 
-    cb(null)
+    return
+
+  # final pass before output
+  normalizeDOM: () ->
+    for line in @$lines()
+      $line = @$(line)
+      id = $line.attr("id")
+      $line.removeAttr("id")
+      lineno = id.split("-")[1]
+      $line.attr("data-line",lineno)
+
+    div = @$wrapper()
+    div.removeClass("highlight")
+    div.addClass("pyg-code")
+
+    return
 
 
 module.exports = SourceFormatter

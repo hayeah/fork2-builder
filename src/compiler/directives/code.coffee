@@ -48,7 +48,7 @@ class Code extends Base
   highlightSource: (input, cb) ->
 
   prepareHTML: (input,cb) ->
-    cb null, @safe("<pre><code>#{input}</code></pre>")
+    cb null, @safe(input)
 
   # # Uses ace editor's modelist to guess language name from a given filename.
   # # @return (String|null) the language name, or null if there's no associated mode.

@@ -93,10 +93,22 @@ end # ::end-mod-abc::
       $lines.should.property("length",2)
       $lines.text().should.eql "module ABC::DEF\nend\n"
 
+  describe "#normalizeDOM", ->
+    beforeEach (done) ->
+      @me = js()
+      @me.initDOM (err) =>
+        @me.normalizeDOM()
+        done(err)
+
+    it "makes line numbers a data attribute instead of id", ->
+      result = @me.$.html()
+      beginning = '<div class="pyg-code"><pre><span data-line="1">'
+      result.should.string beginning
+
   describe "#format", ->
     before (done) ->
       @me = js()
-      @me.format (err,result) =>
+      @me.format {}, (err,result) =>
         @output = result
         done(err)
 
