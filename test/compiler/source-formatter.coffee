@@ -72,6 +72,18 @@ end # ::end-mod-abc::
         @$(ln1).text().trim().should.eql "var i = 10;"
         @$(ln2).text().trim().should.eql "var j = 40;"
 
+  describe "#highlight", ->
+    beforeEach (done) ->
+      @me = tagged_ruby()
+      @me.initDOM done
+
+    it "highlights a line", ->
+      @me.highlight [
+        {at: "mod-abc"}
+      ]
+
+      @me.$line(0).hasClass("pyg-hll").should.be.true
+
   describe "#filter", ->
     beforeEach (done) ->
       @me = tagged_ruby()
@@ -102,7 +114,8 @@ end # ::end-mod-abc::
 
     it "makes line numbers a data attribute instead of id", ->
       result = @me.$.html()
-      beginning = '<div class="pyg-code"><pre><span data-line="1">'
+      # console.log result
+      beginning = '<div class="pyg-code"><pre><div data-line="1">'
       result.should.string beginning
 
   describe "#format", ->

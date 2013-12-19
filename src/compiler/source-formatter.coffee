@@ -57,6 +57,7 @@ class SourceFormatter
     async.waterfall [
       @initDOM.bind(@)
       (cb) =>
+        @highlight(decorators["highlight"] || [])
         @filter(decorators["filter"] || [])
         @normalizeDOM()
         cb(null)
@@ -78,6 +79,9 @@ class SourceFormatter
 
   $lines: ->
     @$("pre > span")
+
+  $line: (i) ->
+    @$(@$lines()[i])
 
   # pygmentize -f html -P classprefix=pyg- -P full=True  -P linespans=line  doc/template-examples/code/example.rb
   colorSyntax: (cb) ->
@@ -127,6 +131,20 @@ class SourceFormatter
 
     return
 
+  highlight: (commands) ->
+    source = @taggedSource
+    source.selectNone()
+
+    for cmd in commands
+      if addr = cmd.at
+        source.select(addr)
+      else throw "unknown highlight command: #{cmd}"
+
+    # console.log "hl", source.selectedLines
+    for i in source.selectedLines
+      $line = @$line(i)
+      $line.addClass("pyg-hll")
+
   # final pass before output
   normalizeDOM: () ->
     for line in @$lines()
@@ -135,6 +153,8 @@ class SourceFormatter
       $line.removeAttr("id")
       lineno = id.split("-")[1]
       $line.attr("data-line",lineno)
+      tag = $line[0]
+      tag.name = "div"
 
     div = @$wrapper()
     div.removeClass("highlight")
