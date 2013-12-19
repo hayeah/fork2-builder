@@ -58,7 +58,7 @@ class SourceFormatter
       @initDOM.bind(@)
       (cb) =>
         @highlight(decorators["highlight"] || [])
-        @filter(decorators["filter"] || [])
+        @filter(decorators["filter"] || ["all"])
         @normalizeDOM()
         cb(null)
       (cb) =>
@@ -102,13 +102,14 @@ class SourceFormatter
 
   # Pluck out sources using tags. Will also remove source tags.
   # @callback {[Error,String]}
-  filter: (filter) ->
+  filter: (commands) ->
     source = @taggedSource
-    source.selectAll()
+    source.selectNone()
 
-    # console.log source.tags
-    for command in filter
-      if command == "none"
+    for command in commands
+      if command == "all"
+        source.selectAll()
+      else if command == "none"
         source.selectNone()
       else if addr = command.add
         source.select(addr)
@@ -135,10 +136,15 @@ class SourceFormatter
     source = @taggedSource
     source.selectNone()
 
-    for cmd in commands
-      if addr = cmd.at
+    for command in commands
+      if command == "none"
+        source.selectNone()
+      else if addr = command.add
         source.select(addr)
-      else throw "unknown highlight command: #{cmd}"
+      else if addr = command.del
+        source.deselect(addr)
+      else
+        throw "unknown filter command: #{command}"
 
     # console.log "hl", source.selectedLines
     for i in source.selectedLines
