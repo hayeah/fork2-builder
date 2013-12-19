@@ -38,7 +38,7 @@ class TaggedSource
     @selectAll()
 
   # Returns source lines meant for input. It also remove a line if all it has no content except the source tag.
-  # @return {[String]} Selected lines as strings.
+  # @return {[Integer]} Line numbers of output lines.
   getOutputLines: ->
     numAsc = ((a,b) -> a - b)
     sortedLines = @selectedLines.sort numAsc
@@ -48,7 +48,7 @@ class TaggedSource
       if @isEmptyTagLine(i)
         continue
       else
-        output.push line
+        output.push i
 
     return output
 
@@ -59,8 +59,8 @@ class TaggedSource
 
   # Combines the selected lines.
   # @return {String}
-  getOutput: ->
-    @getOutputLines().join "\n"
+  # getOutput: ->
+  #   @getOutputLines().join "\n"
 
   selectAll: ->
     @selectedLines = [0...@lines.length]

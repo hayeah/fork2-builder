@@ -43,8 +43,7 @@ describe "TaggedSource", ->
       @lines = @me.getOutputLines()
 
     it "strips out lines that are empty except for tagging", ->
-      @lines.should.length(7)
-      @lines[1].should.match /def len\(\[\]\)/
+      @lines.should.eql [0,2,3,5,7,8,10]
 
   describe "#at", ->
     it "gets the position of a tag", ->
