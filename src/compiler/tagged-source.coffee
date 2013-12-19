@@ -17,6 +17,11 @@ _ = require "lodash"
 # Utility to represent a tagged source file. This is useful for extracting
 # lines, or referencing lines by tags for other purposes (like annotation and
 # highlighting)
+#
+# @property tags {String:Integer} mapping of tags to line numbers
+# @property lineOfTag {Integer:String} inverse of @tags
+# @property lines {[String]} Lines with source tags stripped
+# @property selectedLines {[Integer]} line numbers of selected lines. Initially, all lines
 class TaggedSource
   tagNameRE = "[a-zA-Z][a-zA-Z1-9-_]+" # conservative tag pattern
 
@@ -24,22 +29,38 @@ class TaggedSource
     @tagre = new RegExp("# ::(#{tagNameRE})::")
     @tags = {}
     @original_lines = @source.split(/\r?\n/)
-    # strip tags
-    [@lines,@tags] = @extractTags(@original_lines)
 
-    # index of selected lines. Initially all.
+    [@lines,@tags] = @extractTags(@original_lines)
+    @lineOfTag = []
+    for tag, lineno of @tags
+      @lineOfTag[lineno] = tag
+
     @selectedLines = [0...@lines.length]
+
+  # Returns source lines meant for input. It also remove a line if all it has no content except the source tag.
+  # @return {[String]} Selected lines as strings.
+  getOutputLines: ->
+    numAsc = ((a,b) -> a - b)
+    sortedLines = @selectedLines.sort numAsc
+    output = []
+    for i in sortedLines
+      line = @lines[i]
+      if @isEmptyTagLine(i)
+        continue
+      else
+        output.push line
+
+    return output
+
+  isEmptyTagLine: (lineno) ->
+    line = @lines[lineno]
+    # console.log "isEmptyTagLine", [line.trim() == "",@lineOfTag,@lineOfTag[lineno]]
+    line.trim() == "" && @lineOfTag[lineno] != undefined
 
   # Combines the selected lines.
   # @return {String}
   getOutput: ->
-    numAsc = ((a,b) -> a - b)
-    sortedLines = @selectedLines.sort numAsc
-    console.log "Sorted", sortedLines
-    lines = for i in sortedLines
-      @lines[i]
-
-    lines.join "\n"
+    @getOutputLines().join "\n"
 
   select: (addr) ->
     @selectedLines = _.union @selectedLines, @addr(addr)
@@ -68,7 +89,7 @@ class TaggedSource
           tags[tag] = lineno
 
         # Remove the tag
-        line.replace(@tagre,"")
+        line.replace(@tagre,"").trimRight()
       else
         # Untagged line. Return as is.
         line

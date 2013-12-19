@@ -38,6 +38,14 @@ describe "TaggedSource", ->
     range = @me.betweenTags("len:1","len-end:-1",false)
     range.should.eql [2..3]
 
+  describe "output", ->
+    beforeEach ->
+      @lines = @me.getOutputLines()
+
+    it "strips out lines that are empty except for tagging", ->
+      @lines.should.length(7)
+      @lines[1].should.match /def len\(\[\]\)/
+
   describe "#at", ->
     it "gets the position of a tag", ->
       @me.at("len-2").should.eql 3
