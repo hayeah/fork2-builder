@@ -35,7 +35,7 @@ class TaggedSource
     for tag, lineno of @tags
       @lineOfTag[lineno] = tag
 
-    @selectedLines = [0...@lines.length]
+    @selectAll()
 
   # Returns source lines meant for input. It also remove a line if all it has no content except the source tag.
   # @return {[String]} Selected lines as strings.
@@ -61,6 +61,9 @@ class TaggedSource
   # @return {String}
   getOutput: ->
     @getOutputLines().join "\n"
+
+  selectAll: ->
+    @selectedLines = [0...@lines.length]
 
   select: (addr) ->
     @selectedLines = _.union @selectedLines, @addr(addr)
