@@ -30,6 +30,17 @@ class TaggedSource
     # index of selected lines. Initially all.
     @selectedLines = [0...@lines.length]
 
+  # Combine the selected lines.
+  # @return {String}
+  getOutput: ->
+    numAsc = ((a,b) -> a - b)
+    sortedLines = @selectedLines.sort numAsc
+    console.log "Sorted", sortedLines
+    lines = for i in sortedLines
+      @lines[i]
+
+    lines.join "\n"
+
   select: (addr) ->
     @selectedLines = _.union @selectedLines, @addr(addr)
 
