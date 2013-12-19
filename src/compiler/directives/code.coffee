@@ -7,7 +7,7 @@ Handlebars = require "handlebars"
 Base = require "./base"
 highlight = require "../highlight"
 modelist = require "../../utils/modelist"
-TaggedSource = require "../tagged-source"
+SourceFormatter = require "../source-formatter"
 
 template = Handlebars.compile """
 {{data}}
@@ -32,34 +32,19 @@ class Code extends Base
 
     async.waterfall [
       @readSource.bind(@,@path)
-      @filterSource.bind(@)
+      @formatSource.bind(@)
       @prepareHTML.bind(@)
     ], cb
 
   readSource: (filePath,cb) ->
     fs.readFile filePath,{encoding: "utf8"}, cb
 
-  # Pluck out sources using tags. Will also remove source tags.
   # @callback {[Error,String]}
-  filterSource: (input,cb) ->
-    filter = @decorators["filter"]
-    filter ||= []
+  formatSource: (input,cb) ->
+    lang = @guessLanguageName(@path)
+    formatter = new SourceFormatter(input,lang)
+    formatter.format @decorators,cb
 
-    source = new TaggedSource(input)
-    # console.log source.tags
-    for command in filter
-      if command == "none"
-        source.selectNone()
-      else if addr = command.add
-        source.select(addr)
-      else if addr = command.del
-        source.deselect(addr)
-      else
-        throw "unknown filter command: #{command}"
-
-    cb(null,source.getOutput())
-
-  #
   highlightSource: (input, cb) ->
 
   prepareHTML: (input,cb) ->
@@ -67,13 +52,13 @@ class Code extends Base
 
   # # Uses ace editor's modelist to guess language name from a given filename.
   # # @return (String|null) the language name, or null if there's no associated mode.
-  # guessLanguageName: (path) ->
-  #   match = modelist.getModeForPath(path)
+  guessLanguageName: (path) ->
+    match = modelist.getModeForPath(path)
 
-  #   if match.name == "text"
-  #     return null
+    if match.name == "text"
+      return null
 
-  #   return match.name
+    return match.name
 
 module.exports = Code
 
