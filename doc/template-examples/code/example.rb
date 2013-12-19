@@ -15,7 +15,6 @@ module ABC::DEF # ::mod-abc::
   end
   # ::end-def-foo::
 
-
   def [](index) self[index] end
   def ==(other) other == self end
 end # ::end-mod-abc::
