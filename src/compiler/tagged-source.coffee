@@ -25,12 +25,12 @@ class TaggedSource
     @tags = {}
     @original_lines = @source.split(/\r?\n/)
     # strip tags
-    @lines = @_extractTags()
+    [@lines,@tags] = @extractTags(@original_lines)
 
     # index of selected lines. Initially all.
     @selectedLines = [0...@lines.length]
 
-  # Combine the selected lines.
+  # Combines the selected lines.
   # @return {String}
   getOutput: ->
     numAsc = ((a,b) -> a - b)
@@ -50,20 +50,30 @@ class TaggedSource
   selectNone: ->
     @selectedLines = []
 
-  # Extracts tags from lines, and strip them from the source.
-  _extractTags: ->
-    for line, lineno in @original_lines
+  # Extracts tags from lines, and remove source tags from the source lines.
+  # Return the extracted tags and cleaned up lines.
+  #
+  # @param {[Lines]} Lines of source code to extract tags from.
+  # @return {[Lines,Tags]}
+  extractTags: (sourceLines) ->
+    tags = {}
+    lines = for line, lineno in sourceLines
       if match = @tagre.exec(line)
-        # store the tagged line
+        # This line is tagged
         tagData = match[1]
-        tags = tagData.split(",")
-        for tag in tags
-          @tags[tag] = lineno
+        newTags = tagData.split(",")
 
-        # strip out the tag
+        # Add new tags
+        for tag in newTags
+          tags[tag] = lineno
+
+        # Remove the tag
         line.replace(@tagre,"")
       else
+        # Untagged line. Return as is.
         line
+
+    return [lines, tags]
 
   # Returns line number of a tag. Raises if tag doesn't exist.
   #
