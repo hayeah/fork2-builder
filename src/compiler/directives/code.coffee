@@ -1,46 +1,57 @@
 fs = require 'fs'
 path = require 'path'
 async = require 'async'
+yaml = require 'js-yaml'
+Handlebars = require "handlebars"
 
+Base = require "./base"
 highlight = require "../highlight"
 modelist = require "../../utils/modelist"
+SourceFormatter = require "../source-formatter"
 
-class Code
-  constructor: (@options) ->
-    @hbs = @options.hbs
-    @lang = @options.hash.lang
-    @root = @options.root
+template = Handlebars.compile """
+{{data}}
+"""
 
+class Code extends Base
   # @param filepath {Path} The path to read piece of code from. Relative to project root.
   process: (filepath,cb) ->
-    @path = filepath
-    if !(@path and cb)
-      throw "no path is given to read source code from."
+    unless typeof filepath == "string"
+      cb("no path is given to read source code from.")
       return
+
+    # path to read code source from.
+    @path = path.join @root, "code", filepath
+
+    if yamlData = @contentString()
+      @decorators = yaml.safeLoad(yamlData)
+    else
+      @decorators = {}
+
+    # console.log "decorators", @decorators
+
     async.waterfall [
-      (cb) =>
-        fs.readFile path.join(@root,@path),{encoding: "utf8"}, cb
-      (source,cb) =>
-        source = @prepareSource(source)
-        # the span wrapper is used to measure the width of the code block
-        html = "<pre><code><span>#{source}</span></code></pre>"
-        cb(null,@hbs.safe(html))
+      @readSource.bind(@,@path)
+      @formatSource.bind(@)
+      @prepareHTML.bind(@)
     ], cb
 
-  # Return the source code as html content. Highlight it there's a match highlighter.
-  # @return (HTML)
-  prepareSource: (code) ->
-    if @lang
-      lang = @lang
-    else if @path
-      lang = @guessLanguageName(@path)
-    else
-      lang = null
+  readSource: (filePath,cb) ->
+    fs.readFile filePath,{encoding: "utf8"}, cb
 
-    highlight(code,lang,@hbs)
+  # @callback {[Error,String]}
+  formatSource: (input,cb) ->
+    lang = @guessLanguageName(@path)
+    formatter = new SourceFormatter(input,lang)
+    formatter.format @decorators,cb
 
-  # Uses ace editor's modelist to guess language name from a given filename.
-  # @return (String|null) the language name, or null if there's no associated mode.
+  highlightSource: (input, cb) ->
+
+  prepareHTML: (input,cb) ->
+    cb null, @safe(input)
+
+  # # Uses ace editor's modelist to guess language name from a given filename.
+  # # @return (String|null) the language name, or null if there's no associated mode.
   guessLanguageName: (path) ->
     match = modelist.getModeForPath(path)
 
@@ -48,12 +59,6 @@ class Code
       return null
 
     return match.name
-
-  highlight: (lang,code) ->
-    hljs.highlight(lang,code).value
-
-
-
 
 module.exports = Code
 

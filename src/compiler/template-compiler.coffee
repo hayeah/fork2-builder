@@ -1,10 +1,12 @@
 marked = require 'marked'
 
-highlight = require "./highlight"
+# highlight = require "./highlight"
 async = require 'async'
 sync = require 'sync'
 hbs = require("handlebars")
 _s = require "underscore.string"
+
+SourceFormatter = require "./source-formatter"
 
 # Add the root parameter to helper options when it is invoked.
 # @param root (Path) the root path for template compilation
@@ -88,7 +90,10 @@ class TemplateCompiler
   compile: (input,cb) ->
     async.waterfall [
       @renderhbs.bind(@,input)
-      @renderMarkedDown.bind(@)
+      (input,cb) =>
+        sync (=>
+          @renderMarkedDown(input)
+        ), cb
       @applyTransforms.bind(@)
     ], cb
 
@@ -116,15 +121,23 @@ class TemplateCompiler
     pipe = async.compose.apply(@,TRANSFORMERS)
     pipe(this,input,cb)
 
-  renderMarkedDown: (input,cb) ->
+  renderMarkedDown: (input) ->
     renderer = new marked.Renderer()
     idfy = (str) -> _s.dasherize(str.toLowerCase())
     renderer.header = (text,level) ->
       "<h#{level} id='#{idfy(text)}'>#{text}</h#{level}>"
+    renderer.blockcode = (code,lang) =>
+
+      formatter = new SourceFormatter(code,lang)
+      process = (cb) ->
+        formatter.format({},cb)
+
+      result = process.sync()
+      # console.log "md-code", result
+      @hbs.safe result
+
     marked input, {
-      highlight: (code,lang) =>
-        highlight(code,lang,@hbs)
       renderer: renderer
-      }, cb
+    }
 
 module.exports = TemplateCompiler
