@@ -1,7 +1,3 @@
-# Getting the source
-
-    git clone https://github.com/hayeah/fork2-builder.git
-
 # Prereqs
 
 Install coffee-script globally.
@@ -14,15 +10,21 @@ Add locally installed npm bin to PATH (do this for a shell session, or in your s
 
 # Install
 
+Clone the repo
+
+    git clone https://github.com/hayeah/fork2-builder.git
+
 First, cd into the root of the cloned repository.
 
     cd fork2-builder
 
-Install project dependencies locally:
+Prepare to run the project by installing project dependencies and building client Javascript:
 
-    ./install.sh
+    make up
 
-Everything is installed within the directory of the repo. [See the script](https://github.com/hayeah/fork2-builder/blob/master/install.sh). Finally, link the repo as npm package ([see npm-link](https://npmjs.org/doc/cli/npm-link.html)):
+Note that everything is installed locally.
+
+Finally, link the repo as npm package ([see npm-link](https://npmjs.org/doc/cli/npm-link.html)):
 
     sudo npm link
 
@@ -36,16 +38,31 @@ Everything is installed within the directory of the repo. [See the script](https
 
 # Building Client-Side
 
-To build client-side assets:
+The client side code is in its own subdirectory, in `src/client`. To build it:
 
+    # in src/client
     make build
+
+To automatically rebuild on change,
+
+    # in src/client
+    make watch
+
+To completely rebuild
+
+    # in src/client
+    make rebuild
+
+# Bundling the Client-Side for Release
 
 To create the bundled client-side assets
 
+    # in src/client
     make bundle
 
 Or to build the bundle without optimizing with uglify, to inspect the output,
 
+    # in src/client
     make bundle optimize=none
 
 # Pitfall
