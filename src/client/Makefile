@@ -11,6 +11,8 @@ bower := bower_components
 bundle := bundle
 optimize := uglify2
 
+css_img_files := $(shell find $(css_src)/img -type f)
+
 .PHONY: bundle build watch deps
 
 rebuild: clean build
@@ -48,7 +50,13 @@ $(js_build)/%.js: $(js_src)/%.coffee $(js_files)
 	$(browserify) -o $@ $< || rm $@
 
 # CSS Build Rules
-css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css)
+css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css) css/img
+
+css/img: $(subst $(css_src)/img,$(css_build)/img,$(css_img_files))
+
+$(css_build)/img/%: $(css_src)/img/%
+	@mkdir -p $(css_build)/img
+	cp $< $@
 
 $(css_build)/%.css: $(css_src)/%.less $(css_files)
 	lessc $< $@ --source-map-map-inline --source-map-less-inline
