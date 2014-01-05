@@ -2,7 +2,7 @@ view_id = "#page-view"
 
 # refHighlight = require("./ref-highlight")
 mods = [
-  require("./page/quiz")
+  require("../ui/Quiz")
   require("./page/bigfoot")
 ]
 
