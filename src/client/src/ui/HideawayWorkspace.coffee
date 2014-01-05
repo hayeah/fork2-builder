@@ -1,7 +1,7 @@
 headerHeight = 50
 headerMargin = 20
 
-class Workspace
+class HideawayWorkspace
   constructor: (@$workspace,@$main) ->
     @isHidden = true
     @setPctHeight(1/3)
@@ -61,6 +61,6 @@ class Workspace
 
 
 plugin = (workspace,main) ->
-  window.workspace = new Workspace($(workspace),$(main))
+  window.workspace = new HideawayWorkspace($(workspace),$(main))
 
 module.exports = plugin

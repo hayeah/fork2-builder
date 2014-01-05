@@ -7,6 +7,6 @@ mods = [
 ]
 
 $ ->
-  require("./page/workspace")("#workspace","#main")
+  require("../ui/HideawayWorkspace")("#workspace","#main")
   for mod in mods
     mod(view_id)
