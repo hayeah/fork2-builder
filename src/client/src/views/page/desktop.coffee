@@ -7,5 +7,6 @@ mods = [
 ]
 
 $ ->
+  require("./workspace")("#workspace","#main")
   for mod in mods
     mod(view_id)
