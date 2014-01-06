@@ -1,66 +1,38 @@
-headerHeight = 50
-headerMargin = 20
+# This is an ugly abstraction. It probably should just provide Rx properties, other things coordinate with hideaway by reacting to it.
+{div,span} = React.DOM
+cx = React.addons.classSet
 
-class HideawayWorkspace
-  constructor: (@$workspace,@$main) ->
-    @isHidden = true
-    @setPctHeight(1/3)
+RxReactMixin = require("../rx/RxReactMixin")
 
-    $(window).resize _.debounce ((e) =>
-      @adjustContainerHeights()
-    ), 300
+HideawayWorkspace = React.createClass({
+  mixins: [RxReactMixin]
 
-  # showMore: ->
-  #   @show(2/3)
+  getInitialRxState: ->
+    { isActive: false }
 
-  # showLess: ->
-  #   @show(1/3)
+  # getDefaultProps: ->
+  # componentWillMount: ->
 
-  minimize: ->
-    @setHeight(100)
+  componentDidMount: (rootNode) ->
+    $(window).on "keyup", (e) =>
+      if e.keyCode == 191 # "/"
+        @toggle()
 
-  maximize: ->
-    @setMainHeight(200)
+  toggle: ->
+    @setRxState isActive: !@state.isActive
 
-  # showMin: ->
-  #   @show(150)
+  # componentWillReceiveProps: (nextProps) ->
+  # shouldComponentUpdate: (nextProps,nextState) ->
+  # componentWillUpdate: (nextProps,nextState) ->
+  # componentDidUpdate: (prevProps,prevState,rootNode) ->
+  # componentWillUnmount: ->
 
-  show: () ->
-    return if !@isHidden
-    @isHidden = false
-    @$workspace.css(top: -@currentHeight).show()
-    @$workspace.animate(top: headerHeight)
-    @$main.animate("padding-top": @mainTop)
+  render: ->
+    cs = cx {
+      hidden: !@state.isActive
+    }
 
-  setPctHeight: (pctHeight) ->
-    @setHeight $(window).height() * pctHeight
+    div({className: "hideaway-workspace #{cs}"},"workspace")
+})
 
-  setHeight: (height) ->
-    @currentHeight = height
-    @adjustContainerHeights()
-
-  # main height = window - headertotal - workspace
-  setMainHeight: (mainHeight) ->
-    workSpaceHeight = $(window).height() - headerHeight -  headerMargin - mainHeight
-    @setHeight workSpaceHeight
-
-  adjustContainerHeights: () ->
-    @mainTop = @currentHeight + headerHeight + headerMargin
-
-    if !@isHidden
-      @$workspace.animate height: @currentHeight
-      @$main.animate "padding-top": @mainTop
-    else
-      @$workspace.height @currentHeight
-
-  hide: ->
-    return if @isHidden
-    @isHidden = true
-    @$workspace.animate(top: -@$workspace.height())
-    @$main.animate("padding-top": headerHeight+headerMargin)
-
-
-plugin = (workspace,main) ->
-  window.workspace = new HideawayWorkspace($(workspace),$(main))
-
-module.exports = plugin
+module.exports = HideawayWorkspace
