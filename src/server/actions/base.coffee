@@ -2,6 +2,8 @@ Course = require "../../models/course"
 path = require 'path'
 _ = require "lodash"
 
+DEBUG = !!process.env.DEBUG
+
 module.exports = class BaseAction
   constructor: (@req,@res,@app) ->
     @express = @app.express
@@ -50,7 +52,7 @@ module.exports = class BaseAction
     @_course ||= Course.load(path.join(@root,"course.json"))
 
   render: (view,locals={}) ->
-    defaults = {}
+    defaults = {DEBUG: DEBUG}
 
     if @isMobile()
       # defaults.layout = "mobile"

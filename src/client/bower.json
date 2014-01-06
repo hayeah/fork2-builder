@@ -15,6 +15,7 @@
     "bootstrap": "~3.0.3",
     "bigfoot.js": "https://github.com/pxldot/bigfoot.git",
     "react": "~0.5.1",
-    "bacon": "https://github.com/baconjs/bacon.js.git#~0.7.0"
+    "bacon": "https://github.com/baconjs/bacon.js.git#~0.7.0",
+    "contracts.js": "https://github.com/disnet/contracts.js.git#~0.3.4"
   }
 }

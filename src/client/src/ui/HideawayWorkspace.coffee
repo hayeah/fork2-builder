@@ -7,6 +7,11 @@ RxReactMixin = require("../rx/RxReactMixin")
 HideawayWorkspace = React.createClass({
   mixins: [RxReactMixin]
 
+  getInitialState: ->
+    {
+      content: null
+    }
+
   getInitialRxState: ->
     { isActive: false }
 
@@ -21,6 +26,11 @@ HideawayWorkspace = React.createClass({
   toggle: ->
     @setRxState isActive: !@state.isActive
 
+  # @param {PlaySpec} spec
+  open: (spec) ->
+    content = div(null,"spec:",JSON.stringify(spec))
+    @setState content: content
+
   # componentWillReceiveProps: (nextProps) ->
   # shouldComponentUpdate: (nextProps,nextState) ->
   # componentWillUpdate: (nextProps,nextState) ->
@@ -32,7 +42,9 @@ HideawayWorkspace = React.createClass({
       hidden: !@state.isActive
     }
 
-    div({className: "hideaway-workspace #{cs}"},"workspace")
+    div({className: "hideaway-workspace #{cs}"},
+      div({className: "container"},@state.content)
+    )
 })
 
 module.exports = HideawayWorkspace
