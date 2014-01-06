@@ -1,6 +1,10 @@
-QuizGrader = require("./quiz-grader")
-QuizMany = require("./quiz-many-jsx")
-QuizInput = require("./quiz-input-jsx")
+module.exports = (els,options={}) ->
+  window.quizzes = for el in els
+    new Quiz(el)
+
+QuizGrader = require("../ui/quiz-grader")
+QuizMany = require("../ui/quiz-many-jsx")
+QuizInput = require("../ui/quiz-input-jsx")
 
 controls = {
   "choose-many": QuizMany
@@ -24,8 +28,4 @@ class Quiz
     )
     # @control = new controlType(el,data)
 
-
-module.exports = plugin = ->
-  window.quizzes = $("#page-view .quiz").map (i,el) ->
-    new Quiz(el)
 

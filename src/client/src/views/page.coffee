@@ -1,8 +1,9 @@
 view_id = "#page-view"
 
-# refHighlight = require("./ref-highlight")
+play = require("../plugins/play")
+quiz = require("../plugins/quiz")
+
 mods = [
-  require("../ui/Quiz")
   require("./page/bigfoot")
 ]
 
@@ -23,6 +24,8 @@ class Layout
         @$main.css("padding-top": HEADER_HEIGHT)
 
 $ ->
+  play $(".play")
+  quiz $(".quiz")
   window.layout = new Layout("#workspace","#main")
   for mod in mods
     mod(view_id)

@@ -1,0 +1,11 @@
+Each module should export a function that takes an array of dom elements and
+instantiates the dynamic objects for that page. The "array" of dom elements
+could of be a jQuery array.
+
+This is a jQuery-esque plugin API without actually being a jQuery plugin.
+
+# @param {Array.<DOMElement>} elements
+# @param {?Object} options
+
+plugin = (elements,options) ->
+  # plugin init
