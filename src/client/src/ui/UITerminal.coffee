@@ -60,11 +60,12 @@ UITerminal = React.createClass({
     el = @refs.pty.getDOMNode()
     cursor = $(el).find(".terminal-cursor")
     # cursorSize = [cursor.width(),cursor.height()] # this borks if terminal is not hidden. would be [0,0]
-    cursorSize = [7,13] # FIXME: hardwire for now...
+    cursorSize = [7,15] # FIXME: hardwire for now...
 
     calculatePTYSize = (contentSize) ->
-      w = contentSize.width
-      h = contentSize.height
+      # -10 to account for 5px border all around
+      w = contentSize.width - 10
+      h = contentSize.height - 10
       {
         cols: Math.floor(w / cursorSize[0])
         rows: Math.floor(h / cursorSize[1])
