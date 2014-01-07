@@ -4,3 +4,6 @@ bower_components/underscore/underscore.js
 bower_components/react/react-with-addons.js
 bower_components/bigfoot.js/bigfoot.js
 bower_components/bacon/dist/Bacon.js
+bower_components/socket.io-client/dist/socket.io.js
+
+bower_components/term.js/src/term.js
