@@ -60,7 +60,7 @@ Arr = (val) ->
 Name = (name,test) ->
   f = (val) ->
     if err = test(val)
-      return error "Invalid #{name}:", val, err
+      return error "#{name}:", val, err
   f.contractName = name
   return f
 
@@ -71,7 +71,7 @@ Hash = (tests) ->
 
     for key, test of tests
       if err = test(val[key])
-        return error "Invalid property '#{key}':", val, err
+        return error "Property '#{key}':", val, err
 
     return
 
@@ -86,7 +86,7 @@ List = (test,n) ->
 
     for e, i in val
       if err = test(e)
-        return error "Invalid at #{i}:", val, err
+        return error "At #{i}:", val, err
 
     return
 
@@ -101,7 +101,7 @@ Tuple = (tests,n) ->
 
     for test, i in tests
       if err = test(val[i])
-        return error "Invalid at #{i}:", val, err
+        return error "At #{i}:", val, err
 
     return
 
