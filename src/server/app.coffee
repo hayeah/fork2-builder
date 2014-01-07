@@ -2,6 +2,8 @@
 #   handle: ->
 #     @res.render("terminal")
 
+require "../check"
+
 http = require("http")
 express = require('express')
 ehbs = require("express3-handlebars")
@@ -12,6 +14,10 @@ path = require 'path'
 pkgRoot = path.normalize(path.join __dirname, "../..")
 serverDir = path.join pkgRoot, "src/server"
 console.log "pkg root: #{pkgRoot}"
+
+Socket = require("socket.io")
+PingServer = require("./PingServer")
+PTYServer = require("./PTYServer")
 
 class App
   # @params options.content [Path] The directory of a built project.
@@ -64,9 +70,11 @@ class App
   start: (port) ->
     @server = http.createServer(@express)
     @server.listen(port || 3000)
-    # @socket = require("socket.io").listen(@server)
-    # @socket.of("/webso/pty").on "connection", (so) =>
-    #   new PTYServer(so,@contentRoot)
+    @socket = Socket.listen(@server)
+    @socket.on "connection", (so) =>
+      # new PingServer(so)
+      new PTYServer(so)
+
     console.log "Process #{process.pid} Listening to port #{port}"
 
   handle: (verb,path,action) ->

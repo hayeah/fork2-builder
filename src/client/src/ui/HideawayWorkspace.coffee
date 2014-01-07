@@ -5,6 +5,17 @@ cx = React.addons.classSet
 
 RxReactMixin = require("../rx/RxReactMixin")
 
+UITerminal = require("../ui/UITerminal")
+
+###*
+* @property {Connection} conn A connection
+###
+
+# @param {String} id
+# @param {ShellProgram} spec
+makePTY = (id,spec) ->
+  UITerminal({key: id, program: spec})
+
 HideawayWorkspace = React.createClass({
   mixins: [RxReactMixin]
 
@@ -14,24 +25,48 @@ HideawayWorkspace = React.createClass({
     }
 
   getInitialRxState: ->
-    { isActive: false }
+    {
+      isActive: false
+
+      # @type {DOMSize} amount of space available to display content, in pixels.
+      contentSize: undefined
+    }
 
   # getDefaultProps: ->
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
+    @rx.contentSize.log()
+
     $(window).on "keyup", (e) =>
       if e.keyCode == 191 # "/"
         @toggle()
 
+  getContentSize: ->
+    $contentEl = $ @refs.content.getDOMNode()
+    {width: $contentEl.width(),height: $contentEl.height()}
+
   toggle: ->
-    @setRxState isActive: !@state.isActive
+    #console.log "before toggle", @getContentSize()
+    @setRxState {isActive: !@state.isActive}, =>
+      # console.log "after toggle", @getContentSize()
+    # @setRxState isActive: !@state.isActive
 
   # @param {PlaySpec} spec
   open: (spec) ->
     check "PlaySpec", spec
-    content = div(null,"spec:",JSON.stringify(spec))
-    @setState content: content
+    @setRxState {isActive: true}, =>
+      shell = spec.open[0]
+      content = UITerminal({
+        key: "pty-1"
+        program: shell
+        size: @rx.contentSize
+        conn: @props.conn
+        })
+
+      @setRxState contentSize: @getContentSize()
+      @setState content: content
+
 
   # componentWillReceiveProps: (nextProps) ->
   # shouldComponentUpdate: (nextProps,nextState) ->
@@ -45,7 +80,7 @@ HideawayWorkspace = React.createClass({
     }
 
     div({className: "hideaway-workspace #{cs}"},
-      div({className: "container"},@state.content)
+      div({ref: "content",className: "container"},@state.content)
     )
 })
 

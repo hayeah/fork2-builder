@@ -1,6 +1,9 @@
 # A type contract is a (Value -> Boolean) function.
 
-{Name,Hash,List,Str,Num,Eql,printError} = C = require("./contracts")
+{Name,Hash,List,Tuple,Str,Num,Eql,printError} = C = require("./contracts")
+
+# @typedef {{width: Integer, height: Integer}} DOMSize width and height of a DOM element in pixels.
+DOMSize = Name "DOMSize", Hash(height: Num, width: Num)
 
 # @typedef {{command: String, type: "repl"}} ShellProgram
 ShellProgram = Name "ShellProgram", Hash(command: Str, type: Eql("repl"))
@@ -12,6 +15,8 @@ OpenSpec = Name "OpenSpec", ShellProgram
 PlaySpec = Name "PlaySpec", Hash(open: List(OpenSpec))
 
 types = {
+  DOMSize: DOMSize
+  ShellProgram: ShellProgram
   OpenSpec: OpenSpec
   PlaySpec: PlaySpec
 }

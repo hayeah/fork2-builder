@@ -1,5 +1,8 @@
 view_id = "#page-view"
 
+Socket = io
+Connection = require("../Connection")
+
 play = require("../plugins/play")
 quiz = require("../plugins/quiz")
 
@@ -10,9 +13,9 @@ mods = [
 HideawayWorkspace = require("../ui/HideawayWorkspace")
 
 class PageLayout
-  constructor: (workspace,main) ->
+  constructor: (@conn,workspace,main) ->
     @$main = $(main)
-    @workspace = React.renderComponent HideawayWorkspace({}), $(workspace)[0]
+    @workspace = React.renderComponent HideawayWorkspace({conn: @conn}), $(workspace)[0]
     @$workspace = $(@workspace.getDOMNode())
     HEADER_HEIGHT = parseInt @$main.css("padding-top")
 
@@ -24,7 +27,11 @@ class PageLayout
         @$main.css("padding-top": HEADER_HEIGHT)
 
 $ ->
-  layout = new PageLayout("#workspace","#main")
+  so = Socket.connect()
+  conn = new Connection(so)
+
+  layout = new PageLayout(conn,"#workspace","#main")
+  window.ws = layout.workspace
   play $(".play"), workspace: layout.workspace
   quiz $(".quiz")
 
