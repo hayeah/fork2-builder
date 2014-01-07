@@ -1,3 +1,4 @@
+check = require("check")
 # This is an ugly abstraction. It probably should just provide Rx properties, other things coordinate with hideaway by reacting to it.
 {div,span} = React.DOM
 cx = React.addons.classSet
@@ -28,6 +29,7 @@ HideawayWorkspace = React.createClass({
 
   # @param {PlaySpec} spec
   open: (spec) ->
+    check "PlaySpec", spec
     content = div(null,"spec:",JSON.stringify(spec))
     @setState content: content
 

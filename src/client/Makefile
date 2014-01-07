@@ -2,7 +2,7 @@ build := build
 js_build := $(build)/js
 js_src := src
 js_files := $(shell find $(js_src) -type f -name '*.coffee')
-js_contracts := ../../contract/build/types.js
+js_contracts := ../types.coffee
 
 css_build := $(build)/css
 css_src := src/css
@@ -21,7 +21,7 @@ rebuild: clean build
 build: deps js css
 
 watch:
-	watchy -w src,$(js_contracts) -- make build
+	watchy -w src,$(js_contracts),../contracts.coffee -- make build
 
 clean:
 	rm -r $(build)
@@ -49,7 +49,7 @@ $(js_build)/%-vendor.js: $(js_src)/%-vendor.txt
 browserify := browserify -t hbsfy -t coffeeify --extension='.coffee' --no-detect-globals
 
 # Type contracts for debug mode
-$(js_build)/check-debug.js: $(js_contracts)
+$(js_build)/check-debug.js: $(js_contracts) ../contracts.coffee
 	$(browserify) -r $(js_contracts):check-debug -o $@ || rm $@
 
 $(js_build)/%.js: $(js_src)/%.coffee $(js_files)

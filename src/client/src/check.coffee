@@ -6,6 +6,4 @@ check =
   else
     noop
 
-console.log "loading check module", check
-
 module.exports = check
