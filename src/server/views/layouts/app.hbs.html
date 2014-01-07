@@ -19,6 +19,13 @@
     <!-- <link rel="stylesheet" type="text/css" href="/src/client/build/css/app-vendor.css"> -->
     <link rel="stylesheet" type="text/css" href="/src/client/build/css/app.css">
     {{/if}}
+
+    {{#if DEBUG}}
+    <script type="text/javascript">
+    window.DEBUG = true
+    </script>
+    <script src="/src/client/build/js/check-debug.js"></script>
+    {{/if}}
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">

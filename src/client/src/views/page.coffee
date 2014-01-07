@@ -9,7 +9,7 @@ mods = [
 
 HideawayWorkspace = require("../ui/HideawayWorkspace")
 
-class Layout
+class PageLayout
   constructor: (workspace,main) ->
     @$main = $(main)
     @workspace = React.renderComponent HideawayWorkspace({}), $(workspace)[0]
@@ -24,8 +24,9 @@ class Layout
         @$main.css("padding-top": HEADER_HEIGHT)
 
 $ ->
-  play $(".play")
+  layout = new PageLayout("#workspace","#main")
+  play $(".play"), workspace: layout.workspace
   quiz $(".quiz")
-  window.layout = new Layout("#workspace","#main")
+
   for mod in mods
     mod(view_id)
