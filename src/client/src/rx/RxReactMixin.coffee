@@ -8,8 +8,8 @@ RxReactMixin = {
       @setRxState(state)
 
   # create reactive properties and set state.
-  setRxState: (props) ->
-    @setState(props)
+  setRxState: (props,cb) ->
+    @setState(props,cb)
     RxMixin.setRx.call(@,props)
 }
 
