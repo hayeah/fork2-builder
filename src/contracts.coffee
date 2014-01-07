@@ -3,13 +3,29 @@
 
 # Link list of errors to help diagnose mismatch
 error = (message,val,lastError) ->
-  [message,val,lastError]
+  {
+    msg: message
+    val: val
+    next: lastError # Or(Err,All(Err))
+  }
 
-printError = (err) ->
+DEPTHMARKER = "=================================================="
+depthMarker = (n) ->
+  DEPTHMARKER.slice(0,n)
+
+printError = (err,depth=0) ->
   return if !err
-  [message,val,lastError] = err
-  console.log message, val
-  printError(lastError) if lastError
+  {msg,val,next} = err
+  console.log depthMarker(depth), msg, val
+  if next
+    errs = if next instanceof Array
+      next
+    else
+      [next]
+
+    for nextErr in errs
+      printError(nextErr,depth+1)
+
   return
 
 
@@ -41,7 +57,7 @@ Arr = (val) ->
 # Combinators
 
 # Name a contract
-Name = (test,name) ->
+Name = (name,test) ->
   f = (val) ->
     if err = test(val)
       return error "Invalid #{name}:", val, err
@@ -97,22 +113,25 @@ Optional = (test) ->
 Eql = (testVal) ->
   (val) ->
     unless val == testVal
-      return error "Expects to be #{val}:", val
+      return error "Expects to be #{testVal}:", val
 
 Or = (tests...) ->
   (val) ->
+    errs = []
     for test in tests
       if err = test val
+        name = if test.contractName
+          test.contractName
+        else
+          "?Anon"
+
+        errs.push error("Or #{name}:","",err)
+
         continue
       else
         return
 
-    names = for test in tests
-      if name = test.contractName
-        name
-      else
-        "?anon"
-    return error "Expects one of #{names}:", val
+    return error "Or failed:", val, errs
 
 module.exports = {
   # basics

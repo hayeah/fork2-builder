@@ -1,4 +1,5 @@
-C = Contracts = require_test(__filename)
+{printError} = C = Contracts = require_test(__filename)
+perr = printError
 
 describe "Contracts", ->
   match = (test,value) ->
@@ -120,7 +121,7 @@ describe "Contracts", ->
 
   describe "Or", ->
     beforeEach ->
-      @t = C.Or(C.Name(C.Num,"Index"),C.Name(C.Str,"Tag"))
+      @t = C.Or(C.Name("Index",C.Num),C.Name("Tag",C.Str))
 
     it "matches a number", ->
       match @t, 10
@@ -129,6 +130,8 @@ describe "Contracts", ->
       match @t, "abc"
 
     it "fails otherwise", ->
+      console.log err = @t([])
+      perr err
       fail @t, []
       fail @t, {}
 
