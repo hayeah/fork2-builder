@@ -1,7 +1,7 @@
 view_id = "#page-view"
 
 Socket = io
-Connection = require("../Connection")
+Connection = require("Connection")
 
 play = require("../plugins/play")
 quiz = require("../plugins/quiz")
@@ -10,7 +10,7 @@ mods = [
   require("./page/bigfoot")
 ]
 
-HideawayWorkspace = require("../ui/HideawayWorkspace")
+HideawayWorkspace = require("UIHideawayWorkspace")
 
 class PageLayout
   constructor: (@conn,workspace,main) ->

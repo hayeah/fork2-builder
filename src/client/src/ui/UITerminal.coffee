@@ -2,8 +2,8 @@
 cx = React.addons.classSet
 
 
-PTYPipe = require("../pty/PTYPipe")
-PTYSession = require("../pty/PTYSession")
+PTYPipe = require("PTYPipe")
+PTYSession = require("PTYSession")
 
 ###*
 @property {Connection} conn A websocket connection

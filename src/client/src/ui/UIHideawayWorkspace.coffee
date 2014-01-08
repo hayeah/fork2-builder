@@ -3,9 +3,9 @@ check = require("check")
 {div,span} = React.DOM
 cx = React.addons.classSet
 
-RxReactMixin = require("../rx/RxReactMixin")
+RxReactMixin = require("RxReactMixin")
 
-UITerminal = require("../ui/UITerminal")
+UITerminal = require("UITerminal")
 
 ###*
 * @property {Connection} conn A connection

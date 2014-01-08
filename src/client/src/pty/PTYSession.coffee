@@ -16,7 +16,7 @@ RESPAWN_LIMIT = 3
 
 # @property {Bacon.Property.<PTYSize>} PTYSize The maximum allowable size for this pty. If it changes, should request remote pty to resize.
 # @property {Bacon.Property.<PTYSize>} rx.remotePTYSize  When remote PTY successfully resizes, this value changes.
-RxObject = require("../rx/RxObject")
+RxObject = require("RxObject")
 
 class PTYSession extends RxObject
   # @param {PTYPipe} pipe

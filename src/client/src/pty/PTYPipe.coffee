@@ -6,7 +6,7 @@
 # respawn everything on reconnect.
 #
 # TODO: If the underlying connection goes away, we should respawn pipe on connect.
-RxObject = require("../rx/RxObject")
+RxObject = require("RxObject")
 
 class PTYPipe extends RxObject
   ###*
