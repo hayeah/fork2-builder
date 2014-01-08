@@ -52,8 +52,12 @@ browserify := browserify -t hbsfy -t coffeeify --extension='.coffee' --no-detect
 $(js_build)/check-debug.js: $(js_contracts) ../contracts.coffee
 	$(browserify) -r $(js_contracts):check-debug -o $@ || rm $@
 
-$(js_build)/%.js: $(js_src)/%.coffee $(js_files)
-	$(browserify) -r ./$(js_src)/check.coffee:check -x check-debug -o $@ $< || rm $@
+# $(js_build)/%.js: $(js_src)/%.coffee $(js_files)
+# 	$(browserify) -r ./$(js_src)/check.coffee:check -x check-debug -o $@ $< || rm $@
+
+$(js_build)/app.js: $(js_src)/app.coffee $(js_files)
+	coffee build-app.coffee > $@ || rm $@
+	@# $(browserify) -r ./$(js_src)/check.coffee:check -x check-debug -o $@ $< || rm $@
 
 # CSS Build Rules
 css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css) css/img
