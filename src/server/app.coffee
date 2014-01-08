@@ -65,6 +65,7 @@ class App
     @handle "get", '/react', require("./actions/react_sandbox")
     # @handle "get", "/terminal", require("./actions/terminal")
     @handle "get", '/sample/:name', require("./actions/sample")
+    @handle "get", '/uitest/:name', require("./actions/uitest")
     @handle "get", '/:permalink', require("./actions/show")
 
   start: (port) ->
