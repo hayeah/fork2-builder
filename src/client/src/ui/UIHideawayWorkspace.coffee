@@ -37,9 +37,9 @@ HideawayWorkspace = React.createClass({
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
-    $(window).on "keyup", (e) =>
-      if e.keyCode == 191 # "/"
-        @toggle()
+    # $(window).on "keyup", (e) =>
+    #   if e.keyCode == 191 # "/"
+    #     @toggle()
 
   getContentSize: ->
     $contentEl = $ @refs.content.getDOMNode()
