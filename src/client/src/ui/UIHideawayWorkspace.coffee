@@ -37,8 +37,6 @@ HideawayWorkspace = React.createClass({
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
-    @rx.contentSize.log()
-
     $(window).on "keyup", (e) =>
       if e.keyCode == 191 # "/"
         @toggle()
@@ -47,11 +45,11 @@ HideawayWorkspace = React.createClass({
     $contentEl = $ @refs.content.getDOMNode()
     {width: $contentEl.width(),height: $contentEl.height()}
 
+  hide: ->
+    @setRxState {isActive: false}
+
   toggle: ->
-    #console.log "before toggle", @getContentSize()
-    @setRxState {isActive: !@state.isActive}, =>
-      # console.log "after toggle", @getContentSize()
-    # @setRxState isActive: !@state.isActive
+    @setRxState {isActive: !@state.isActive}
 
   # Create a connection if workspace is not connected yet.
   ensureConnection: ->
@@ -85,7 +83,10 @@ HideawayWorkspace = React.createClass({
       hidden: !@state.isActive
     }
 
-    div({className: "hideaway-workspace #{cs}"},
+    div({className: "hideaway-workspace #{cs}"}
+      div({className: "hideaway-workspace-controls"},
+        span({className: "glyphicon glyphicon-resize-small",onClick: @hide})
+      )
       div({ref: "content",className: "container"},@state.content)
     )
 })
