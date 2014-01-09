@@ -2,6 +2,9 @@
 
 {Name,Hash,List,Tuple,Str,Num,Eql,printError} = C = require("./contracts")
 
+# @typedef {{rows: Integer, cols: Integer}} PTYSize The dimension of a pty in rows and columns
+PTYSize = Name "PTYSize", Hash(rows: Num, cols: Num)
+
 # @typedef {{width: Integer, height: Integer}} DOMSize width and height of a DOM element in pixels.
 DOMSize = Name "DOMSize", Hash(height: Num, width: Num)
 
@@ -15,6 +18,8 @@ OpenSpec = Name "OpenSpec", ShellProgram
 PlaySpec = Name "PlaySpec", Hash(open: List(OpenSpec))
 
 types = {
+  PTYID: Str
+  PTYSize: PTYSize
   DOMSize: DOMSize
   ShellProgram: ShellProgram
   OpenSpec: OpenSpec

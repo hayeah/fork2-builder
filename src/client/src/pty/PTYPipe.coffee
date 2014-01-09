@@ -6,13 +6,11 @@
 # respawn everything on reconnect.
 #
 # TODO: If the underlying connection goes away, we should respawn pipe on connect.
+check = require("check")
 RxObject = require("RxObject")
 
 class PTYPipe extends RxObject
-  ###*
-  @param {PTYServer.Program} program
-  ###
-  constructor: (@conn,@id,@program) ->
+  constructor: (@conn,@id) ->
     @setRx {
       # is the pty program running?
       isRunning: false
@@ -35,10 +33,10 @@ class PTYPipe extends RxObject
         @setRx isRunning: false
 
   # Spawns a remote terminal
-  spawn: (size,cb) ->
+  spawn: (size,program,cb) ->
+    check("ShellProgram",program)
     # use the current ui terminal size
-    # @uiPTYSize.take(1).onValue (size) =>
-    @conn.send "spawn", @id, size, @program, =>
+    @conn.send "spawn", @id, size, program, =>
       @setRx isRunning: true
       cb(size) if cb
 
@@ -46,7 +44,6 @@ class PTYPipe extends RxObject
     @write ["resize",size], =>
       # downstream resize if remote call is success
       cb(size) if cb
-      # @setRx PTYSize: size
 
   write: (args...) ->
     @conn.send(@id,args...)

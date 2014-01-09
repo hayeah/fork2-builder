@@ -7,6 +7,7 @@ class PTYInstance
   # @param {PTYServer.Size} size
   # @param {ShellProgram} program
   constructor: (@so,@id,@size,@program) ->
+    check("PTYID",@id)
     check("ShellProgram",@program)
     @spawn()
 
@@ -52,6 +53,9 @@ class PTYInstance
     @so.emit(@id,args)
 
   close: ->
+    @so.removeAllListeners @id
+    @pty.removeAllListeners()
+    @pty.destroy()
 
 class PTYServer
   constructor: (@so) ->
