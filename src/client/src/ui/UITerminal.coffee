@@ -1,6 +1,7 @@
 {div,span} = React.DOM
 cx = React.addons.classSet
 
+check = require('check')
 
 PTYPipe = require("PTYPipe")
 PTYSession = require("PTYSession")
@@ -31,6 +32,7 @@ UITerminal = React.createClass({
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
+    check("ShellProgram",@props.program)
     term = @openPTY()
     ptySize = @setPTYSize(term)
     session = @connectPTY(term,ptySize)
@@ -38,6 +40,9 @@ UITerminal = React.createClass({
   # Spawns a session using the current pty size
   # @return {null}
   connectPTY: (term,ptySize) ->
+    ptySize.onValue (size) ->
+      console.log "ptysize", size
+
     pipe = new PTYPipe(@props.conn,@props.key,@props.program)
     ptySession = new PTYSession(pipe,term,ptySize)
     @setState session: ptySession

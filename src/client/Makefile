@@ -21,7 +21,7 @@ rebuild: clean build
 build: deps js css
 
 watch:
-	watchy -w src,$(js_contracts),../contracts.coffee -- make build
+	watchy -w uitest,src,$(js_contracts),../contracts.coffee -- make build
 
 clean:
 	rm -r $(build)
@@ -38,7 +38,7 @@ bower_components: bower.json | node_modules
 	touch $@
 
 # JS Build Rules
-js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js check-debug.js)
+js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js check-debug.js uitest.js)
 
 $(js_build):
 	mkdir -p $(js_build)
@@ -56,8 +56,11 @@ $(js_build)/check-debug.js: $(js_contracts) ../contracts.coffee
 # 	$(browserify) -r ./$(js_src)/check.coffee:check -x check-debug -o $@ $< || rm $@
 
 $(js_build)/app.js: $(js_src)/app.coffee $(js_files)
-	coffee build-app.coffee > $@ || rm $@
+	coffee build.coffee app > $@ || rm $@
 	@# $(browserify) -r ./$(js_src)/check.coffee:check -x check-debug -o $@ $< || rm $@
+
+$(js_build)/uitest.js: $(shell find uitest -type f -name '*.coffee')
+	coffee build.coffee uitest > $@ || rm $@
 
 # CSS Build Rules
 css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css) css/img
