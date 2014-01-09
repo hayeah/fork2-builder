@@ -6,9 +6,10 @@ cx = React.addons.classSet
 RxReactMixin = require("RxReactMixin")
 
 UITerminal = require("UITerminal")
+Connection = require("Connection")
 
 ###*
-* @property {Connection} conn A connection
+@attr {Connection} _conn A connection. Should call `this.ensureConnection` to initialize before use.
 ###
 
 # @param {String} id
@@ -52,16 +53,21 @@ HideawayWorkspace = React.createClass({
       # console.log "after toggle", @getContentSize()
     # @setRxState isActive: !@state.isActive
 
+  # Create a connection if workspace is not connected yet.
+  ensureConnection: ->
+    @_conn ||= Connection.create()
+
   # @param {PlaySpec} spec
   open: (spec) ->
     check "PlaySpec", spec
     @setRxState {isActive: true}, =>
+      conn = @ensureConnection()
       shell = spec.open[0]
       content = UITerminal({
         key: "pty-1"
         program: shell
         size: @rx.contentSize
-        conn: @props.conn
+        conn: conn
         })
 
       @setRxState contentSize: @getContentSize()
