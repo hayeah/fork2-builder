@@ -59,6 +59,8 @@ HideawayWorkspace = React.createClass({
   open: (spec) ->
     check "PlaySpec", spec
     @setRxState {isActive: true}, =>
+      @setRxState contentSize: @getContentSize()
+
       conn = @ensureConnection()
       shell = spec.open[0]
       content = UITerminal({
@@ -68,7 +70,6 @@ HideawayWorkspace = React.createClass({
         conn: conn
         })
 
-      @setRxState contentSize: @getContentSize()
       @setState content: content
 
 

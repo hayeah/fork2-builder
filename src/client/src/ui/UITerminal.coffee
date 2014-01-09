@@ -100,7 +100,7 @@ UITerminal = React.createClass({
   componentDidUpdate: (prevProps,prevState,rootNode) ->
     # if program changed, should respawn remote pty
     if not _.isEqual prevProps.program, @props.program
-      console.log "changed program", @props.program, prevProps.program
+      # console.log "changed program", @props.program, prevProps.program
       # respawn program if program changed
       @changeProgram()
 

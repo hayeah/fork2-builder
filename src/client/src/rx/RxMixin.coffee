@@ -6,6 +6,8 @@
 #
 # WARNING: If the property isn't subscribed to, the values pushed to bus are lost.
 
+RxBuffer = require("RxBuffer")
+
 module.exports = RxMixin = {
   # @param {Object} props
   setRx: (props) ->
@@ -17,7 +19,7 @@ module.exports = RxMixin = {
     for key, val of props
       bus = @_rx_buses[key]
       unless bus
-        bus = @_rx_buses[key] = new Bacon.Bus()
+        bus = @_rx_buses[key] = new RxBuffer()
         prop = bus.toProperty()
         unless val == undefined
           prop = prop.startWith(val)
