@@ -14,17 +14,17 @@
     {{/if}}
 
     {{#if useBundle}}
-    <link rel="stylesheet" type="text/css" href="/bundle/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
     {{else}}
     <!-- <link rel="stylesheet" type="text/css" href="/src/client/build/css/app-vendor.css"> -->
-    <link rel="stylesheet" type="text/css" href="/src/client/build/css/app.css">
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
     {{/if}}
 
     {{#if DEBUG}}
     <script type="text/javascript">
     window.DEBUG = true
     </script>
-    <script src="/src/client/build/js/check-debug.js"></script>
+    <script src="/js/check-debug.js"></script>
     {{/if}}
   </head>
   <body>
@@ -56,16 +56,11 @@
     </div>
     <!-- <script src="http://localhost:35729/livereload.js"></script>  -->
 
-    {{#if useBundle}}
-    <script src="/bundle/app-vendor.js"></script>
-    <script src="/bundle/app.js"></script>
-    {{else}}
-    <script src="/src/client/build/js/app-vendor.js"></script>
-    <script src="/src/client/build/js/app.js"></script>
-    {{/if}}
+    <script src="/js/app-vendor.js"></script>
+    <script src="/js/app.js"></script>
 
     {{#if uitest}}
-    <script src="/src/client/build/js/uitest.js"></script>
+    <script src="/js/uitest.js"></script>
     {{/if}}
   </body>
 </html>

@@ -19,6 +19,8 @@ Socket = require("socket.io")
 PingServer = require("./PingServer")
 PTYServer = require("./PTYServer")
 
+USE_BUNDLE = !!process.env.BUNDLE
+
 class App
   # @params options.content [Path] The directory of a built project.
   constructor: (@options) ->
@@ -33,15 +35,6 @@ class App
 
     @express.set("root",@contentRoot)
 
-    # If pkgRoot/bundle exists, then use the bundled client assets.
-    # Use a layout template that uses the client assets. Else use the
-    # client assets in build.
-    # FIXME hmmm... should probably use a --dev flag instead
-    if fs.existsSync(path.join(pkgRoot,"bundle"))
-      @express.locals.useBundle = true
-    else
-      @express.locals.useBundle = false
-
     hbsViewEngine = ehbs
       defaultLayout: "app"
       extname: '.hbs.html'
@@ -52,9 +45,22 @@ class App
 
     @express.set('views', "#{serverDir}/views")
     @express.set('view engine', '.hbs.html')
-    console.log "static: #{pkgRoot}"
+
     @express.use(express.compress())
-    @express.use(express.static(pkgRoot))
+    # TODO disable this...? can I still get source map to work? ya i think so. It's inline from browserify
+    # @express.use(express.static(pkgRoot))
+
+    clientRoot = path.join pkgRoot, "src/client"
+
+    staticPath =
+      if USE_BUNDLE
+        path.join clientRoot, "bundle"
+      else
+        path.join clientRoot, "build"
+
+    console.log "static: #{staticPath}"
+    @express.use(express.static(staticPath))
+
 
     assetsPath = path.resolve(path.join @contentRoot, "assets")
     console.log "assets: #{assetsPath}"
