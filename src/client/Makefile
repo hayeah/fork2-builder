@@ -1,24 +1,39 @@
 build := build
+bundle_path := bundle
+
+# JS Vars
 js_build := $(build)/js
+js_bundle_path := $(bundle_path)/js
+
+## Input
 js_src := src
 js_files := $(shell find $(js_src) -type f -name '*.coffee')
 js_contracts := ../types.coffee
 
+## Output
+js_build_output := $(addprefix $(js_build)/,app.js app-vendor.js check-debug.js uitest.js)
+js_bundle_output := $(addprefix $(js_bundle_path)/,app.js app-vendor.js)
+
+# CSS vars
 css_build := $(build)/css
+css_bundle_path := $(bundle_path)/css
+
+## Input
 css_src := src/css
 css_files := $(shell find $(js_src) -type f -name '*.less')
 
-bower := bower_components
-bundle := bundle
-optimize := uglify2
+## Output
+css_build_output := $(css_build)/app.css
+css_bundle_output := $(css_bundle_path)/app.css
 
+bower := bower_components
 css_img_files := $(shell find $(css_src)/img -type f)
 
 .PHONY: bundle build watch deps
 
 rebuild: clean build
 
-build: deps js css
+build: deps build_js build_css
 
 watch:
 	watchy -w uitest,src,$(js_contracts),../contracts.coffee -- make build
@@ -37,8 +52,28 @@ bower_components: bower.json | node_modules
 	bower install
 	touch $@
 
+bundle: bundle_js bundle_css
+
+bundle_js: $(js_bundle_path) $(js_bundle_output)
+
+$(js_bundle_path):
+	mkdir -p $@
+
+$(js_bundle_path)/%.js: $(js_build)/%.js
+	uglifyjs $< > $@
+
+bundle_css: $(css_bundle_path) $(css_bundle_output)
+
+$(css_bundle_path):
+	mkdir -p $@
+
+$(css_bundle_path)/%.css:  $(css_build)/%.css
+	lessc --compress $< > $@ || rm $@
+
+# bundle_css: $(css_files)
+
 # JS Build Rules
-js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js check-debug.js uitest.js)
+build_js: $(js_build) $(addprefix $(js_build)/,app.js app-vendor.js check-debug.js uitest.js)
 
 $(js_build):
 	mkdir -p $(js_build)
@@ -63,16 +98,18 @@ $(js_build)/uitest.js: $(shell find uitest -type f -name '*.coffee')
 	coffee build.coffee uitest > $@ || rm $@
 
 # CSS Build Rules
-css: $(css_build) $(addprefix $(css_build)/,app.css app-vendor.css) css/img
+build_css: $(css_build) $(css_build_output)
 
-css/img: $(subst $(css_src)/img,$(css_build)/img,$(css_img_files))
+#css/img
 
-$(css_build)/img/%: $(css_src)/img/%
-	@mkdir -p $(css_build)/img
-	cp $< $@
+# css/img: $(subst $(css_src)/img,$(css_build)/img,$(css_img_files))
+
+# $(css_build)/img/%: $(css_src)/img/%
+# 	@mkdir -p $(css_build)/img
+# 	cp $< $@
+$(css_build):
+	mkdir -p $(css_build)
 
 $(css_build)/%.css: $(css_src)/%.less $(css_files)
 	lessc $< $@ --source-map-map-inline --source-map-less-inline
 
-$(css_build):
-	mkdir -p $(css_build)
