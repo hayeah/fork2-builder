@@ -53,6 +53,7 @@ class App
     @express.set('views', "#{serverDir}/views")
     @express.set('view engine', '.hbs.html')
     console.log "static: #{pkgRoot}"
+    @express.use(express.compress())
     @express.use(express.static(pkgRoot))
 
     assetsPath = path.resolve(path.join @contentRoot, "assets")
