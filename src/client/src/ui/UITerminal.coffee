@@ -1,15 +1,21 @@
 {div,span} = React.DOM
 cx = React.addons.classSet
 
+check = require('check')
 
-PTYPipe = require("../pty/PTYPipe")
-PTYSession = require("../pty/PTYSession")
+PTYPipe = require("PTYPipe")
+PTYSession = require("PTYSession")
 
 ###*
-@property {Connection} conn A websocket connection
-@property {Bacon.Property.<{width: Integer, height: Integer}>} size The width and height in pixels available for terminal
-@property {String} key Unique id for this terminal
-@property {ShellProgram} program Specify the repl to spawn
+Object Properties
+@attr {PTYSession} _ptySession
+@attr {Terminal} _term
+
+React properties
+@prop {Connection} conn A websocket connection
+@prop {Bacon.Property.<{width: Integer, height: Integer}>} size The width and height in pixels available for terminal
+@prop {String} key Unique id for this terminal
+@prop {ShellProgram} program Specify the repl to spawn
 ###
 
 UITerminal = React.createClass({
@@ -31,16 +37,29 @@ UITerminal = React.createClass({
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
-    term = @openPTY()
-    ptySize = @setPTYSize(term)
-    session = @connectPTY(term,ptySize)
+    check("ShellProgram",@props.program)
+    @_term = @openPTY()
+    ptySize = @setPTYSize(@_term)
+    @_ptySession = @connectPTY(@_term,ptySize)
+    @spawnProgram()
+
+  # respawn program and reset terminal
+  changeProgram: ->
+    @_term.reset()
+    @spawnProgram()
+
+  # respawn program without resetting terminal
+  respawnProgram: ->
+
+  spawnProgram: ->
+    @_ptySession.spawn(@props.program)
 
   # Spawns a session using the current pty size
   # @return {null}
   connectPTY: (term,ptySize) ->
-    pipe = new PTYPipe(@props.conn,@props.key,@props.program)
+    pipe = new PTYPipe(@props.conn,@props.key)
     ptySession = new PTYSession(pipe,term,ptySize)
-    @setState session: ptySession
+    # @setState session: ptySession
     return ptySession
 
   # Renders the terminal into DOM.
@@ -53,7 +72,6 @@ UITerminal = React.createClass({
       cursorBlink: false
     })
     term.open(el)
-    @setState term: term
     return term
 
   setPTYSize: ->
@@ -80,6 +98,12 @@ UITerminal = React.createClass({
   # componentWillUpdate: (nextProps,nextState) ->
 
   componentDidUpdate: (prevProps,prevState,rootNode) ->
+    # if program changed, should respawn remote pty
+    if not _.isEqual prevProps.program, @props.program
+      # console.log "changed program", @props.program, prevProps.program
+      # respawn program if program changed
+      @changeProgram()
+
     # focus and blurring when changing tabs
     if prevProps.focus == false && @props.focus == true
       @state.term.focus()

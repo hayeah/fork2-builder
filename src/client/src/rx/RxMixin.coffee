@@ -3,6 +3,10 @@
 #
 # If the initial value is `undefined`, setRx creates a property with no
 # initial value.
+#
+# WARNING: If the property isn't subscribed to, the values pushed to bus are lost.
+
+RxBuffer = require("RxBuffer")
 
 module.exports = RxMixin = {
   # @param {Object} props
@@ -15,9 +19,11 @@ module.exports = RxMixin = {
     for key, val of props
       bus = @_rx_buses[key]
       unless bus
-        bus = @_rx_buses[key] = new Bacon.Bus()
-        @_rx_props[key] = bus.toProperty()
-        bus.push val unless val == undefined
+        bus = @_rx_buses[key] = new RxBuffer()
+        prop = bus.toProperty()
+        unless val == undefined
+          prop = prop.startWith(val)
+        @_rx_props[key] = prop
       else
         bus.push(val)
 }

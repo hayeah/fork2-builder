@@ -9,26 +9,24 @@
 
 RESPAWN_LIMIT = 3
 
-
+check = require("check")
 # @param {Bacon.Property.<PTYSize>} uiPTYSize
 
-# @type {{rols: Integer, cols: Integer}} PTYSize The dimension of a pty
 
-# @property {Bacon.Property.<PTYSize>} PTYSize The maximum allowable size for this pty. If it changes, should request remote pty to resize.
-# @property {Bacon.Property.<PTYSize>} rx.remotePTYSize  When remote PTY successfully resizes, this value changes.
-RxObject = require("../rx/RxObject")
+RxObject = require("RxObject")
 
 class PTYSession extends RxObject
-  # @param {PTYPipe} pipe
-  # @param {Terminal} terminal Client side terminal object.
+  # @attr {Terminal} terminal Terminal emulator
+  # @attr {Bacon.Property.<PTYSize>} PTYSize The maximum allowable size for this pty. If it changes, should request remote pty to resize.
+  # @attr {Bacon.Property.<PTYSize>} rx.remotePTYSize  When remote PTY successfully resizes, this value changes.
+  # @attr {PTYPipe} pipe
   constructor: (@pipe,@terminal,@PTYSize) ->
     @setRx {
       remotePTYSize: null
     }
-    @spawn()
 
     @setupIO()
-    @setupAutoRespawn()
+    # @setupAutoRespawn()
     @setupAutoResize()
 
   setupIO: ->
@@ -67,17 +65,22 @@ class PTYSession extends RxObject
     @PTYSize.changes().onValue @resizeRemote.bind(@)
 
   resizeLocal: (size) ->
+    check("PTYSize",size)
     {cols,rows} = size
     @terminal.resize cols, rows
 
   resizeRemote: (size) ->
+    check("PTYSize",size)
     @pipe.resize size, (remoteSize) =>
       @setRx remotePTYSize: remoteSize
 
-  # TODO throttle spawn.
-  spawn: ->
+  # Spawn a remote program
+  # @param {ShellProgram} program
+  spawn: (program) ->
+    check("ShellProgram",program)
+    # TODO throttle spawn.
     @PTYSize.take(1).onValue (size) =>
-      @pipe.spawn size, (remoteSize) =>
+      @pipe.spawn size, program, (remoteSize) =>
         @setRx remotePTYSize: remoteSize
 
   respawn: ->

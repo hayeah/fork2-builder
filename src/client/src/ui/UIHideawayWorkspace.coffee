@@ -3,12 +3,13 @@ check = require("check")
 {div,span} = React.DOM
 cx = React.addons.classSet
 
-RxReactMixin = require("../rx/RxReactMixin")
+RxReactMixin = require("RxReactMixin")
 
-UITerminal = require("../ui/UITerminal")
+UITerminal = require("UITerminal")
+Connection = require("Connection")
 
 ###*
-* @property {Connection} conn A connection
+@attr {Connection} _conn A connection. Should call `this.ensureConnection` to initialize before use.
 ###
 
 # @param {String} id
@@ -36,35 +37,39 @@ HideawayWorkspace = React.createClass({
   # componentWillMount: ->
 
   componentDidMount: (rootNode) ->
-    @rx.contentSize.log()
-
-    $(window).on "keyup", (e) =>
-      if e.keyCode == 191 # "/"
-        @toggle()
+    # $(window).on "keyup", (e) =>
+    #   if e.keyCode == 191 # "/"
+    #     @toggle()
 
   getContentSize: ->
     $contentEl = $ @refs.content.getDOMNode()
     {width: $contentEl.width(),height: $contentEl.height()}
 
+  hide: ->
+    @setRxState {isActive: false}
+
   toggle: ->
-    #console.log "before toggle", @getContentSize()
-    @setRxState {isActive: !@state.isActive}, =>
-      # console.log "after toggle", @getContentSize()
-    # @setRxState isActive: !@state.isActive
+    @setRxState {isActive: !@state.isActive}
+
+  # Create a connection if workspace is not connected yet.
+  ensureConnection: ->
+    @_conn ||= Connection.create()
 
   # @param {PlaySpec} spec
   open: (spec) ->
     check "PlaySpec", spec
     @setRxState {isActive: true}, =>
+      @setRxState contentSize: @getContentSize()
+
+      conn = @ensureConnection()
       shell = spec.open[0]
       content = UITerminal({
         key: "pty-1"
         program: shell
         size: @rx.contentSize
-        conn: @props.conn
+        conn: conn
         })
 
-      @setRxState contentSize: @getContentSize()
       @setState content: content
 
 
@@ -79,7 +84,10 @@ HideawayWorkspace = React.createClass({
       hidden: !@state.isActive
     }
 
-    div({className: "hideaway-workspace #{cs}"},
+    div({className: "hideaway-workspace #{cs}"}
+      div({className: "hideaway-workspace-controls"},
+        span({className: "glyphicon glyphicon-resize-small",onClick: @hide})
+      )
       div({ref: "content",className: "container"},@state.content)
     )
 })

@@ -1,3 +1,5 @@
+path = require "path"
 module.exports = class Sample extends require('./base')
   handle: (cb) ->
-    @res.render("uitests/#{@params.name}",name: @params.name)
+    name = @params.name
+    @render("uitest",name: name,uitest: true)

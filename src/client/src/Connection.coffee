@@ -1,3 +1,4 @@
+Socket = io
 class Connection
   # @param {SocketIO} so A Socket.io socket.
   constructor: (@so) ->
@@ -13,7 +14,6 @@ class Connection
     disconnectEvents = Bacon.fromEventTarget(@so,"disconnect").map(false)
     @status = connectEvents.merge(disconnectEvents).toProperty().startWith(false)
 
-    @status.log()
     @status.changes().onValue (up) =>
       @isConnected = up
       @drainBuffer() if @isConnected
@@ -40,5 +40,11 @@ class Connection
     @drainBuffer()
 
     @so.emit args...
+
+create = ->
+  so = Socket.connect()
+  new Connection(so)
+
+Connection.create = create
 
 module.exports = Connection
