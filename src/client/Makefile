@@ -26,14 +26,22 @@ css_files := $(shell find $(js_src) -type f -name '*.less')
 css_build_output := $(css_build)/app.css
 css_bundle_output := $(css_bundle_path)/app.css
 
+# Assets
+asset_path := assets
+asset_build_path := $(css_build)
+asset_bundle_path := $(css_bundle_path)
+asset_files := $(shell find $(asset_path) -type f)
+
+asset_build_output := $(patsubst $(asset_path)/%,$(asset_build_path)/%,$(asset_files))
+asset_bundle_output := $(patsubst $(asset_path)/%,$(asset_bundle_path)/%,$(asset_files))
+
 bower := bower_components
-css_img_files := $(shell find $(css_src)/img -type f)
 
 .PHONY: bundle build watch deps
 
 rebuild: clean build
 
-build: deps build_js build_css
+build: deps build_js build_css build_assets
 
 watch:
 	watchy -w uitest,src,$(js_contracts),../contracts.coffee -- make build
@@ -62,13 +70,19 @@ $(js_bundle_path):
 $(js_bundle_path)/%.js: $(js_build)/%.js
 	uglifyjs $< > $@
 
-bundle_css: $(css_bundle_path) $(css_bundle_output)
+bundle_css: $(css_bundle_path) $(css_bundle_output) $(asset_bundle_output)
 
 $(css_bundle_path):
 	mkdir -p $@
 
 $(css_bundle_path)/%.css:  $(css_build)/%.css
 	lessc --compress $< > $@ || rm $@
+
+bundle_assets: $(asset_build_output)
+
+$(asset_bundle_path)/%: $(asset_path)/%
+	mkdir -p $(@D)
+	cp $< $@
 
 # bundle_css: $(css_files)
 
@@ -113,3 +127,10 @@ $(css_build):
 $(css_build)/%.css: $(css_src)/%.less $(css_files)
 	lessc $< $@ --source-map-map-inline --source-map-less-inline
 
+# Asset rules
+
+build_assets: $(asset_build_output)
+
+$(asset_build_path)/%: $(asset_path)/%
+	mkdir -p $(@D)
+	cp $< $@
