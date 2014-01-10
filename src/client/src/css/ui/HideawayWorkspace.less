@@ -1,0 +1,40 @@
+#workspace {
+
+  // top: -400px;
+  // transition-property: top;
+  // display: none;
+
+  // z-index: 99999;
+  // opacity: 0.7;
+  z-index: 10;
+}
+
+.hideaway-workspace {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-top: 50px; // header's height
+  height: 300px;
+  box-shadow: inset 0px -5px 5px -5px #B5B5B5;
+  background: repeat url("img/dark_fish_skin.png");
+}
+
+.hideaway-workspace .container {
+  overflow: hidden;
+  height: 100%;
+}
+
+.hideaway-workspace-controls {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  padding: 10px;
+  color: #fff;
+  &:hover {
+    color: #ddd;
+  }
+  span {
+    font-size: 25px;
+    width: 30px;
+  }
+}

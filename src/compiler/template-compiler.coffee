@@ -54,6 +54,7 @@ directives =
   "quiz-choose-many": buildHelper("./directives/quiz-choose-many")
   "quiz-input": buildHelper("./directives/quiz-input")
   img: buildHelper("./directives/img")
+  play: buildHelper("./directives/play")
 
 TRANSFORMERS = [
   require("./directives/footnote").transform

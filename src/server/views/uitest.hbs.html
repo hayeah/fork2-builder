@@ -1,0 +1,8 @@
+<h1> {{name}} </h1>
+<div id="uitest"></div>
+<script type="text/javascript">
+  window.onload = function() {
+    var component = require("uitest/{{name}}");
+    window.t = React.renderComponent(component(), document.getElementById("uitest"));
+  }
+</script>
