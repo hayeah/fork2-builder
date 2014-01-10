@@ -9,6 +9,7 @@
 , "license": "BSD-2-Clause"
 , "devDependencies":
   { "coffee-script": "~1.6.3"
+  , "glob": "~3.2.8"
   , "less": "~1.5.1"
   , "bower": "~1.2.7"
   , "browserify": "~2.36.1"
