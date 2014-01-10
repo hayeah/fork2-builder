@@ -68,7 +68,7 @@ $(js_bundle_path):
 	mkdir -p $@
 
 $(js_bundle_path)/%.js: $(js_build)/%.js
-	uglifyjs $< > $@
+	uglifyjs -m -c --stats -o $@ $< || > $@
 
 bundle_css: $(css_bundle_path) $(css_bundle_output) $(asset_bundle_output)
 
